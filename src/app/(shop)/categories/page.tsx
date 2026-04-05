@@ -15,7 +15,6 @@ export default async function CategoriesPage() {
   return (
     <div className="min-h-screen bg-bg pt-32 pb-20 px-6">
       <div className="mx-auto max-w-7xl">
-        {/* Header Section */}
         <div className="relative mb-20 text-center sm:text-left">
            <div className="flex items-center justify-center sm:justify-start gap-4 mb-6">
               <div className="h-12 w-12 rounded-2xl bg-accent-light text-accent flex items-center justify-center shadow-sm">
