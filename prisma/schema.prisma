@@ -1,0 +1,222 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  CLIENT
+  ADMIN
+}
+
+enum OrderStatus {
+  EN_ATTENTE
+  CONFIRME
+  EXPEDIE
+  LIVRE
+  ANNULE
+}
+
+enum PromoType {
+  POURCENTAGE
+  MONTANT_FIXE
+}
+
+enum ConversationStatus {
+  OUVERTE
+  EN_ATTENTE
+  FERMEE
+}
+
+enum MessageType {
+  TEXTE
+  IMAGE
+  FICHIER
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  prenom        String
+  nom           String
+  telephone     String?
+  avatarUrl     String?
+  role          Role           @default(CLIENT)
+  emailVerifie  Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  addresses     Address[]
+  orders        Order[]
+  cart          Cart?
+  wishlist      Wishlist[]
+  conversations Conversation[]
+  messages      Message[]
+}
+
+model Category {
+  id        String     @id @default(uuid())
+  nom       String
+  slug      String     @unique
+  imageUrl  String?
+  ordre     Int        @default(0)
+  parentId  String?
+  parent    Category?  @relation("CategoryToSubCategory", fields: [parentId], references: [id])
+  children  Category[] @relation("CategoryToSubCategory")
+  products  Product[]
+  createdAt DateTime   @default(now())
+}
+
+model Product {
+  id          String         @id @default(uuid())
+  nom         String
+  slug        String         @unique
+  description String         @db.Text
+  prix        Decimal        @db.Decimal(10, 2)
+  ancienPrix  Decimal?       @db.Decimal(10, 2)
+  stock       Int            @default(0)
+  estVisible  Boolean        @default(true)
+  categorieId String
+  categorie   Category       @relation(fields: [categorieId], references: [id])
+  images      ProductImage[]
+  orderItems  OrderItem[]
+  cartItems   CartItem[]
+  wishlist    Wishlist[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+}
+
+model ProductImage {
+  id        String  @id @default(uuid())
+  produitId String
+  produit   Product @relation(fields: [produitId], references: [id], onDelete: Cascade)
+  url       String
+  ordre     Int     @default(0)
+}
+
+model Address {
+  id               String   @id @default(uuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  prenom           String
+  nom              String
+  telephone        String
+  rue              String
+  complementAdresse String?
+  ville            String
+  codePostal       String
+  pays             String
+  estParDefaut     Boolean  @default(false)
+  orders           Order[]
+  createdAt        DateTime @default(now())
+}
+
+model Order {
+  id               String         @id @default(uuid())
+  userId           String
+  user             User           @relation(fields: [userId], references: [id])
+  statut           OrderStatus    @default(EN_ATTENTE)
+  sousTotal        Decimal        @db.Decimal(10, 2)
+  fraisLivraison   Decimal        @db.Decimal(10, 2)
+  montantReduction Decimal?       @db.Decimal(10, 2)
+  total            Decimal        @db.Decimal(10, 2)
+  promoId          String?
+  promo            Promo?         @relation(fields: [promoId], references: [id])
+  adresseId        String
+  adresse          Address        @relation(fields: [adresseId], references: [id])
+  noteLivraison    String?
+  orderItems       OrderItem[]
+  conversation     Conversation?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+model OrderItem {
+  id           String  @id @default(uuid())
+  ordreId      String
+  order        Order   @relation(fields: [ordreId], references: [id], onDelete: Cascade)
+  produitId    String?
+  produit      Product? @relation(fields: [produitId], references: [id], onDelete: SetNull)
+  quantite     Int
+  prixUnitaire Decimal @db.Decimal(10, 2)
+  nomProduit   String
+  imageProduit String?
+}
+
+model Cart {
+  id        String     @id @default(uuid())
+  userId    String     @unique
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items     CartItem[]
+  updatedAt DateTime   @updatedAt
+}
+
+model CartItem {
+  id        String   @id @default(uuid())
+  paniereId String
+  cart      Cart     @relation(fields: [paniereId], references: [id], onDelete: Cascade)
+  produitId String
+  produit   Product  @relation(fields: [produitId], references: [id], onDelete: Cascade)
+  quantite  Int
+  ajouteLe  DateTime @default(now())
+}
+
+model Wishlist {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  produitId String
+  produit   Product  @relation(fields: [produitId], references: [id], onDelete: Cascade)
+  ajouteLe  DateTime @default(now())
+}
+
+model Promo {
+  id                String    @id @default(uuid())
+  code              String    @unique
+  reduction         Decimal   @db.Decimal(10, 2)
+  type              PromoType
+  montantMinimum    Decimal?  @db.Decimal(10, 2)
+  limiteUtilisation Int?
+  nombreUtilisations Int       @default(0)
+  dateExpiration    DateTime
+  estActif          Boolean   @default(true)
+  orders            Order[]
+  createdAt         DateTime  @default(now())
+}
+
+model Conversation {
+  id        String             @id @default(uuid())
+  userId    String
+  user      User               @relation(fields: [userId], references: [id])
+  statut    ConversationStatus @default(OUVERTE)
+  sujet     String?
+  ordreId   String?            @unique
+  order     Order?             @relation(fields: [ordreId], references: [id])
+  messages  Message[]
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+}
+
+model Message {
+  id             String                @id @default(uuid())
+  conversationId String
+  conversation   Conversation          @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  expediteurId   String
+  expediteur     User                  @relation(fields: [expediteurId], references: [id])
+  contenu        String                @db.Text
+  type           MessageType           @default(TEXTE)
+  lu             Boolean               @default(false)
+  piecesJointes  MessagePieceJointe[]
+  createdAt      DateTime              @default(now())
+}
+
+model MessagePieceJointe {
+  id          String  @id @default(uuid())
+  messageId   String
+  message     Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  url         String
+  nom         String
+  typeFichier String
+  taille      Int
+}
