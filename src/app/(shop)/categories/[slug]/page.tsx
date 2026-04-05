@@ -1,11 +1,13 @@
-import { notFound } from 'next/navigation'
-import { ProductGrid } from "@/components/product/ProductGrid/ProductGrid"
-import prisma from "@/lib/prisma/client"
-import { getProducts } from "@/lib/actions/product.actions"
+import { notFound } from "next/navigation";
+import { ProductGrid } from "@/components/product/ProductGrid/ProductGrid";
+import prisma from "@/lib/prisma/client";
+import { getProducts } from "@/lib/actions/product.actions";
 
-export default async function CategoryPage({ params }: { params: { slug: string } }) {
+export default async function CategoryPage({
+  params,
+}: Readonly<{ params: Promise<{ slug: string }> }>) {
   const { slug } = await params;
-  
+
   const category = await prisma.category.findUnique({ where: { slug } });
 
   if (!category) {
@@ -19,16 +21,20 @@ export default async function CategoryPage({ params }: { params: { slug: string 
       <div className="max-w-7xl mx-auto">
         <header className="mb-12">
           <div className="flex flex-col gap-2">
-            <p className="text-sm font-bold text-accent uppercase tracking-widest italic">Collection</p>
+            <p className="text-sm font-bold text-accent uppercase tracking-widest italic">
+              Collection
+            </p>
             <h1 className="text-4xl font-bold tracking-tighter text-text-primary uppercase">
               {category.nom}
             </h1>
             <p className="text-text-muted font-medium max-w-xl">
-              Explorer notre sélection exclusive dans la catégorie <span className="text-text-primary font-bold">{category.nom}</span>.
-              Qualité et style garantis.
+              Explorer notre sélection exclusive dans la catégorie{" "}
+              <span className="text-text-primary font-bold">
+                {category.nom}
+              </span>{" "}
+              . Qualité et style garantis.
             </p>
           </div>
-          
         </header>
 
         <div className="mb-12">
@@ -37,9 +43,8 @@ export default async function CategoryPage({ params }: { params: { slug: string 
           </span>
         </div>
 
-        {/* Content */}
         <ProductGrid products={products} />
       </div>
     </main>
-  )
+  );
 }

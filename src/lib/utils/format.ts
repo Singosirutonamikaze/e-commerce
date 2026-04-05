@@ -1,12 +1,14 @@
-export function formatPrice(price: number | unknown): string {
-  const numericPrice = typeof price === 'number' ? price : Number(price);
-  
+export function formatPrice(price: number | string | null | undefined): string {
+  const numericPrice = typeof price === "number" ? price : Number(price ?? 0);
+
   // Custom FCFA formatting for Minimalist Professional Luxury
-  return new Intl.NumberFormat('fr-FR', {
-    style: 'decimal',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(numericPrice) + ' FCFA';
+  return (
+    new Intl.NumberFormat("fr-FR", {
+      style: "decimal",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(numericPrice) + " FCFA"
+  );
 }
 
 /**
@@ -16,14 +18,14 @@ export function formatPrice(price: number | unknown): string {
  * @returns Formatted date string
  */
 export function formatDate(date: Date | string, includeTime = false): string {
-  const d = typeof date === 'string' ? new Date(date) : date;
-  
+  const d = typeof date === "string" ? new Date(date) : date;
+
   const options: Intl.DateTimeFormatOptions = {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    ...(includeTime && { hour: '2-digit', minute: '2-digit' }),
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    ...(includeTime && { hour: "2-digit", minute: "2-digit" }),
   };
-  
-  return new Intl.DateTimeFormat('fr-FR', options).format(d);
+
+  return new Intl.DateTimeFormat("fr-FR", options).format(d);
 }

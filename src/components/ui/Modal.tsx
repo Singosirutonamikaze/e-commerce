@@ -1,39 +1,43 @@
-'use client'
+"use client";
 
-import React, { useEffect, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { X } from 'lucide-react'
-import { Button } from './Button'
-import { cn } from '@/lib/utils/cn'
+import React, { useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
+import { Button } from "./Button";
+import { cn } from "@/lib/utils/cn";
 
 interface ModalProps {
-  isOpen: boolean
-  onClose: () => void
-  title?: string
-  children: React.ReactNode
-  className?: string
+  isOpen: boolean;
+  onClose: () => void;
+  title?: string;
+  children: React.ReactNode;
+  className?: string;
 }
 
-export function Modal({ isOpen, onClose, title, children, className }: ModalProps) {
-  const modalRef = useRef<HTMLDivElement>(null)
-
+export function Modal({
+  isOpen,
+  onClose,
+  title,
+  children,
+  className,
+}: Readonly<ModalProps>) {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
-    }
-    
+      if (e.key === "Escape") onClose();
+    };
+
     if (isOpen) {
-      document.body.style.overflow = 'hidden'
-      window.addEventListener('keydown', handleEscape)
+      document.body.style.overflow = "hidden";
+      globalThis.addEventListener("keydown", handleEscape);
     } else {
-      document.body.style.overflow = 'unset'
+      document.body.style.overflow = "unset";
     }
-    
+
     return () => {
-      document.body.style.overflow = 'unset'
-      window.removeEventListener('keydown', handleEscape)
-    }
-  }, [isOpen, onClose])
+      document.body.style.overflow = "unset";
+      globalThis.removeEventListener("keydown", handleEscape);
+    };
+  }, [isOpen, onClose]);
 
   return (
     <AnimatePresence>
@@ -52,11 +56,13 @@ export function Modal({ isOpen, onClose, title, children, className }: ModalProp
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             className={cn(
               "relative z-10 w-full max-w-lg overflow-hidden rounded-sm bg-surface p-6 shadow-2xl",
-              className
+              className,
             )}
           >
             <div className="flex items-center justify-between mb-4">
-              {title && <h2 className="text-xl font-bold text-text-primary">{title}</h2>}
+              {title && (
+                <h2 className="text-xl font-bold text-text-primary">{title}</h2>
+              )}
               <Button
                 variant="ghost"
                 size="sm"
@@ -71,5 +77,5 @@ export function Modal({ isOpen, onClose, title, children, className }: ModalProp
         </div>
       )}
     </AnimatePresence>
-  )
+  );
 }

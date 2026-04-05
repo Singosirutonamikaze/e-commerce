@@ -1,0 +1,38 @@
+.stockBarProgress {
+  width: 80px;
+  height: 4px;
+  appearance: none;
+  border: 0;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.stockBarProgress::-webkit-progress-bar {
+  background-color: #f5f5f5;
+}
+
+.stockBarProgress::-webkit-progress-value {
+  background-color: #000000;
+  transition: all 0.2s ease-in-out;
+}
+
+.stockBarProgress::-moz-progress-bar {
+  background-color: #000000;
+  transition: all 0.2s ease-in-out;
+}
+
+.fillLow::-webkit-progress-value {
+  background-color: #a3a3a3;
+}
+
+.fillLow::-moz-progress-bar {
+  background-color: #a3a3a3;
+}
+
+.fillZero::-webkit-progress-value {
+  background-color: #ef4444;
+}
+
+.fillZero::-moz-progress-bar {
+  background-color: #ef4444;
+}

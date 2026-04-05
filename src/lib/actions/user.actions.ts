@@ -1,17 +1,26 @@
-'use server';
+"use server";
 
 import prisma from "@/lib/prisma/client";
 import { createClient } from "@/lib/supabase/server";
-import { loginSchema, registerSchema, addressSchema, profileSchema, LoginInput, RegisterInput, AddressInput, ProfileInput } from "@/lib/utils/validators";
+import {
+  loginSchema,
+  registerSchema,
+  addressSchema,
+  profileSchema,
+  LoginInput,
+  RegisterInput,
+  AddressInput,
+  ProfileInput,
+} from "@/lib/utils/validators";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { ROUTES } from "@/lib/utils/constants/routes";
 
 export async function login(formData: LoginInput) {
   const validatedFields = loginSchema.safeParse(formData);
-  
+
   if (!validatedFields.success) {
-    return { error: 'Données invalides' };
+    return { error: "Données invalides" };
   }
 
   const { email, password } = validatedFields.data;
@@ -23,18 +32,21 @@ export async function login(formData: LoginInput) {
   });
 
   if (error) {
-    console.error('Erreur Supabase au login:', error);
-    if (error.message.includes('Email not confirmed')) {
-      return { error: 'Veuillez confirmer votre numéro ou adresse email avant de vous connecter.' };
+    console.error("Erreur Supabase au login:", error);
+    if (error.message.includes("Email not confirmed")) {
+      return {
+        error:
+          "Veuillez confirmer votre numéro ou adresse email avant de vous connecter.",
+      };
     }
-    return { error: error.message || 'Identifiants invalides' };
+    return { error: error.message || "Identifiants invalides" };
   }
 
-  let role = 'CLIENT';
+  let role = "CLIENT";
   if (data?.user) {
     const dbUser = await prisma.user.findUnique({
       where: { id: data.user.id },
-      select: { role: true }
+      select: { role: true },
     });
     if (dbUser) {
       role = dbUser.role;
@@ -48,26 +60,30 @@ export async function login(formData: LoginInput) {
 
 export async function register(formData: RegisterInput) {
   const validatedFields = registerSchema.safeParse(formData);
-  
+
   if (!validatedFields.success) {
-    return { error: 'Données invalides' };
+    return { error: "Données invalides" };
   }
 
   const { email, password, prenom, nom } = validatedFields.data;
-  const { createClient: createSupabaseClient } = await import('@supabase/supabase-js');
-  
+  const { createClient: createSupabaseClient } =
+    await import("@supabase/supabase-js");
+
   // Bypass email verification using admin client
   const supabaseAdmin = createSupabaseClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
   );
 
   // Inscription Supabase Auth
-  const { data: { user }, error: authError } = await supabaseAdmin.auth.admin.createUser({
+  const {
+    data: { user },
+    error: authError,
+  } = await supabaseAdmin.auth.admin.createUser({
     email,
     password,
     email_confirm: true,
-    user_metadata: { prenom, nom }
+    user_metadata: { prenom, nom },
   });
 
   if (authError) {
@@ -83,16 +99,19 @@ export async function register(formData: RegisterInput) {
           email,
           prenom,
           nom,
-          role: 'CLIENT'
-        }
+          role: "CLIENT",
+        },
       });
       // Création du panier vide
       await prisma.cart.create({
-        data: { userId: user.id }
+        data: { userId: user.id },
       });
     } catch (dbError) {
-      console.error('Erreur lors de la création de l\'utilisateur dans la BDD:', dbError);
-      return { error: 'Erreur lors de la création du profil' };
+      console.error(
+        "Erreur lors de la création de l'utilisateur dans la BDD:",
+        dbError,
+      );
+      return { error: "Erreur lors de la création du profil" };
     }
   }
 
@@ -109,38 +128,43 @@ export async function logout() {
 
 export async function updateProfile(formData: ProfileInput) {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  
-  if (!user) return { error: 'Non authentifié' };
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return { error: "Non authentifié" };
 
   const validatedFields = profileSchema.safeParse(formData);
-  if (!validatedFields.success) return { error: 'Données invalides' };
+  if (!validatedFields.success) return { error: "Données invalides" };
 
   const { prenom, nom, telephone, avatarUrl } = validatedFields.data;
 
   try {
     await prisma.user.update({
       where: { id: user.id },
-      data: { prenom, nom, telephone, avatarUrl }
+      data: { prenom, nom, telephone, avatarUrl },
     });
 
-    revalidatePath(ROUTES.ACCOUNT.PROFILE);
+    revalidatePath(ROUTES.DASHBOARD.PROFILE);
     return { success: true };
   } catch (error) {
-    return { error: 'Erreur lors de la mise à jour' };
+    console.error("Erreur updateProfile:", error);
+    return { error: "Erreur lors de la mise à jour" };
   }
 }
 
 export async function addAddress(formData: AddressInput) {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  
-  if (!user) return { error: 'Non authentifié' };
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return { error: "Non authentifié" };
 
   const validatedFields = addressSchema.safeParse(formData);
-  
+
   if (!validatedFields.success) {
-    return { error: 'Données invalides' };
+    return { error: "Données invalides" };
   }
 
   const data = validatedFields.data;
@@ -150,21 +174,22 @@ export async function addAddress(formData: AddressInput) {
     if (data.estParDefaut) {
       await prisma.address.updateMany({
         where: { userId: user.id },
-        data: { estParDefaut: false }
+        data: { estParDefaut: false },
       });
     }
 
     await prisma.address.create({
       data: {
         ...data,
-        userId: user.id
-      }
+        userId: user.id,
+      },
     });
 
-    revalidatePath(ROUTES.ACCOUNT.ADDRESSES);
+    revalidatePath(ROUTES.DASHBOARD.ADDRESSES);
     return { success: true };
   } catch (error) {
-    return { error: 'Erreur lors de l\'ajout de l\'adresse' };
+    console.error("Erreur addAddress:", error);
+    return { error: "Erreur lors de l'ajout de l'adresse" };
   }
 }
 
@@ -173,29 +198,31 @@ export async function addAddress(formData: AddressInput) {
  */
 export async function getCustomers() {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   if (!user) return [];
 
   const dbUser = await prisma.user.findUnique({
     where: { id: user.id },
-    select: { role: true }
+    select: { role: true },
   });
 
-  if (dbUser?.role !== 'ADMIN') return [];
+  if (dbUser?.role !== "ADMIN") return [];
 
   try {
     return await prisma.user.findMany({
-      where: { role: 'CLIENT' },
-      orderBy: { createdAt: 'desc' },
+      where: { role: "CLIENT" },
+      orderBy: { createdAt: "desc" },
       include: {
         _count: {
-          select: { orders: true }
-        }
-      }
+          select: { orders: true },
+        },
+      },
     });
   } catch (error) {
-    console.error('Erreur getCustomers:', error);
+    console.error("Erreur getCustomers:", error);
     return [];
   }
 }
@@ -205,38 +232,42 @@ export async function getCustomers() {
  */
 export async function getCustomer(id: string) {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   if (!user) return null;
 
   const dbUser = await prisma.user.findUnique({
     where: { id: user.id },
-    select: { role: true }
+    select: { role: true },
   });
 
-  if (dbUser?.role !== 'ADMIN') return null;
+  if (dbUser?.role !== "ADMIN") return null;
 
   try {
     return await prisma.user.findUnique({
       where: { id },
       include: {
         orders: {
-          orderBy: { createdAt: 'desc' },
-          take: 5
+          orderBy: { createdAt: "desc" },
+          take: 5,
         },
-        addresses: true
-      }
+        addresses: true,
+      },
     });
   } catch (error) {
-    console.error('Erreur getCustomer:', error);
+    console.error("Erreur getCustomer:", error);
     return null;
   }
 }
 
 export async function getWishlist() {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   if (!user) return [];
 
   try {
@@ -245,50 +276,56 @@ export async function getWishlist() {
       include: {
         produit: {
           include: {
-            images: { orderBy: { ordre: 'asc' }, take: 1 },
-            categorie: true
-          }
-        }
+            images: { orderBy: { ordre: "asc" }, take: 1 },
+            categorie: true,
+          },
+        },
       },
-      orderBy: { ajouteLe: 'desc' }
+      orderBy: { ajouteLe: "desc" },
     });
 
-    return rawWishlist.map(item => ({
+    return rawWishlist.map((item) => ({
       ...item,
       produit: {
         ...item.produit,
         prix: Number(item.produit.prix),
-        ancienPrix: item.produit.ancienPrix ? Number(item.produit.ancienPrix) : null
-      }
+        ancienPrix: item.produit.ancienPrix
+          ? Number(item.produit.ancienPrix)
+          : null,
+      },
     }));
   } catch (error) {
+    console.error("Erreur getWishlist:", error);
     return [];
   }
 }
 
 export async function toggleWishlist(productId: string) {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  
-  if (!user) return { error: 'Non authentifié' };
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return { error: "Non authentifié" };
 
   try {
     const existing = await prisma.wishlist.findFirst({
-      where: { userId: user.id, produitId: productId }
+      where: { userId: user.id, produitId: productId },
     });
 
     if (existing) {
       await prisma.wishlist.delete({ where: { id: existing.id } });
     } else {
       await prisma.wishlist.create({
-        data: { userId: user.id, produitId: productId }
+        data: { userId: user.id, produitId: productId },
       });
     }
 
-    revalidatePath(ROUTES.ACCOUNT.WISHLIST);
+    revalidatePath(ROUTES.DASHBOARD.WISHLIST);
     revalidatePath(ROUTES.PRODUCTS);
     return { success: true };
   } catch (error) {
-    return { error: 'Erreur lors du changement de statut' };
+    console.error("Erreur toggleWishlist:", error);
+    return { error: "Erreur lors du changement de statut" };
   }
 }

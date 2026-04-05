@@ -1,32 +1,48 @@
-import React from 'react';
-import Link from 'next/link';
-import { FaInstagram, FaTwitter, FaFacebook, FaYoutube } from 'react-icons/fa';
+"use client";
 
-import { ROUTES } from '@/lib/utils/constants/routes';
+import React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { FaInstagram, FaTwitter, FaFacebook, FaYoutube } from "react-icons/fa";
+
+import { ROUTES } from "@/lib/utils/constants/routes";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const pathname = usePathname();
+  const socialLinks = [
+    { name: "instagram", href: "#", icon: FaInstagram },
+    { name: "twitter", href: "#", icon: FaTwitter },
+    { name: "facebook", href: "#", icon: FaFacebook },
+    { name: "youtube", href: "#", icon: FaYoutube },
+  ];
 
   const footerLinks = {
-    "Produits": [
+    Produits: [
       { name: "Catalogue", href: ROUTES.PRODUCTS },
       { name: "Saisons", href: `${ROUTES.PRODUCTS}?new=true` },
       { name: "Exclusivités", href: `${ROUTES.PRODUCTS}?promo=true` },
       { name: "Univers", href: ROUTES.CATEGORIES },
     ],
-    "Société": [
+    Société: [
       { name: "Héritage", href: ROUTES.FAQ },
       { name: "Savoir-faire", href: ROUTES.SHIPPING },
       { name: "Confidentialité", href: ROUTES.PRIVACY },
       { name: "Conditions", href: ROUTES.PRIVACY },
     ],
-    "Assistance": [
-      { name: "Compte Client", href: ROUTES.ACCOUNT.PROFILE },
-      { name: "Commandes", href: ROUTES.ACCOUNT.ORDERS },
-      { name: "Wishlist", href: ROUTES.ACCOUNT.WISHLIST },
+    Assistance: [
+      { name: "Compte Client", href: ROUTES.DASHBOARD.PROFILE },
+      { name: "Commandes", href: ROUTES.DASHBOARD.ORDERS },
+      { name: "Wishlist", href: ROUTES.DASHBOARD.WISHLIST },
       { name: "Support et FAQ", href: ROUTES.FAQ },
     ],
   };
+
+  const isShopPage =
+    !pathname.startsWith("/admin") &&
+    !pathname.startsWith("/auth") &&
+    !pathname.startsWith("/dashboard");
+  if (!isShopPage) return null;
 
   return (
     <footer className="bg-white pt-24 pb-12 px-6 border-t border-neutral-100">
@@ -44,11 +60,18 @@ export function Footer() {
               Artisanat et vision pour un vestiaire d&apos;exception.
             </p>
             <div className="flex gap-4">
-              {[FaInstagram, FaTwitter, FaFacebook, FaYoutube].map((Icon, idx) => (
-                <Link key={idx} href="#" className="h-10 w-10 flex items-center justify-center rounded-sm border border-neutral-100 text-neutral-300 hover:border-black hover:text-black hover:bg-neutral-50 transition-all">
-                  <Icon className="h-3.5 w-3.5" />
-                </Link>
-              ))}
+              {socialLinks.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="h-10 w-10 flex items-center justify-center rounded-sm border border-neutral-100 text-neutral-300 hover:border-black hover:text-black hover:bg-neutral-50 transition-all"
+                  >
+                    <Icon className="h-3.5 w-3.5" />
+                  </Link>
+                );
+              })}
             </div>
           </div>
 
@@ -76,27 +99,45 @@ export function Footer() {
 
         {/* Professional Contact Registry */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 p-12 bg-neutral-950 rounded-sm border border-neutral-900 mb-24 text-center md:text-left shadow-xl shadow-black/10 transition-all hover:bg-black group">
-           <div className="flex flex-col gap-4 border-l border-neutral-800 pl-8">
-              <span className="text-[9px] font-bold uppercase tracking-[0.5em] text-neutral-500 group-hover:text-neutral-400 transition-colors">Service Client</span>
-              <div className="flex flex-col gap-1">
-                 <p className="text-[11px] font-bold text-white uppercase tracking-[0.2em]">contact@velure.tg</p>
-                 <p className="text-[9px] font-bold text-neutral-600 uppercase tracking-widest">+228 90 00 00 00</p>
-              </div>
-           </div>
-           <div className="flex flex-col gap-4 border-l border-neutral-800 pl-8">
-              <span className="text-[9px] font-bold uppercase tracking-[0.5em] text-neutral-500 group-hover:text-neutral-400 transition-colors">Boutique Officielle</span>
-              <div className="flex flex-col gap-1">
-                 <p className="text-[11px] font-bold text-white uppercase tracking-[0.2em]">Quartier Administratif</p>
-                 <p className="text-[9px] font-bold text-neutral-600 uppercase tracking-widest">Lomé, Togo</p>
-              </div>
-           </div>
-           <div className="flex flex-col gap-4 border-l border-neutral-800 pl-8">
-              <span className="text-[9px] font-bold uppercase tracking-[0.5em] text-neutral-500 group-hover:text-neutral-400 transition-colors">Expédition et Engagement</span>
-              <div className="flex flex-col gap-1">
-                 <p className="text-[11px] font-bold text-white uppercase tracking-[0.2em]">Livraison Rapide</p>
-                 <p className="text-[9px] font-bold text-neutral-600 uppercase tracking-widest">Qualité Exceptionnelle</p>
-              </div>
-           </div>
+          <div className="flex flex-col gap-4 border-l border-neutral-800 pl-8">
+            <span className="text-[9px] font-bold uppercase tracking-[0.5em] text-neutral-500 group-hover:text-neutral-400 transition-colors">
+              Service Client
+            </span>
+            <div className="flex flex-col gap-1">
+              <p className="text-[11px] font-bold text-white uppercase tracking-[0.2em]">
+                contact@velure.tg
+              </p>
+              <p className="text-[9px] font-bold text-neutral-600 uppercase tracking-widest">
+                +228 90 00 00 00
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-col gap-4 border-l border-neutral-800 pl-8">
+            <span className="text-[9px] font-bold uppercase tracking-[0.5em] text-neutral-500 group-hover:text-neutral-400 transition-colors">
+              Boutique Officielle
+            </span>
+            <div className="flex flex-col gap-1">
+              <p className="text-[11px] font-bold text-white uppercase tracking-[0.2em]">
+                Quartier Administratif
+              </p>
+              <p className="text-[9px] font-bold text-neutral-600 uppercase tracking-widest">
+                Lomé, Togo
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-col gap-4 border-l border-neutral-800 pl-8">
+            <span className="text-[9px] font-bold uppercase tracking-[0.5em] text-neutral-500 group-hover:text-neutral-400 transition-colors">
+              Expédition et Engagement
+            </span>
+            <div className="flex flex-col gap-1">
+              <p className="text-[11px] font-bold text-white uppercase tracking-[0.2em]">
+                Livraison Rapide
+              </p>
+              <p className="text-[9px] font-bold text-neutral-600 uppercase tracking-widest">
+                Qualité Exceptionnelle
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Legal Footer - High Contrast Pro */}
@@ -110,8 +151,12 @@ export function Footer() {
             </p>
           </div>
           <div className="flex items-center gap-8">
-            {['Confidentialité', 'Sécurité', 'Légal'].map((item) => (
-              <Link key={item} href={ROUTES.PRIVACY} className="text-[9px] font-bold uppercase tracking-widest text-neutral-500 hover:text-black transition-colors">
+            {["Confidentialité", "Sécurité", "Légal"].map((item) => (
+              <Link
+                key={item}
+                href={ROUTES.PRIVACY}
+                className="text-[9px] font-bold uppercase tracking-widest text-neutral-500 hover:text-black transition-colors"
+              >
                 {item}
               </Link>
             ))}

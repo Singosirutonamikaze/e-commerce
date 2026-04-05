@@ -1,20 +1,23 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useRef } from 'react';
-import { Send, User, Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
-import { useChat } from '@/hooks/useChat/useChat';
-import { ChatBubble } from '../ChatBubble/ChatBubble';
-import { MessageWithSender } from '@/types/chat';
+import React, { useState, useEffect, useRef } from "react";
+import { Send, User, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/Button";
+import { useChat } from "@/hooks/useChat/useChat";
+import { ChatBubble } from "../ChatBubble/ChatBubble";
+import { MessageWithSender } from "@/types/chat";
 
 interface AdminChatProps {
   conversationId: string;
   customerName: string;
 }
 
-export function AdminChat({ conversationId, customerName }: AdminChatProps) {
+export function AdminChat({
+  conversationId,
+  customerName,
+}: Readonly<AdminChatProps>) {
   const { messages, loading, sendMessage } = useChat(conversationId);
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
   const [sending, setSending] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -31,7 +34,7 @@ export function AdminChat({ conversationId, customerName }: AdminChatProps) {
     setSending(true);
     const success = await sendMessage(inputValue);
     if (success) {
-      setInputValue('');
+      setInputValue("");
     }
     setSending(false);
   };
@@ -47,7 +50,7 @@ export function AdminChat({ conversationId, customerName }: AdminChatProps) {
   return (
     <div className="flex flex-col h-[calc(100vh-280px)] bg-white rounded-sm border border-border shadow-sm overflow-hidden">
       {/* Messages Area */}
-      <div 
+      <div
         ref={scrollRef}
         className="flex-1 overflow-y-auto p-8 flex flex-col gap-6 bg-surface-alt/10"
       >
@@ -57,27 +60,32 @@ export function AdminChat({ conversationId, customerName }: AdminChatProps) {
           ))
         ) : (
           <div className="flex-1 flex flex-col items-center justify-center text-text-hint gap-4 opacity-40">
-             <User className="h-12 w-12" />
-             <p className="text-sm font-bold uppercase tracking-widest">Aucun historique</p>
+            <User className="h-12 w-12" />
+            <p className="text-sm font-bold uppercase tracking-widest">
+              Aucun historique
+            </p>
           </div>
         )}
       </div>
 
       {/* Input Area */}
-      <form onSubmit={handleSend} className="p-6 bg-white border-t border-border flex items-center gap-4">
-        <input 
-          type="text" 
+      <form
+        onSubmit={handleSend}
+        className="p-6 bg-white border-t border-border flex items-center gap-4"
+      >
+        <input
+          type="text"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          placeholder={`Répondre à ${customerName}...`} 
-          className="flex-grow h-14 bg-surface-alt rounded-sm border border-transparent focus:border-accent focus:bg-white focus:ring-4 focus:ring-accent/5 px-6 text-sm font-bold placeholder:text-text-hint outline-none transition-all"
+          placeholder={`Répondre à ${customerName}...`}
+          className="grow h-14 bg-surface-alt rounded-sm border border-transparent focus:border-accent focus:bg-white focus:ring-4 focus:ring-accent/5 px-6 text-sm font-bold placeholder:text-text-hint outline-none transition-all"
         />
-        <Button 
-          type="submit" 
+        <Button
+          type="submit"
           disabled={!inputValue.trim() || sending}
           className="h-14 px-8 rounded-sm font-bold uppercase tracking-widest shadow-xl shadow-accent/20 transition-all hover:scale-105 active:scale-95 disabled:grayscale"
         >
-          {sending ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Répondre'}
+          {sending ? <Loader2 className="h-5 w-5 animate-spin" /> : "Répondre"}
           <Send className="h-4 w-4 ml-3" />
         </Button>
       </form>
