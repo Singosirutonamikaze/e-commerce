@@ -1,15 +1,12 @@
-/**
- * Formats a number as a price string in Euros.
- * @param price - The price to format (number or Decimal)
- * @returns Formatted price string (e.g., 99,99 €)
- */
 export function formatPrice(price: number | unknown): string {
   const numericPrice = typeof price === 'number' ? price : Number(price);
   
+  // Custom FCFA formatting for Minimalist Professional Luxury
   return new Intl.NumberFormat('fr-FR', {
-    style: 'currency',
-    currency: 'EUR',
-  }).format(numericPrice);
+    style: 'decimal',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(numericPrice) + ' FCFA';
 }
 
 /**

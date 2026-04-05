@@ -11,8 +11,8 @@ export default function NotFound() {
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center bg-bg relative overflow-hidden px-6">
 
-      <div className="absolute top-1/4 -left-20 w-96 h-96 bg-accent/5 rounded-full blur-[120px] pointer-events-none animate-pulse"></div>
-      <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-accent/10 rounded-full blur-[120px] pointer-events-none animate-pulse"></div>
+      <div className="absolute top-1/4 -left-20 w-96 h-96 bg-accent/5 rounded-sm blur-[120px] pointer-events-none animate-pulse"></div>
+      <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-accent/10 rounded-sm blur-[120px] pointer-events-none animate-pulse"></div>
       
       <motion.div 
         initial={{ opacity: 0, y: 30 }}
@@ -41,7 +41,7 @@ export default function NotFound() {
                className="relative"
             >
                <Ghost className="h-32 w-32 text-accent drop-shadow-2xl" strokeWidth={1.5} />
-               <div className="absolute -top-4 -right-4 h-12 w-12 bg-white rounded-full flex items-center justify-center shadow-lg border border-border">
+               <div className="absolute -top-4 -right-4 h-12 w-12 bg-white rounded-sm flex items-center justify-center shadow-lg border border-border">
                   <Search className="h-6 w-6 text-accent" />
                </div>
             </motion.div>
@@ -49,9 +49,9 @@ export default function NotFound() {
         </div>
 
         <div className="space-y-6">
-          <h2 className="text-4xl md:text-5xl font-black text-text-primary uppercase tracking-tighter leading-tight italic">
-            Oups... Cette page s&apos;est <span className="text-accent not-italic">envolée</span>.
-          </h2>
+          <h1 className="text-xl md:text-2xl font-bold tracking-tight text-black flex items-center justify-center gap-3">
+             404: RESSOURCE NON RÉPERTORIÉE
+          </h1>
           <p className="text-lg font-medium text-text-muted max-w-md mx-auto leading-relaxed">
             Désolé, l&apos;adresse que vous recherchez n&apos;existe plus ou a été déplacée vers une nouvelle destination.
           </p>
@@ -60,7 +60,7 @@ export default function NotFound() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12">
           <Button 
             asChild
-            className="h-16 px-10 text-lg font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-accent/20 transition-all hover:scale-105 active:scale-95 group"
+            className="h-16 px-10 text-lg font-bold uppercase tracking-widest rounded-sm shadow-xl shadow-accent/20 transition-all hover:scale-105 active:scale-95 group"
           >
             <Link href={ROUTES.HOME}>
               <Home className="h-6 w-6 mr-3 transition-transform group-hover:-translate-y-1" />
@@ -71,7 +71,7 @@ export default function NotFound() {
           <Button 
             asChild
             variant="outline"
-            className="h-16 px-10 text-lg font-black uppercase tracking-widest rounded-2xl border-2 transition-all hover:bg-surface-alt"
+            className="h-16 px-10 text-lg font-bold uppercase tracking-widest rounded-sm border-2 transition-all hover:bg-surface-alt"
           >
             <button onClick={() => window.history.back()}>
               <ArrowLeft className="h-6 w-6 mr-3" />
@@ -86,9 +86,9 @@ export default function NotFound() {
       </motion.div>
 
       <div className="hidden lg:block">
-         <motion.div animate={{ y: [0, 20, 0] }} transition={{ duration: 3, repeat: Infinity }} className="absolute top-1/4 left-1/4 h-3 w-3 bg-accent/20 rounded-full"></motion.div>
-         <motion.div animate={{ y: [0, -30, 0] }} transition={{ duration: 5, repeat: Infinity }} className="absolute bottom-1/4 right-1/4 h-2 w-2 bg-text-hint/20 rounded-full"></motion.div>
-         <motion.div animate={{ x: [0, 40, 0] }} transition={{ duration: 4, repeat: Infinity }} className="absolute top-2/3 left-1/3 h-4 w-4 bg-accent-light border border-accent/10 rounded-full"></motion.div>
+         <motion.div animate={{ y: [0, 20, 0] }} transition={{ duration: 3, repeat: Infinity }} className="absolute top-1/4 left-1/4 h-3 w-3 bg-accent/20 rounded-sm"></motion.div>
+         <motion.div animate={{ y: [0, -30, 0] }} transition={{ duration: 5, repeat: Infinity }} className="absolute bottom-1/4 right-1/4 h-2 w-2 bg-text-hint/20 rounded-sm"></motion.div>
+         <motion.div animate={{ x: [0, 40, 0] }} transition={{ duration: 4, repeat: Infinity }} className="absolute top-2/3 left-1/3 h-4 w-4 bg-accent-light border border-accent/10 rounded-sm"></motion.div>
       </div>
     </div>
   );

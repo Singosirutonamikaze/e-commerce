@@ -3,11 +3,9 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ShoppingCart, Heart, ArrowRight } from 'lucide-react';
+import { ShoppingCart, Heart, ArrowUpRight } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
-import { Badge } from '@/components/ui/Badge';
 import { formatPrice } from '@/lib/utils/format';
-import { motion } from 'framer-motion';
 import { useCart } from '@/hooks/useCart/useCart';
 import { ProductWithImages } from '@/types';
 import { ROUTES } from '@/lib/utils/constants/routes';
@@ -40,91 +38,71 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
-      className="group relative flex flex-col bg-surface rounded-2xl border border-border overflow-hidden hover:shadow-2xl hover:shadow-accent/5 transition-all duration-300"
-    >
-      {/* Image Container */}
-      <Link href={ROUTES.PRODUCT_DETAIL(product.slug)} className="relative aspect-[4/5] overflow-hidden">
+    <div className="group relative flex flex-col bg-white rounded-sm transition-all duration-300">
+      {/* Professional Image Container */}
+      <Link href={ROUTES.PRODUCT_DETAIL(product.slug)} className="relative aspect-[4/5] overflow-hidden rounded-sm bg-neutral-50 border border-neutral-100">
         <Image
           src={mainImage}
           alt={product.nom}
           fill
-          className="object-cover transition-transform duration-700 group-hover:scale-110"
+          className="object-cover transition-transform duration-700 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
         
-        {/* Badges */}
-        <div className="absolute top-4 left-4 flex flex-col gap-2">
+        {/* Discrete Status Tags */}
+        <div className="absolute top-4 left-4 flex flex-col gap-1.5 z-20">
           {hasPromotion && (
-            <Badge variant="danger" className="font-black px-2.5 py-1">
-              -{discount}%
-            </Badge>
+            <div className="bg-black text-white px-2.5 py-1 rounded-sm shadow-sm">
+               <span className="text-[9px] font-bold tracking-widest">-{discount}%</span>
+            </div>
           )}
           {product.stock <= 5 && product.stock > 0 && (
-            <Badge variant="warning" className="font-bold">
-              Presque épuisé
-            </Badge>
-          )}
-          {product.stock === 0 && (
-            <Badge variant="outline" className="bg-white/80 backdrop-blur-sm text-text-muted font-bold">
-              Rupture
-            </Badge>
+            <div className="bg-neutral-100 border border-neutral-200 text-black px-2.5 py-1 rounded-sm shadow-sm">
+               <span className="text-[8px] font-bold uppercase tracking-widest">Stock Limité</span>
+            </div>
           )}
         </div>
 
-        {/* Quick Actions (Desktop Hover) */}
-        <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-          <Button
-            onClick={handleAddToCart}
-            disabled={product.stock === 0}
-            className="translate-y-4 group-hover:translate-y-0 transition-transform duration-300 shadow-xl"
-          >
-            <ShoppingCart className="h-4 w-4 mr-2" />
-            Ajouter au panier
-          </Button>
+        {/* Quick Action Overlay */}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-all duration-500 flex items-end p-4">
+           <Button
+             onClick={handleAddToCart}
+             disabled={product.stock === 0}
+             className="w-full h-11 rounded-sm opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300 bg-white text-black border border-neutral-200 hover:bg-black hover:text-white text-[10px] uppercase font-bold tracking-widest"
+           >
+             <ShoppingCart className="h-3 w-3 mr-2" />
+             Ajouter au panier
+           </Button>
         </div>
       </Link>
 
-      {/* Info */}
-      <div className="p-5 flex flex-col flex-grow">
-        <div className="flex items-start justify-between mb-2">
-          <p className="text-xs font-black text-accent uppercase tracking-widest">
-            {product.categorie?.nom || 'Collection'}
+      {/* Product Details - Sharp Typography */}
+      <div className="pt-6 pb-2 flex flex-col">
+        <div className="flex items-center justify-between mb-3">
+          <p className="text-[9px] font-bold text-neutral-400 uppercase tracking-[0.2em]">
+            {product.categorie?.nom || 'EXCLUSIVITÉ'}
           </p>
-          <button className="text-text-hint hover:text-danger transition-colors">
-            <Heart className="h-4 w-4" />
-          </button>
+          <Heart className="h-4 w-4 text-neutral-300 hover:text-black cursor-pointer transition-colors" />
         </div>
         
-        <Link href={ROUTES.PRODUCT_DETAIL(product.slug)} className="mb-4">
-          <h3 className="text-lg font-bold text-text-primary line-clamp-1 hover:text-accent transition-colors">
+        <Link href={ROUTES.PRODUCT_DETAIL(product.slug)} className="flex items-center justify-between group/link mb-2">
+          <h3 className="text-sm font-bold tracking-tight text-black uppercase">
             {product.nom}
           </h3>
+          <ArrowUpRight className="h-3.5 w-3.5 text-neutral-300 group-hover/link:text-black transition-all" />
         </Link>
         
-        <div className="mt-auto flex items-center justify-between">
-          <div className="flex flex-col">
-            {hasPromotion && (
-              <span className="text-xs text-text-hint line-through font-medium">
-                {formatPrice(Number(product.ancienPrix))}
-              </span>
-            )}
-            <span className="text-xl font-black text-text-primary">
-              {formatPrice(Number(product.prix))}
+        <div className="flex items-baseline gap-3">
+          <span className="text-sm font-bold text-black tabular-nums">
+            {formatPrice(Number(product.prix))}
+          </span>
+          {hasPromotion && (
+            <span className="text-[10px] text-neutral-400 line-through font-bold opacity-60 tabular-nums">
+              {formatPrice(Number(product.ancienPrix))}
             </span>
-          </div>
-          
-          <Link href={ROUTES.PRODUCT_DETAIL(product.slug)}>
-            <Button variant="ghost" size="sm" className="rounded-full p-0 h-10 w-10 text-accent hover:bg-accent-light">
-              <ArrowRight className="h-5 w-5" />
-            </Button>
-          </Link>
+          )}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

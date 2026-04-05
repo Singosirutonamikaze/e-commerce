@@ -22,7 +22,7 @@ export function ProductImages({ images }: ProductImagesProps) {
             key={idx}
             onClick={() => setActiveImage(img.url)}
             className={cn(
-              "relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl border-2 transition-all p-1 bg-white",
+              "relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-sm border-2 transition-all p-1 bg-white",
               activeImage === img.url ? "border-accent shadow-md shadow-accent/10" : "border-border hover:border-text-hint"
             )}
           >
@@ -30,7 +30,7 @@ export function ProductImages({ images }: ProductImagesProps) {
               src={img.url}
               alt={`Miniature ${idx + 1}`}
               fill
-              className="object-cover rounded-xl"
+              className="object-cover rounded-sm"
               sizes="80px"
             />
           </button>
@@ -38,7 +38,7 @@ export function ProductImages({ images }: ProductImagesProps) {
       </div>
 
       {/* Main Image */}
-      <div className="relative flex-grow aspect-[4/5] bg-surface-alt rounded-3xl overflow-hidden border border-border shadow-sm">
+      <div className="relative flex-grow aspect-[4/5] bg-surface-alt rounded-sm overflow-hidden border border-border shadow-sm">
         <Image
           src={activeImage}
           alt="Produit principal"

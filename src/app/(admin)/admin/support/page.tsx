@@ -12,13 +12,13 @@ export default async function AdminSupportPage() {
 
   return (
     <div className="flex flex-col gap-10">
-      <header>
-        <h1 className="text-3xl font-black tracking-tighter text-text-primary uppercase mb-2">
-          Support <span className="text-accent italic">Client</span>
-        </h1>
-        <p className="text-sm font-medium text-text-muted">
-          Gérez les demandes d&apos;assistance et les messages de vos clients Velure.
-        </p>
+      <header className="flex flex-col gap-2">
+         <h1 className="text-xl md:text-2xl font-bold tracking-tight text-text-primary uppercase mb-2">
+            LOGISTIQUE SUPPORT
+         </h1>
+         <p className="text-[10px] font-bold text-text-hint uppercase tracking-widest pl-4 border-l border-border">
+            Registre d&apos;Assistance Système
+         </p>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -26,14 +26,14 @@ export default async function AdminSupportPage() {
             <div className="h-10 w-10 text-accent mb-2">
                <MessageSquare className="h-full w-full" />
             </div>
-            <span className="text-2xl font-black text-text-primary">{conversations.length}</span>
-            <span className="text-[10px] font-black uppercase text-text-hint tracking-widest">Conversations actives</span>
+            <span className="text-2xl font-bold text-text-primary">{conversations.length}</span>
+            <span className="text-[10px] font-bold uppercase text-text-hint tracking-widest">Conversations actives</span>
          </Card>
       </div>
 
       <section>
         <div className="flex items-center justify-between mb-8">
-           <h3 className="text-sm font-black uppercase tracking-widest text-text-primary">Discussions en cours</h3>
+           <h3 className="text-sm font-bold uppercase tracking-widest text-text-primary">Discussions en cours</h3>
         </div>
 
         {conversations.length > 0 ? (
@@ -42,16 +42,16 @@ export default async function AdminSupportPage() {
               <Link key={conv.id} href={ROUTES.ADMIN.SUPPORT_DETAIL(conv.id)}>
                 <Card className="p-6 border-border hover:border-accent group transition-all flex items-center justify-between cursor-pointer bg-white">
                   <div className="flex items-center gap-6">
-                    <div className="h-14 w-14 rounded-2xl bg-accent-light text-accent flex items-center justify-center font-black relative">
+                    <div className="h-14 w-14 rounded-sm bg-accent-light text-accent flex items-center justify-center font-bold relative">
                        {conv.user.prenom[0]}{conv.user.nom[0]}
                        {conv.messages.some((m) => !m.lu && m.expediteurId === conv.userId) && (
-                         <div className="absolute -top-1 -right-1 h-4 w-4 bg-accent border-2 border-white rounded-full"></div>
+                         <div className="absolute -top-1 -right-1 h-4 w-4 bg-accent border-2 border-white rounded-sm"></div>
                        )}
                     </div>
                     <div className="flex flex-col">
                        <div className="flex items-center gap-3 mb-1">
                           <span className="font-bold text-text-primary">{conv.user.prenom} {conv.user.nom}</span>
-                          <Badge variant="accent" className="text-[9px] font-black uppercase tracking-tighter h-5">
+                          <Badge variant="accent" className="text-[9px] font-bold uppercase tracking-tighter h-5">
                              {conv.statut}
                           </Badge>
                        </div>
@@ -64,7 +64,7 @@ export default async function AdminSupportPage() {
                              {formatDate(conv.updatedAt, true)}
                           </span>
                           {conv.ordreId && (
-                            <span className="text-[10px] font-black text-accent bg-accent-light px-2 py-0.5 rounded-full uppercase tracking-widest">
+                            <span className="text-[10px] font-bold text-accent bg-accent-light px-2 py-0.5 rounded-sm uppercase tracking-widest">
                                Commande: {conv.ordreId.slice(0, 8)}
                             </span>
                           )}
@@ -77,8 +77,8 @@ export default async function AdminSupportPage() {
             ))}
           </div>
         ) : (
-          <div className="py-24 text-center bg-surface-alt/30 rounded-[40px] border-2 border-dashed border-border flex flex-col items-center gap-6">
-             <div className="h-20 w-20 bg-white rounded-full flex items-center justify-center text-text-hint shadow-sm">
+          <div className="py-24 text-center bg-surface-alt/30 rounded-sm border-2 border-dashed border-border flex flex-col items-center gap-6">
+             <div className="h-20 w-20 bg-white rounded-sm flex items-center justify-center text-text-hint shadow-sm">
                 <Star className="h-10 w-10 opacity-20" />
              </div>
              <p className="text-sm font-bold text-text-muted tracking-tight">Aucune conversation active pour le moment.</p>

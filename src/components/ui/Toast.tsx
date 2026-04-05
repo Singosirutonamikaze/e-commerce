@@ -43,12 +43,12 @@ export function Toast({ id, message, type = 'info', onClose, duration = 5000 }: 
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
       className={cn(
-        "flex items-center gap-3 px-4 py-3 min-w-[300px] max-w-md rounded-xl border shadow-lg backdrop-blur-md",
+        "flex items-center gap-3 px-4 py-3 min-w-[300px] max-w-md rounded-sm border shadow-lg backdrop-blur-md",
         bgColors[type]
       )}
     >
       <div className="flex-shrink-0">{icons[type]}</div>
-      <p className="flex-grow text-sm font-medium text-text-primary">{message}</p>
+      <p className="flex-grow text-sm font-bold text-text-primary">{message}</p>
       <button
         onClick={() => onClose(id)}
         className="flex-shrink-0 text-text-hint hover:text-text-primary transition-colors"

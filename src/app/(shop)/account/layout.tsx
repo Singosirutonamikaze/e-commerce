@@ -1,29 +1,42 @@
 import React from 'react'
 import { AccountSidebar } from '@/components/layout/AccountSidebar/AccountSidebar'
+import { createClient } from '@/lib/supabase/server'
+import { redirect } from 'next/navigation'
+import { ROUTES } from '@/lib/utils/constants/routes'
 
-export default function AccountLayout({
+export default async function AccountLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  return (
-    <main className="pt-32 pb-24 px-6 min-h-screen bg-bg">
-      <div className="max-w-7xl mx-auto">
-        <header className="mb-12">
-          <h1 className="text-4xl font-black tracking-tighter text-text-primary uppercase">
-            Mon Espace <span className="text-accent italic">Velure</span>
-          </h1>
-          <p className="text-text-muted font-medium">Gérez votre compte, vos commandes et vos préférences.</p>
-          <div className="h-0.5 w-16 bg-accent mt-8 rounded-full"></div>
-        </header>
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
 
-        <div className="flex flex-col md:flex-row gap-8 lg:gap-16">
-          <AccountSidebar />
-          <div className="flex-grow">
+  if (!user) {
+    redirect(ROUTES.AUTH.LOGIN)
+  }
+
+  return (
+    <div className="flex min-h-screen bg-neutral-50">
+      <AccountSidebar />
+      
+      <main className="flex-1 p-8 md:p-12 lg:p-16">
+        <div className="max-w-5xl mx-auto">
+          <header className="mb-12">
+            <div className="flex items-center gap-2 mb-2">
+               <div className="h-1 w-4 bg-black"></div>
+               <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400">Espace Privé</span>
+            </div>
+            <h1 className="text-2xl font-bold tracking-tight text-black uppercase">
+              Tableau de bord
+            </h1>
+          </header>
+          
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
             {children}
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
   )
 }

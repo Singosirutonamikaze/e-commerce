@@ -28,7 +28,11 @@ export function LoginForm() {
     
     if (result.success) {
       addToast({ title: 'Connexion réussie', type: 'success' });
-      router.push(ROUTES.HOME);
+      if (result.role === 'ADMIN') {
+        router.push(ROUTES.ADMIN.ROOT);
+      } else {
+        router.push(ROUTES.HOME);
+      }
       router.refresh();
     } else {
       addToast({ title: 'Erreur de connexion', description: result.error, type: 'danger' });
@@ -39,13 +43,13 @@ export function LoginForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
       <div className="space-y-2">
-        <label className="text-xs font-black uppercase tracking-widest text-text-muted px-1">Email</label>
+        <label className="text-xs font-bold uppercase tracking-widest text-text-muted px-1">Email</label>
         <div className="relative">
           <Input 
             {...register('email')} 
             error={!!errors.email} 
             placeholder="votre@email.com" 
-            className="h-12 pl-10 rounded-xl" 
+            className="h-12 pl-10 rounded-sm" 
           />
           <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-text-hint" />
         </div>
@@ -54,7 +58,7 @@ export function LoginForm() {
 
       <div className="space-y-2">
         <div className="flex items-center justify-between px-1">
-          <label className="text-xs font-black uppercase tracking-widest text-text-muted">Mot de passe</label>
+          <label className="text-xs font-bold uppercase tracking-widest text-text-muted">Mot de passe</label>
           <Link href={ROUTES.AUTH.FORGOT_PASSWORD} className="text-xs font-bold text-accent hover:underline">
             Oublié ?
           </Link>
@@ -65,7 +69,7 @@ export function LoginForm() {
             type="password"
             error={!!errors.password} 
             placeholder="••••••••" 
-            className="h-12 pl-10 rounded-xl" 
+            className="h-12 pl-10 rounded-sm" 
           />
           <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-text-hint" />
         </div>
@@ -75,7 +79,7 @@ export function LoginForm() {
       <Button 
         type="submit" 
         disabled={loading}
-        className="h-14 text-lg font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-accent/10 mt-2 group"
+        className="h-12 w-full text-[10px] font-bold uppercase tracking-[0.2em] rounded-sm bg-black text-white hover:bg-neutral-900 transition-all shadow-md shadow-black/5 mt-2 flex items-center justify-center group"
       >
         {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : (
           <>

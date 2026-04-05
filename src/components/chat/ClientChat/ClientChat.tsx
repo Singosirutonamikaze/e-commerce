@@ -44,15 +44,15 @@ export function ClientChat({ conversationId }: ClientChatProps) {
   }
 
   return (
-    <div className="flex flex-col h-[600px] bg-white rounded-[40px] border border-border shadow-2xl overflow-hidden">
+    <div className="flex flex-col h-[600px] bg-white rounded-sm border border-border shadow-2xl overflow-hidden">
       {/* Header Info */}
       <div className="px-8 py-6 bg-surface-alt/50 border-b border-border flex items-center justify-between">
          <div className="flex items-center gap-4">
-            <div className="h-10 w-10 bg-accent text-white rounded-full flex items-center justify-center font-black">V</div>
+            <div className="h-10 w-10 bg-accent text-white rounded-sm flex items-center justify-center font-bold">V</div>
             <div className="flex flex-col">
-               <span className="text-sm font-black text-text-primary uppercase tracking-tighter italic">Support Velure</span>
+               <span className="text-sm font-bold text-text-primary uppercase tracking-tighter italic">Support Velure</span>
                <span className="text-[10px] font-bold text-success uppercase tracking-widest flex items-center gap-1.5">
-                  <div className="h-1.5 w-1.5 rounded-full bg-success animate-pulse"></div>
+                  <div className="h-1.5 w-1.5 rounded-sm bg-success animate-pulse"></div>
                   En ligne
                </span>
             </div>
@@ -70,10 +70,10 @@ export function ClientChat({ conversationId }: ClientChatProps) {
           ))
         ) : (
           <div className="flex-1 flex flex-col items-center justify-center text-center p-12 opacity-40">
-             <div className="h-16 w-16 bg-surface rounded-full flex items-center justify-center mb-6">
+             <div className="h-16 w-16 bg-surface rounded-sm flex items-center justify-center mb-6">
                 <User className="h-8 w-8 text-text-hint" />
              </div>
-             <p className="text-xs font-black uppercase tracking-[0.2em] text-text-hint mb-2">Début de conversation</p>
+             <p className="text-xs font-bold uppercase tracking-[0.2em] text-text-hint mb-2">Début de conversation</p>
              <p className="text-sm font-medium text-text-muted max-w-xs">
                 Posez vos questions à notre équipe support ci-dessous.
              </p>
@@ -83,7 +83,7 @@ export function ClientChat({ conversationId }: ClientChatProps) {
 
       {/* Input Area */}
       <form onSubmit={handleSend} className="p-8 bg-white border-t border-border">
-        <div className="relative flex items-center gap-4 bg-surface-alt px-4 py-2 rounded-2xl border border-transparent focus-within:border-accent focus-within:bg-white focus-within:ring-4 focus-within:ring-accent/5 transition-all">
+        <div className="relative flex items-center gap-4 bg-surface-alt px-4 py-2 rounded-sm border border-transparent focus-within:border-accent focus-within:bg-white focus-within:ring-4 focus-within:ring-accent/5 transition-all">
            <input 
             type="text" 
             value={inputValue}
@@ -94,7 +94,7 @@ export function ClientChat({ conversationId }: ClientChatProps) {
            <Button 
             type="submit" 
             disabled={!inputValue.trim() || sending}
-            className="h-12 w-12 p-0 rounded-xl font-black uppercase tracking-widest shadow-xl shadow-accent/20 transition-all hover:scale-105 active:scale-95 disabled:grayscale shrink-0"
+            className="h-12 w-12 p-0 rounded-sm font-bold uppercase tracking-widest shadow-xl shadow-accent/20 transition-all hover:scale-105 active:scale-95 disabled:grayscale shrink-0"
            >
               {sending ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
            </Button>

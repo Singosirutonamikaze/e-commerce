@@ -25,7 +25,7 @@ export function ProductGrid({ products, loading, emptyMessage = "Aucun produit t
   if (!products || products.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center">
-        <div className="h-20 w-20 bg-surface-alt rounded-full flex items-center justify-center mb-6">
+        <div className="h-20 w-20 bg-surface-alt rounded-sm flex items-center justify-center mb-6">
           <span className="text-4xl text-text-hint opacity-50">?</span>
         </div>
         <h3 className="text-xl font-bold text-text-primary mb-2">Pas encore de produits</h3>

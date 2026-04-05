@@ -2,10 +2,11 @@ import React from 'react';
 import prisma from "@/lib/prisma/client";
 import { formatPrice } from "@/lib/utils/format";
 import { Button } from '@/components/ui/Button';
-import { Plus, Search, Edit3, Trash2, ExternalLink } from 'lucide-react';
+import { Plus, Search, Edit3, Trash2, ExternalLink, ChevronRight, Filter } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ROUTES } from '@/lib/utils/constants/routes';
+import { Card } from '@/components/ui/Card';
 
 export default async function AdminProductsPage() {
   const products = await prisma.product.findMany({
@@ -17,67 +18,67 @@ export default async function AdminProductsPage() {
   });
 
   return (
-    <div className="flex flex-col gap-10">
-      <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div>
-          <h1 className="text-3xl font-black tracking-tighter text-text-primary uppercase mb-2">
-            Gestion des <span className="text-accent italic">Produits</span>
+    <div className="flex flex-col gap-10 max-w-screen-2xl mx-auto">
+      {/* Pro Header Section */}
+      <header className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-3">
+             <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-400">Gestion de Stock</span>
+          </div>
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-black uppercase">
+            Répertoire des Produits
           </h1>
-          <p className="text-sm font-medium text-text-muted">
-            Ajoutez, modifiez ou supprimez des articles de votre catalogue Velure.
-          </p>
         </div>
         <Link href={ROUTES.ADMIN.PRODUCT_NEW}>
-          <Button className="rounded-2xl h-14 px-10 font-black uppercase tracking-widest shadow-xl shadow-accent/20 transition-all hover:scale-105 active:scale-95">
-            <Plus className="h-5 w-5 mr-3" />
-            Nouveau Produit
+          <Button size="lg" className="rounded-sm h-12 px-8 flex items-center gap-3 bg-black text-white hover:bg-neutral-800 transition-all">
+            <Plus className="h-4 w-4" />
+            <span className="text-[10px] font-bold uppercase tracking-widest text-[11px]">Nouveau Produit</span>
           </Button>
         </Link>
       </header>
 
-      {/* Filters & Search */}
-      <div className="bg-surface p-6 rounded-3xl border border-border shadow-sm flex flex-col md:flex-row gap-4 items-center">
-        <div className="relative flex-grow">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-text-hint" />
+      {/* Professional Filter Infrastructure */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+        <div className="lg:col-span-2 relative">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-neutral-400" />
           <input 
             type="text" 
-            placeholder="Rechercher un produit..." 
-            className="w-full h-12 pl-12 pr-4 bg-surface-alt/50 rounded-2xl border border-border focus:ring-2 focus:ring-accent/50 focus:border-accent outline-none text-sm font-bold"
+            placeholder="RECHERCHER PAR NOM OU SKU..." 
+            className="w-full h-12 pl-12 pr-6 bg-white rounded-sm border border-neutral-200 text-[10px] font-bold uppercase tracking-widest placeholder:text-neutral-400 focus:outline-none focus:border-black transition-all"
           />
         </div>
-        <div className="flex items-center gap-4 w-full md:w-auto">
-          <select className="h-12 px-6 bg-surface-alt/50 rounded-2xl border border-border text-sm font-bold focus:ring-2 focus:ring-accent/50 outline-none appearance-none cursor-pointer flex-grow md:flex-grow-0">
-             <option>Toutes les catégories</option>
-             <option>Chaussures</option>
-             <option>Chemises</option>
-          </select>
-          <select className="h-12 px-6 bg-surface-alt/50 rounded-2xl border border-border text-sm font-bold focus:ring-2 focus:ring-accent/50 outline-none appearance-none cursor-pointer flex-grow md:flex-grow-0">
-             <option>Derniers ajouts</option>
-             <option>Prix croissant</option>
-             <option>Stock bas</option>
-          </select>
+        <div className="lg:col-span-1 relative">
+           <Filter className="absolute left-4 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-neutral-400" />
+           <select className="w-full h-12 pl-12 pr-10 bg-white rounded-sm border border-neutral-200 text-[10px] font-bold uppercase tracking-widest focus:outline-none focus:border-black transition-all appearance-none cursor-pointer">
+              <option>TOUTES LES CATÉGORIES</option>
+              {/* Dynamic categories could go here */}
+           </select>
+           <ChevronRight className="absolute right-4 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-neutral-400 rotate-90" />
+        </div>
+        <div className="lg:col-span-1 border border-neutral-200 bg-white rounded-sm h-12 flex items-center justify-center">
+            <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-neutral-400">Total: {products.length} Items</span>
         </div>
       </div>
 
-      {/* Products Table */}
-      <section className="bg-surface rounded-[32px] border border-border shadow-sm overflow-hidden">
+      {/* Clean System Table */}
+      <Card className="rounded-sm border border-neutral-200 shadow-sm overflow-hidden bg-white">
         <div className="overflow-x-auto">
-          <table className="w-full text-left table-fixed min-w-[900px]">
+          <table className="w-full text-left min-w-[1000px]">
              <thead>
-                <tr className="bg-surface-alt/30 border-b border-border">
-                  <th className="px-8 py-5 text-[10px] font-black uppercase text-text-hint tracking-widest w-1/3">Produit</th>
-                  <th className="px-8 py-5 text-[10px] font-black uppercase text-text-hint tracking-widest w-1/6 text-center">Prix</th>
-                  <th className="px-8 py-5 text-[10px] font-black uppercase text-text-hint tracking-widest w-1/6 text-center">Stock</th>
-                  <th className="px-8 py-5 text-[10px] font-black uppercase text-text-hint tracking-widest w-1/6 text-center">Statut</th>
-                  <th className="px-8 py-5 text-[10px] font-black uppercase text-text-hint tracking-widest w-1/6 text-right">Actions</th>
+                <tr className="bg-neutral-50 border-b border-neutral-200">
+                  <th className="px-8 py-4 text-[9px] font-bold uppercase text-neutral-500 tracking-[0.3em]">Identification</th>
+                  <th className="px-8 py-4 text-[9px] font-bold uppercase text-neutral-500 tracking-[0.3em] text-center">Prix Unitaire</th>
+                  <th className="px-8 py-4 text-[9px] font-bold uppercase text-neutral-500 tracking-[0.3em] text-center">Disponibilité</th>
+                  <th className="px-8 py-4 text-[9px] font-bold uppercase text-neutral-500 tracking-[0.3em] text-center">Status Vente</th>
+                  <th className="px-8 py-4 text-[9px] font-bold uppercase text-neutral-500 tracking-[0.3em] text-right">Opérations</th>
                 </tr>
              </thead>
-             <tbody>
+             <tbody className="divide-y divide-neutral-100">
                 {products.map((product) => (
-                  <tr key={product.id} className="border-b border-border last:border-0 hover:bg-surface-alt/10 transition-all group">
+                  <tr key={product.id} className="hover:bg-neutral-50/50 transition-all group">
                     <td className="px-8 py-6">
                       <div className="flex items-center gap-5">
-                        <div className="relative h-16 w-14 rounded-xl overflow-hidden bg-surface-alt border border-border shrink-0">
+                        <div className="relative h-16 w-12 rounded-sm overflow-hidden bg-neutral-100 border border-neutral-200 shrink-0">
                            <Image 
                             src={product.images[0]?.url || '/placeholder.png'} 
                             alt={product.nom} 
@@ -86,48 +87,53 @@ export default async function AdminProductsPage() {
                             sizes="60px"
                            />
                         </div>
-                        <div className="flex flex-col min-w-0">
-                          <h4 className="text-sm font-black text-text-primary truncate group-hover:text-accent transition-colors">{product.nom}</h4>
-                          <span className="text-[10px] font-bold text-text-hint uppercase tracking-widest mt-0.5">{product.categorie?.nom}</span>
+                        <div className="flex flex-col gap-1">
+                          <h4 className="text-sm font-bold tracking-tight text-black uppercase">{product.nom}</h4>
+                          <span className="text-[9px] font-bold uppercase tracking-widest text-neutral-400">{product.categorie?.nom || 'NON CLASSÉ'}</span>
                         </div>
                       </div>
                     </td>
-                    <td className="px-8 py-6 text-center">
-                      <span className="text-sm font-black text-text-primary">{formatPrice(Number(product.prix))}</span>
-                      {product.ancienPrix && (
-                        <p className="text-[10px] text-text-hint line-through font-bold mt-0.5">{formatPrice(Number(product.ancienPrix))}</p>
-                      )}
+                    <td className="px-8 py-6 text-center tabular-nums">
+                      <div className="flex flex-col items-center gap-1">
+                        <span className="text-sm font-bold text-black">{formatPrice(Number(product.prix))}</span>
+                        {product.ancienPrix && (
+                          <span className="text-[9px] text-neutral-400 line-through font-bold">{formatPrice(Number(product.ancienPrix))}</span>
+                        )}
+                      </div>
                     </td>
                     <td className="px-8 py-6 text-center">
-                       <div className="flex flex-col items-center gap-1.5">
-                          <span className="text-sm font-bold text-text-primary">{product.stock}</span>
-                          <div className="h-1 w-12 bg-surface-alt rounded-full overflow-hidden">
+                       <div className="flex flex-col items-center gap-2">
+                          <div className="flex items-baseline gap-1">
+                             <span className="text-xs font-bold text-black">{product.stock}</span>
+                             <span className="text-[8px] font-bold text-neutral-400 uppercase tracking-widest">Unités</span>
+                          </div>
+                          <div className="h-1 w-20 bg-neutral-100 rounded-full overflow-hidden">
                              <div 
-                              className={`h-full rounded-full ${product.stock > 10 ? 'bg-success' : product.stock > 0 ? 'bg-warning' : 'bg-danger'}`}
                               style={{ width: `${Math.min((product.stock / 50) * 100, 100)}%` }}
-                             ></div>
+                              className={`h-full ${product.stock > 10 ? 'bg-black' : product.stock > 0 ? 'bg-neutral-400' : 'bg-red-500'}`}
+                             />
                           </div>
                        </div>
                     </td>
                     <td className="px-8 py-6 text-center">
-                       <span className={`inline-flex px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${product.estVisible ? 'bg-success-bg text-success shadow-sm' : 'bg-surface-alt text-text-hint border border-border'}`}>
-                          {product.estVisible ? 'Visible' : 'Masqué'}
+                       <span className={`inline-flex px-3 py-1 text-[9px] font-bold uppercase tracking-widest rounded-sm border ${product.estVisible ? 'bg-neutral-50 border-neutral-200 text-black' : 'bg-red-50 border-red-100 text-red-600'}`}>
+                          {product.estVisible ? 'En Ligne' : 'Masqué'}
                        </span>
                     </td>
                     <td className="px-8 py-6">
                       <div className="flex items-center justify-end gap-2">
                         <Link href={ROUTES.PRODUCT_DETAIL(product.slug)} target="_blank">
-                           <Button variant="ghost" size="sm" className="h-10 w-10 p-0 rounded-xl text-text-hint hover:text-accent hover:bg-accent-light transition-all">
-                              <ExternalLink className="h-4 w-4" />
+                           <Button variant="ghost" size="icon" className="h-9 w-9 rounded-sm border border-neutral-200 hover:border-black transition-all">
+                              <ExternalLink className="h-3.5 w-3.5" />
                            </Button>
                         </Link>
                         <Link href={ROUTES.ADMIN.PRODUCT_EDIT(product.id)}>
-                           <Button variant="ghost" size="sm" className="h-10 w-10 p-0 rounded-xl text-text-hint hover:text-accent hover:bg-accent-light transition-all">
-                              <Edit3 className="h-4 w-4" />
+                           <Button variant="ghost" size="icon" className="h-9 w-9 rounded-sm border border-neutral-200 hover:border-black transition-all">
+                              <Edit3 className="h-3.5 w-3.5" />
                            </Button>
                         </Link>
-                        <Button variant="ghost" size="sm" className="h-10 w-10 p-0 rounded-xl text-text-hint hover:text-danger hover:bg-danger-bg transition-all">
-                           <Trash2 className="h-4 w-4" />
+                        <Button variant="ghost" size="icon" className="h-9 w-9 rounded-sm border border-neutral-200 hover:text-red-600 hover:border-red-600 transition-all">
+                           <Trash2 className="h-3.5 w-3.5" />
                         </Button>
                       </div>
                     </td>
@@ -136,7 +142,14 @@ export default async function AdminProductsPage() {
              </tbody>
           </table>
         </div>
-      </section>
+        <div className="p-8 border-t border-neutral-200 bg-neutral-50 flex justify-between items-center">
+           <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-neutral-400">Index système certifié</p>
+           <div className="flex gap-2">
+              <Button variant="outline" size="sm" className="h-9 px-4 rounded-sm text-[9px] font-bold uppercase tracking-widest border-neutral-200 hover:border-black">Précédent</Button>
+              <Button variant="outline" size="sm" className="h-9 px-4 rounded-sm text-[9px] font-bold uppercase tracking-widest border-neutral-200 hover:border-black">Suivant</Button>
+           </div>
+        </div>
+      </Card>
     </div>
   );
 }

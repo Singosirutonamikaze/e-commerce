@@ -2,9 +2,8 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/Button";
-import { ArrowRight, TrendingUp, Zap, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { CategoryGrid } from "@/components/category/CategoryGrid";
 import { PromoBanner } from "@/components/promo/PromoBanner";
 import { ROUTES } from '@/lib/utils/constants/routes';
@@ -17,98 +16,74 @@ export default function HomePage() {
   ];
 
   const promo = {
-    code: 'VELURE2024',
+    code: 'SEASON-2024',
     reduction: 15,
     type: 'POURCENTAGE',
-    montantMinimum: 100,
+    montantMinimum: 50000,
   };
 
   return (
-    <div className="flex flex-col">
-      {/* Hero Section */}
-      <section className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-bg text-center px-6 pt-20 pb-32">
-        {/* Background Gradients */}
-        <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-from)_0%,_transparent_50%)] from-accent/10"></div>
-        <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-from)_0%,_transparent_50%)] from-accent/5"></div>
-        
-        <div className="z-10 mx-auto max-w-5xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <div className="flex items-center justify-center gap-3 mb-8">
-               <div className="h-[1px] w-12 bg-accent/30"></div>
-               <span className="text-sm font-black uppercase tracking-[0.3em] text-accent italic">Collection 2024</span>
-               <div className="h-[1px] w-12 bg-accent/30"></div>
+    <div className="flex flex-col bg-white">
+      {/* Hero Section - Professional & Minimalist */}
+      <section className="relative min-h-[85vh] w-full flex items-center justify-center pt-32 pb-20 px-6 lg:px-12 border-b border-neutral-100">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          
+          <div className="flex flex-col gap-8 order-2 lg:order-1">
+            <div className="flex items-center gap-3">
+              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-400">NOUVELLE COLLECTION 2024</span>
             </div>
             
-            <h1 className="text-6xl font-black tracking-tighter text-text-primary sm:text-8xl leading-[0.9] uppercase mb-10">
-              L&apos;Élégance <br />
-              <span className="text-accent italic relative">
-                Redéfinie
-                <svg className="absolute -bottom-2 left-0 w-full h-3 text-accent/20" viewBox="0 0 100 10" preserveAspectRatio="none">
-                  <path d="M0 5 Q 25 0 50 5 T 100 5" fill="none" stroke="currentColor" strokeWidth="4" />
-                </svg>
-              </span>.
+            <h1 className="text-3xl md:text-5xl font-serif text-black leading-tight">
+              L&apos;élégance <br /> 
+              à l&apos;état pur.
             </h1>
             
-            <p className="mx-auto max-w-2xl text-lg text-text-muted sm:text-xl font-medium leading-relaxed mb-12">
-              Découvrez une sélection exclusive de pièces maîtresses, fusionnant 
-              l&apos;artisanat traditionnel et le design contemporain pour une allure inégalée.
+            <p className="max-w-md text-xs font-bold uppercase tracking-widest text-neutral-500 leading-relaxed mb-4">
+              Des pièces intemporelles et raffinées pour une garde-robe moderne.
             </p>
             
-            <div className="flex flex-col items-center justify-center gap-6 sm:flex-row">
+            <div className="flex flex-col sm:flex-row gap-3">
               <Link href={ROUTES.PRODUCTS}>
-                <Button size="lg" className="h-16 px-12 text-base font-black uppercase tracking-widest shadow-2xl shadow-accent/20 rounded-2xl group overflow-hidden relative">
-                  <span className="relative z-10 flex items-center gap-2">
-                    Découvrir l&apos;Exclusivité
-                    <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-                  </span>
-                  <div className="absolute inset-0 bg-accent-hover translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                <Button size="lg" className="rounded-sm px-10 bg-black text-white hover:bg-neutral-900 transition-all text-[10px] uppercase font-bold tracking-widest h-14">
+                  Voir la Collection
+                  <ArrowRight className="ml-3 h-3.5 w-3.5" />
                 </Button>
               </Link>
               <Link href={ROUTES.CATEGORIES}>
-                <Button variant="outline" size="lg" className="h-16 px-12 text-base font-black uppercase tracking-widest rounded-2xl border-2 hover:bg-surface-alt transition-all">
-                  Les Univers
+                <Button variant="outline" size="lg" className="rounded-sm px-10 border-neutral-200 text-black hover:border-black transition-all text-[10px] uppercase font-bold tracking-widest h-14">
+                  Catalogue Univers
                 </Button>
               </Link>
             </div>
-          </motion.div>
+          </div>
+
+          <div className="relative order-1 lg:order-2">
+            <div className="aspect-[4/5] bg-neutral-50 rounded-sm overflow-hidden border border-neutral-100 shadow-xl shadow-black/[0.02]">
+              <img 
+                src="https://images.unsplash.com/photo-1490481651871-ab68624d5517?auto=format&fit=crop&q=80&w=1200" 
+                alt="Velure Campaign" 
+                className="w-full h-full object-cover grayscale-[30%] transition-transform duration-[2000ms] hover:scale-105"
+              />
+            </div>
+          </div>
         </div>
-        
-        {/* Floating elements simulation */}
-        <motion.div 
-          animate={{ y: [0, -20, 0] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-20 left-10 hidden lg:block"
-        >
-           <div className="bg-white/80 backdrop-blur-md p-4 rounded-3xl shadow-xl border border-white/50 flex items-center gap-4">
-              <div className="h-10 w-10 bg-success-bg text-success rounded-full flex items-center justify-center">
-                 <TrendingUp className="h-5 w-5" />
-              </div>
-              <div className="text-left">
-                 <p className="text-[10px] font-black uppercase text-text-hint tracking-widest">Tendance actuelle</p>
-                 <p className="text-sm font-bold text-text-primary">+150% d&apos;élégance</p>
-              </div>
-           </div>
-        </motion.div>
       </section>
 
-      {/* Featured Categories Grid */}
-      <section className="bg-bg py-32 px-6">
-        <div className="mx-auto max-w-7xl">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-8 mb-16">
-            <div className="text-center sm:text-left">
-              <span className="text-xs font-black uppercase tracking-[0.4em] text-accent mb-4 block">Découvrir</span>
-              <h2 className="text-4xl sm:text-5xl font-black tracking-tighter text-text-primary uppercase">
-                Nos <span className="text-accent italic">Incontournables</span>
+      {/* Featured Index */}
+      <section className="py-24 bg-white border-b border-neutral-100">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="flex flex-col md:flex-row items-end justify-between mb-20 gap-8">
+            <div className="max-w-lg flex flex-col gap-3">
+              <div className="flex items-center gap-2">
+                 <span className="text-[9px] font-bold uppercase tracking-[0.4em] text-neutral-400">Nos Coups de Cœur</span>
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-black uppercase">
+                NOTRE SÉLECTION
               </h2>
             </div>
             <Link href={ROUTES.CATEGORIES}>
-               <Button variant="ghost" className="rounded-full font-black uppercase tracking-widest text-xs h-12 px-8 border border-border group">
-                  Voir tout l&apos;univers
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+               <Button variant="ghost" className="rounded-sm border border-neutral-100 h-10 px-8 text-[9px] font-bold uppercase tracking-widest hover:border-black transition-all">
+                  TOUT EXPLORER
                </Button>
             </Link>
           </div>
@@ -117,76 +92,50 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Featured Promo Section */}
-      <section className="px-6 py-24 bg-surface-alt/10">
-        <div className="mx-auto max-w-7xl">
+      {/* Promo Experience - System Calibration */}
+      <section className="py-16 px-6 lg:px-12">
+        <div className="max-w-7xl mx-auto rounded-sm overflow-hidden border border-neutral-100">
            <PromoBanner promo={promo} />
         </div>
       </section>
 
-      {/* Trust & Features */}
-      <section className="bg-surface py-32 relative overflow-hidden border-y border-border">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="grid grid-cols-1 gap-16 md:grid-cols-3">
-            <div className="flex flex-col items-center text-center group">
-              <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-accent-light text-accent mb-8 group-hover:rotate-12 transition-transform duration-300">
-                <Zap className="h-8 w-8" />
-              </div>
-              <h3 className="text-xl font-black uppercase tracking-tighter text-text-primary mb-4">Livraison Express</h3>
-              <p className="text-sm text-text-muted font-medium leading-relaxed">
-                Expédition prioritaire sous 24h. L&apos;excellence n&apos;attend pas, votre style non plus.
-              </p>
-            </div>
-            <div className="flex flex-col items-center text-center group">
-              <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-accent-light text-accent mb-8 group-hover:-rotate-12 transition-transform duration-300">
-                <ShieldCheck className="h-8 w-8" />
-              </div>
-              <h3 className="text-xl font-black uppercase tracking-tighter text-text-primary mb-4">Confiance Totale</h3>
-              <p className="text-sm text-text-muted font-medium leading-relaxed">
-                Paiements sécurisés et protection des données. Votre sérénité est notre priorité absolue.
-              </p>
-            </div>
-            <div className="flex flex-col items-center text-center group">
-              <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-accent-light text-accent mb-8 group-hover:scale-110 transition-transform duration-300">
-                <Sparkles className="h-8 w-8" />
-              </div>
-              <h3 className="text-xl font-black uppercase tracking-tighter text-text-primary mb-4">Savoir-faire Unique</h3>
-              <p className="text-sm text-text-muted font-medium leading-relaxed">
-                Chaque pièce est sélectionnée pour son excellence artisanale et sa qualité irréprochable.
-              </p>
-            </div>
-          </div>
+      {/* Professional Values Registry */}
+      <section className="py-24 bg-neutral-50 border-y border-neutral-100">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-3 gap-16">
+           {[
+             { title: "Qualité Artisanale", desc: "Un savoir-faire unique avec des matériaux d'exception pour un style durable." },
+             { title: "Service Client", desc: "Une navigation fluide et un service client dédié à votre satisfaction." },
+             { title: "Authenticité Garantie", desc: "Toutes nos pièces sont certifiées et soigneusement sélectionnées par nos experts." }
+           ].map((feature, idx) => (
+             <div key={idx} className="flex flex-col gap-5 p-8 bg-white border border-neutral-100 rounded-sm hover:border-black transition-all shadow-sm shadow-black/[0.01]">
+                <h3 className="text-[10px] font-bold uppercase tracking-[0.4em] text-black border-b border-neutral-100 pb-4">{feature.title}</h3>
+                <p className="text-[10px] font-bold text-neutral-400 leading-relaxed max-w-xs uppercase tracking-widest">
+                   {feature.desc}
+                </p>
+             </div>
+           ))}
         </div>
       </section>
 
-      {/* Newsletter / Call to Action */}
-      <section className="px-6 pb-32">
-        <div className="mx-auto max-w-7xl bg-accent rounded-[60px] p-12 sm:p-24 relative overflow-hidden text-center shadow-2xl shadow-accent/20">
-           {/* Abstract Circles */}
-           <div className="absolute -top-10 -right-10 h-64 w-64 bg-white/10 rounded-full blur-3xl"></div>
-           <div className="absolute -bottom-10 -left-10 h-64 w-64 bg-white/10 rounded-full blur-3xl"></div>
-           
-           <div className="relative z-10 max-w-2xl mx-auto">
-              <span className="text-xs font-black uppercase tracking-[0.4em] text-white/70 mb-6 block">Privilège Velure</span>
-              <h2 className="text-4xl sm:text-6xl font-black text-white tracking-tighter uppercase mb-10 leading-tight">
-                Ne manquez aucune <br />
-                <span className="italic opacity-80 underline underline-offset-8 decoration-white/30">Nouveauté</span>
+      {/* Newsletter - Minimalist Terminal */}
+      <section className="py-32 px-6 lg:px-12 bg-white">
+        <div className="max-w-3xl mx-auto text-center flex flex-col items-center gap-12">
+           <div className="flex flex-col gap-4">
+              <span className="text-[9px] font-bold uppercase tracking-[0.4em] text-neutral-400">Newsletter</span>
+              <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-black uppercase">
+                RESTEZ CONNECTÉ À NOS NOUVEAUTÉS
               </h2>
-              <p className="text-white/70 font-medium text-lg mb-12">
-                Inscrivez-vous à notre newsletter exclusive et recevez 
-                <span className="text-white font-bold"> -10% sur votre première commande</span>.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                 <input 
-                  type="email" 
-                  placeholder="votre@email.com" 
-                  className="flex-grow h-16 rounded-2xl bg-white/10 border border-white/20 px-6 text-white placeholder:text-white/50 focus:outline-none focus:ring-4 focus:ring-white/10 transition-all font-bold"
-                 />
-                 <Button className="h-16 px-10 bg-white text-accent hover:bg-white/90 rounded-2xl font-black uppercase tracking-widest shadow-xl">
-                   S&apos;abonner
-                 </Button>
-              </div>
+           </div>
+           
+           <div className="flex flex-col sm:flex-row gap-3 w-full bg-neutral-50 p-3 rounded-sm border border-neutral-100">
+              <input 
+                type="email" 
+                placeholder="votre@email.com" 
+                className="flex-grow h-12 bg-white border border-neutral-100 px-6 rounded-sm text-[10px] font-bold tracking-widest placeholder:text-neutral-300 focus:outline-none focus:border-black transition-all"
+              />
+              <Button className="h-12 px-10 rounded-sm bg-black text-white text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-neutral-900 transition-all">
+                S&apos;INSCRIRE
+              </Button>
            </div>
         </div>
       </section>

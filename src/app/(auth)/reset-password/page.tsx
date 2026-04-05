@@ -1,115 +1,105 @@
-'use client';
+"use client";
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { Mail, ArrowRight, Loader2, CheckCircle2 } from 'lucide-react';
+import { Loader2, CheckCircle2, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { ROUTES } from '@/lib/utils/constants/routes';
-import { motion, AnimatePresence } from 'framer-motion';
 
 export default function ResetPasswordPage() {
-  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSent, setIsSent] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    if (!email.trim() || isSubmitting) return;
+    if (!password || password !== confirmPassword || isSubmitting) return;
 
     setIsSubmitting(true);
-    // Simulation d'envoi d'email de récupération
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setIsSent(true);
+    // Simulation
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setIsSuccess(true);
     setIsSubmitting(false);
   };
 
-  return (
-    <div className="min-h-screen py-32 px-6 flex flex-col items-center justify-center bg-bg">
-      <div className="w-full max-w-md bg-white rounded-[48px] p-12 border border-border shadow-2xl relative overflow-hidden">
-        {/* Background Accent */}
-        <div className="absolute top-0 right-0 h-32 w-32 bg-accent/5 rounded-full blur-3xl -translate-y-16 translate-x-16"></div>
-
-        <Link 
-          href={ROUTES.AUTH.LOGIN}
-          className="text-xs font-black uppercase text-text-hint hover:text-accent tracking-widest transition-all mb-8 inline-block"
-        >
-          &larr; Retour à la connexion
+  if (isSuccess) {
+    return (
+      <div className="w-full flex flex-col items-start text-left">
+        <Link href={ROUTES.AUTH.LOGIN} className="inline-flex items-center gap-2 text-[9px] font-bold uppercase text-neutral-400 hover:text-black tracking-[0.2em] transition-all mb-8 group">
+          <ArrowLeft className="h-3 w-3" />
+          Retour
         </Link>
-        
-        <AnimatePresence mode="wait">
-          {!isSent ? (
-            <motion.div
-              key="form"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-            >
-              <h1 className="text-4xl font-black tracking-tighter text-text-primary uppercase mb-4 leading-tight">
-                Mot de <span className="text-accent italic">Passe</span> perdu ?
-              </h1>
-              <p className="text-sm font-medium text-text-muted mb-10 leading-relaxed">
-                Pas d&apos;inquiétude. Entrez votre email ci-dessous et nous vous enverrons 
-                un lien sécurisé pour le réinitialiser.
-              </p>
-
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="space-y-4">
-                  <div className="relative group">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-text-hint group-focus-within:text-accent transition-colors" />
-                    <Input 
-                      type="email" 
-                      placeholder="votre@email.com" 
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="pl-12 h-14 rounded-2xl bg-surface-alt/50 border border-border focus:ring-4 focus:ring-accent/5 transition-all font-bold"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <Button 
-                  type="submit" 
-                  disabled={isSubmitting}
-                  className="w-full h-14 text-lg font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-accent/20 mt-4 group"
-                >
-                  {isSubmitting ? (
-                    <Loader2 className="h-6 w-6 animate-spin" />
-                  ) : (
-                    <span className="flex items-center gap-3">
-                      Envoyer le lien
-                      <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-                    </span>
-                  )}
-                </Button>
-              </form>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="success"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="text-center py-8"
-            >
-              <div className="h-20 w-20 bg-success-bg text-success rounded-full flex items-center justify-center mx-auto mb-8 shadow-inner">
-                <CheckCircle2 className="h-10 w-10" />
-              </div>
-              <h2 className="text-2xl font-black text-text-primary uppercase mb-4 tracking-tight">Email Envoyé !</h2>
-              <p className="text-sm font-medium text-text-muted leading-relaxed mb-10">
-                Nous avons envoyé un lien de réinitialisation à <span className="text-text-primary font-bold">{email}</span>. 
-                N&apos;oubliez pas de vérifier vos spams.
-              </p>
-              <Button 
-                variant="outline" 
-                className="w-full h-12 rounded-xl font-black uppercase tracking-widest border-2"
-                onClick={() => setIsSent(false)}
-              >
-                Ressayer avec un autre email
-              </Button>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <div className="h-16 w-16 bg-neutral-50 border border-neutral-100 text-black rounded-sm flex items-center justify-center mb-6">
+          <CheckCircle2 className="h-6 w-6" />
+        </div>
+        <h1 className="text-3xl md:text-4xl font-serif text-black mb-4">Mot de passe modifié</h1>
+        <p className="text-xs font-medium text-neutral-500 leading-relaxed mb-8">
+          Votre mot de passe a été mis à jour avec succès. Vous pouvez maintenant accéder à votre compte.
+        </p>
+        <Link href={ROUTES.AUTH.LOGIN} className="w-full">
+          <Button className="w-full h-12 rounded-sm font-bold uppercase tracking-widest bg-black text-white hover:bg-neutral-900 transition-all">
+            Se Connecter
+          </Button>
+        </Link>
       </div>
+    );
+  }
+
+  return (
+    <div className="w-full flex flex-col">
+      <header className="mb-8 flex flex-col items-start w-full">
+        <Link href={ROUTES.AUTH.LOGIN} className="inline-flex items-center gap-2 text-[9px] font-bold uppercase text-neutral-400 hover:text-black tracking-[0.2em] transition-all mb-8 group">
+          <ArrowLeft className="h-3 w-3" />
+          Retour
+        </Link>
+        <h1 className="text-3xl md:text-4xl font-serif text-black mb-2">
+          Nouveau mot de passe
+        </h1>
+        <p className="text-xs font-medium text-neutral-500 leading-relaxed text-left">
+          Veuillez définir un nouveau mot de passe sécurisé.
+        </p>
+      </header>
+
+      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+        <div className="flex flex-col gap-4">
+           <div className="flex flex-col gap-2">
+             <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-black">Nouveau Mot de Passe</label>
+             <Input 
+               type="password" 
+               placeholder="••••••••" 
+               value={password}
+               onChange={(e) => setPassword(e.target.value)}
+               className="h-12 rounded-sm bg-neutral-50 border border-neutral-200 focus:border-black font-medium text-xs px-4 outline-none"
+               required
+             />
+           </div>
+           <div className="flex flex-col gap-2">
+             <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-black">Confirmer le Mot de Passe</label>
+             <Input 
+               type="password" 
+               placeholder="••••••••" 
+               value={confirmPassword}
+               onChange={(e) => setConfirmPassword(e.target.value)}
+               className="h-12 rounded-sm bg-neutral-50 border border-neutral-200 focus:border-black font-medium text-xs px-4 outline-none"
+               required
+             />
+           </div>
+        </div>
+
+        <Button 
+          type="submit" 
+          disabled={isSubmitting || password !== confirmPassword || password.length === 0}
+          className="w-full h-12 text-xs font-bold uppercase tracking-widest rounded-sm bg-black text-white hover:bg-neutral-900 transition-all disabled:opacity-50"
+        >
+          {isSubmitting ? (
+            <Loader2 className="h-5 w-5 animate-spin" />
+          ) : (
+            "Enregistrer"
+          )}
+        </Button>
+      </form>
     </div>
   );
 }

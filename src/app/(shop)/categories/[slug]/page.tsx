@@ -19,8 +19,8 @@ export default async function CategoryPage({ params }: { params: { slug: string 
       <div className="max-w-7xl mx-auto">
         <header className="mb-12">
           <div className="flex flex-col gap-2">
-            <p className="text-sm font-black text-accent uppercase tracking-widest italic">Collection</p>
-            <h1 className="text-4xl font-black tracking-tighter text-text-primary uppercase">
+            <p className="text-sm font-bold text-accent uppercase tracking-widest italic">Collection</p>
+            <h1 className="text-4xl font-bold tracking-tighter text-text-primary uppercase">
               {category.nom}
             </h1>
             <p className="text-text-muted font-medium max-w-xl">
@@ -29,11 +29,10 @@ export default async function CategoryPage({ params }: { params: { slug: string 
             </p>
           </div>
           
-          <div className="h-0.5 w-16 bg-accent mt-8 rounded-full"></div>
         </header>
 
         <div className="mb-12">
-          <span className="text-sm font-black uppercase text-text-hint tracking-widest">
+          <span className="text-sm font-bold uppercase text-text-hint tracking-widest">
             {products.length} Produits trouvés
           </span>
         </div>

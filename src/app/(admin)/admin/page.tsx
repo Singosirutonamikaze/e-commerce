@@ -8,11 +8,16 @@ import {
   ArrowUpRight, 
   ArrowDownRight,
   Package,
+  Activity,
+  Calendar,
+  Layers,
+  ArrowRight
 } from 'lucide-react';
 import prisma from "@/lib/prisma/client";
 import { formatPrice } from "@/lib/utils/format";
 import Link from 'next/link';
 import { ROUTES } from '@/lib/utils/constants/routes';
+import { Button } from '@/components/ui/Button';
 
 export default async function AdminDashboard() {
   // Récupération des stats réelles depuis Prisma
@@ -22,7 +27,7 @@ export default async function AdminDashboard() {
     prisma.user.count({ where: { role: 'CLIENT' } }),
     prisma.order.findMany({
       orderBy: { createdAt: 'desc' },
-      take: 5,
+      take: 6,
       include: { user: true },
     }),
   ]);
@@ -35,149 +40,246 @@ export default async function AdminDashboard() {
   const totalRevenue = revenueResult._sum.total || 0;
 
   const stats = [
-    { label: "Chiffre d&apos;Affaires", value: formatPrice(Number(totalRevenue)), icon: CreditCard, trend: "+12.5%", trendUp: true },
-    { label: "Commandes", value: totalOrders.toString(), icon: ShoppingBag, trend: "+8.2%", trendUp: true },
-    { label: "Clients", value: totalCustomers.toString(), icon: Users, trend: "+3.1%", trendUp: true },
-    { label: "Produits", value: totalProducts.toString(), icon: Package, trend: "Stable", trendUp: true },
+    { label: "Ventes Totales", value: formatPrice(Number(totalRevenue)), icon: CreditCard, trend: "+12.5%", trendUp: true, color: "text-black" },
+    { label: "Commandes Flux", value: totalOrders.toString(), icon: ShoppingBag, trend: "+8.2%", trendUp: true, color: "text-black" },
+    { label: "Répertoire Clients", value: totalCustomers.toString(), icon: Users, trend: "+3.1%", trendUp: true, color: "text-black" },
+    { label: "Stock Actif", value: totalProducts.toString(), icon: Package, trend: "Stable", trendUp: true, color: "text-neutral-400" },
   ];
 
   return (
-    <div className="flex flex-col gap-10">
-      <header>
-        <h1 className="text-3xl font-black tracking-tighter text-text-primary uppercase mb-2">
-          Tableau de <span className="text-accent italic">Bord</span>
-        </h1>
-        <p className="text-sm font-medium text-text-muted">
-          Aperçu global des performances de votre boutique Velure.
-        </p>
+    <div className="flex flex-col gap-10 max-w-screen-2xl mx-auto">
+      {/* Pro Header Section */}
+      <header className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-3">
+             <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-400">Bureau Administrateur</span>
+          </div>
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-black uppercase">
+            Analytiques Système
+          </h1>
+        </div>
+        <div className="flex items-center gap-1 bg-neutral-100 p-1 rounded-sm border border-neutral-200">
+           <Button variant="outline" size="sm" className="rounded-sm h-9 px-6 bg-white border-neutral-200 text-[9px] font-bold uppercase tracking-widest leading-none">Aujourd&apos;hui</Button>
+           <Button variant="ghost" size="sm" className="rounded-sm h-9 px-6 text-[9px] font-bold uppercase tracking-widest leading-none text-neutral-400 hover:text-black hover:bg-neutral-50 transition-all">7 Jours</Button>
+           <Button variant="ghost" size="sm" className="rounded-sm h-9 px-6 text-[9px] font-bold uppercase tracking-widest leading-none text-neutral-400 hover:text-black hover:bg-neutral-50 transition-all">30 Jours</Button>
+        </div>
       </header>
 
-      {/* Stats Cards */}
+      {/* Professional Stats Registry */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, idx) => {
           const Icon = stat.icon;
           return (
-            <Card key={idx} className="p-6 border-border shadow-sm hover:shadow-xl hover:shadow-accent/5 transition-all group overflow-hidden relative">
-              <div className="absolute top-0 right-0 h-24 w-24 bg-accent/5 rounded-full -translate-y-12 translate-x-12 blur-2xl"></div>
-              <div className="flex justify-between items-start mb-4 relative z-10">
-                <div className="h-12 w-12 rounded-2xl bg-accent-light text-accent flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Icon className="h-6 w-6" />
+            <Card key={idx} className="p-8 border-neutral-200 shadow-sm rounded-sm bg-white hover:border-black transition-all group relative overflow-hidden">
+              <div className="flex justify-between items-start mb-10 relative z-10">
+                <div className={cn("h-10 w-10 rounded-sm flex items-center justify-center transition-all bg-neutral-50 border border-neutral-100", stat.color)}>
+                  <Icon className="h-4 w-4" />
                 </div>
-                <div className={stat.trendUp ? "flex items-center text-success text-xs font-black bg-success-bg px-2 py-1 rounded-full" : "flex items-center text-danger text-xs font-black bg-danger-bg px-2 py-1 rounded-full"}>
-                  {stat.trendUp ? <TrendingUp className="h-3 w-3 mr-1" /> : <ArrowDownRight className="h-3 w-3 mr-1" />}
+                <div className={cn(
+                  "flex items-center gap-1.5 px-3 py-1 text-[9px] font-bold tracking-widest uppercase border rounded-sm",
+                  stat.trendUp ? "bg-neutral-50 border-neutral-200 text-black" : "bg-red-50 border-red-100 text-red-600"
+                )}>
+                  {stat.trendUp ? <TrendingUp className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
                   {stat.trend}
                 </div>
               </div>
-              <div className="flex flex-col relative z-10">
-                <span className="text-2xl font-black text-text-primary tracking-tight">{stat.value}</span>
-                <span className="text-[10px] font-black uppercase text-text-hint tracking-widest mt-1">{stat.label}</span>
+
+              <div className="flex flex-col relative z-10 pt-2 border-t border-neutral-50">
+                <p className="text-[9px] font-bold uppercase text-neutral-400 tracking-[0.2em] mb-2">{stat.label}</p>
+                <h3 className="text-2xl font-bold tracking-tight text-black tabular-nums">{stat.value}</h3>
               </div>
             </Card>
           );
         })}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-        {/* Recent Orders Table */}
-        <section className="lg:col-span-2">
-          <Card className="border-border shadow-sm rounded-3xl overflow-hidden">
-            <div className="px-8 py-6 border-b border-border bg-surface-alt/50 flex items-center justify-between">
-              <h3 className="text-sm font-black uppercase tracking-widest text-text-primary">Dernières Commandes</h3>
+      {/* Main Grid: Data Infrastructure */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        
+        {/* Sales Performance Grid */}
+        <section className="lg:col-span-8 flex flex-col gap-8">
+          <Card className="p-8 border-neutral-200 shadow-sm rounded-sm bg-white flex flex-col gap-10">
+             <div className="flex items-center justify-between border-b border-neutral-100 pb-6">
+                <div className="flex flex-col gap-1">
+                   <h3 className="text-lg font-bold tracking-tight text-black uppercase">Flux de Performance</h3>
+                   <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-neutral-400">Intégration Stripe &bull; Prisma Index</p>
+                </div>
+                <div className="flex items-center gap-6">
+                   <div className="flex items-center gap-2">
+                      <div className="h-1.5 w-1.5 rounded-sm bg-black"></div>
+                      <span className="text-[8px] font-bold uppercase tracking-widest text-neutral-400">REVENUS</span>
+                   </div>
+                   <div className="flex items-center gap-2">
+                      <div className="h-1.5 w-1.5 rounded-sm bg-neutral-200"></div>
+                      <span className="text-[8px] font-bold uppercase tracking-widest text-neutral-400">UNITÉS</span>
+                   </div>
+                </div>
+             </div>
+
+             {/* Static Professional Chart (No motion error) */}
+             <div className="h-56 w-full relative flex items-end justify-between gap-1.5">
+                {[40, 70, 45, 90, 65, 80, 55, 75, 40, 85, 95, 60].map((h, i) => (
+                  <div key={i} className="flex-1 flex flex-col items-center gap-3 group">
+                     <div className="w-full relative h-full flex items-end">
+                        <div 
+                          style={{ height: `${h}%` }}
+                          className="w-full bg-neutral-100 rounded-sm transition-all group-hover:bg-black"
+                        />
+                     </div>
+                     <span className="text-[7px] font-bold uppercase tracking-widest text-neutral-300 group-hover:text-black transition-colors">T{i+1}</span>
+                  </div>
+                ))}
+             </div>
+             
+             <div className="grid grid-cols-3 gap-8 pt-8 border-t border-neutral-100">
+                <div className="flex flex-col gap-1">
+                   <p className="text-[8px] font-bold uppercase tracking-widest text-neutral-400">Pic d&apos;activité</p>
+                   <p className="text-xs font-bold text-black uppercase">Hebdomadaire &bull; Ven 14h</p>
+                </div>
+                <div className="flex flex-col gap-1">
+                   <p className="text-[8px] font-bold uppercase tracking-widest text-neutral-400">Indice de Conversion</p>
+                   <div className="flex items-baseline gap-2">
+                      <p className="text-xs font-bold text-black tabular-nums">3.45%</p>
+                      <span className="text-[7px] font-bold text-black bg-neutral-100 px-1 rounded-sm">OPTIMAL</span>
+                   </div>
+                </div>
+                <div className="flex flex-col gap-1">
+                   <p className="text-[8px] font-bold uppercase tracking-widest text-neutral-400">Panier Moyen</p>
+                   <p className="text-xs font-bold text-black tabular-nums">154.20 €</p>
+                </div>
+             </div>
+          </Card>
+
+          {/* Recent Orders - System List */}
+          <Card className="border-neutral-200 shadow-sm rounded-sm overflow-hidden bg-white">
+            <div className="px-8 py-6 border-b border-neutral-200 bg-neutral-50 flex items-center justify-between">
+              <div className="flex flex-col gap-1">
+                <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-black">Index Acquisitions Récentes</h3>
+                <p className="text-[8px] font-bold text-neutral-400 uppercase tracking-widest leading-none">Journalisation système</p>
+              </div>
               <Link href={ROUTES.ADMIN.ORDERS}>
-                <button className="text-xs font-black text-accent hover:underline uppercase tracking-widest">Voir tout</button>
+                <Button variant="outline" size="sm" className="rounded-sm h-8 px-4 border-neutral-200 font-bold text-[8px] uppercase tracking-[0.2em]">Accéder à l&apos;archive</Button>
               </Link>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
-                  <tr className="bg-surface-alt/30">
-                    <th className="px-8 py-4 text-[10px] font-black uppercase text-text-hint tracking-widest">Client</th>
-                    <th className="px-8 py-4 text-[10px] font-black uppercase text-text-hint tracking-widest">Date</th>
-                    <th className="px-8 py-4 text-[10px] font-black uppercase text-text-hint tracking-widest">Total</th>
-                    <th className="px-8 py-4 text-[10px] font-black uppercase text-text-hint tracking-widest">Statut</th>
+                  <tr className="bg-neutral-50/50">
+                    <th className="px-8 py-4 text-[9px] font-bold uppercase text-neutral-400 tracking-[0.3em]">Client ID</th>
+                    <th className="px-8 py-4 text-[9px] font-bold uppercase text-neutral-400 tracking-[0.3em]">Timestamp</th>
+                    <th className="px-8 py-4 text-[9px] font-bold uppercase text-neutral-400 tracking-[0.3em]">Valeur</th>
+                    <th className="px-8 py-4 text-[9px] font-bold uppercase text-neutral-400 tracking-[0.3em] text-right">État Flux</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="divide-y divide-neutral-100">
                    {recentOrders.map((order) => (
-                    <tr key={order.id} className="border-b border-border last:border-0 hover:bg-surface-alt/20 transition-all cursor-pointer group">
+                    <tr key={order.id} className="hover:bg-neutral-50/50 transition-all cursor-pointer group">
                       <td className="px-8 py-5">
-                        <div className="flex items-center gap-3">
-                          <div className="h-8 w-8 rounded-full bg-accent-light text-accent flex items-center justify-center font-black text-[10px]">
+                        <div className="flex items-center gap-4">
+                          <div className="h-8 w-8 bg-black text-white rounded-sm flex items-center justify-center font-bold text-[9px] shrink-0">
                             {order.user.prenom[0]}{order.user.nom[0]}
                           </div>
-                          <span className="text-sm font-bold text-text-primary group-hover:text-accent transition-colors">{order.user.prenom} {order.user.nom}</span>
+                          <div className="flex flex-col">
+                            <span className="text-[11px] font-bold text-black uppercase tracking-widest mb-0.5">{order.user.prenom} {order.user.nom}</span>
+                            <span className="text-[8px] font-bold text-neutral-300 uppercase tracking-widest">{order.user.email}</span>
+                          </div>
                         </div>
                       </td>
-                      <td className="px-8 py-5 text-sm font-medium text-text-muted">
-                        {new Date(order.createdAt).toLocaleDateString('fr-FR')}
+                      <td className="px-8 py-5 text-[9px] font-bold uppercase tracking-widest text-neutral-400 tabular-nums">
+                        {new Date(order.createdAt).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' })} &bull; {new Date(order.createdAt).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
                       </td>
-                      <td className="px-8 py-5 text-sm font-black text-text-primary">
+                      <td className="px-8 py-5 text-[11px] font-bold text-black tabular-nums">
                         {formatPrice(Number(order.total))}
                       </td>
-                      <td className="px-8 py-5">
-                        <div className="inline-flex h-6 px-3 rounded-full bg-warning-bg text-warning text-[10px] font-black uppercase items-center">
-                          {order.statut}
-                        </div>
+                      <td className="px-8 py-5 text-right">
+                         <span className="inline-flex h-6 px-3 rounded-sm border border-neutral-200 bg-neutral-50 text-[8px] font-bold uppercase tracking-widest items-center text-black">
+                           {order.statut}
+                         </span>
                       </td>
                     </tr>
-                  ))}
+                   ))}
                 </tbody>
               </table>
+            </div>
+            <div className="p-6 border-t border-neutral-100 bg-neutral-50/50 flex justify-center">
+                 <Link href={ROUTES.ADMIN.ORDERS} className="text-[8px] font-bold uppercase tracking-[0.4em] text-neutral-400 hover:text-black transition-colors flex items-center gap-2">
+                    Visualiser tout le registre
+                    <ArrowRight className="h-2.5 w-2.5" />
+                 </Link>
             </div>
           </Card>
         </section>
 
-        {/* Quick Links / Tasks */}
-        <section className="lg:col-span-1 flex flex-col gap-6">
-           <Card className="p-8 border-border shadow-sm rounded-3xl bg-accent text-white">
-              <h3 className="text-sm font-black uppercase tracking-widest mb-6 opacity-80">Actions Rapides</h3>
-              <div className="flex flex-col gap-3">
-                <Link href={ROUTES.ADMIN.PRODUCT_NEW}>
-                  <button className="w-full h-12 bg-white/10 hover:bg-white/20 rounded-xl flex items-center justify-between px-4 transition-all text-sm font-bold">
-                    <span>Ajouter un produit</span>
-                    <ArrowUpRight className="h-4 w-4" />
-                  </button>
-                </Link>
-                <Link href={ROUTES.ADMIN.PROMO_NEW}>
-                  <button className="w-full h-12 bg-white/10 hover:bg-white/20 rounded-xl flex items-center justify-between px-4 transition-all text-sm font-bold">
-                    <span>Créer un code promo</span>
-                    <ArrowUpRight className="h-4 w-4" />
-                  </button>
-                </Link>
-                <Link href={ROUTES.ADMIN.SUPPORT}>
-                  <button className="w-full h-12 bg-white/10 hover:bg-white/20 rounded-xl flex items-center justify-between px-4 transition-all text-sm font-bold">
-                    <span>Voir les messages support</span>
-                    <ArrowUpRight className="h-4 w-4" />
-                  </button>
-                </Link>
+        {/* Right Columns: Configuration & Actions */}
+        <section className="lg:col-span-4 flex flex-col gap-10">
+           {/* Terminal Actions */}
+           <Card className="p-8 border-neutral-200 shadow-sm rounded-sm bg-white relative overflow-hidden flex flex-col gap-8">
+              <div className="flex items-center gap-3 border-b border-neutral-100 pb-5">
+                 <div className="h-3 w-3 bg-neutral-100 rounded-sm border border-neutral-200"></div>
+                 <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-black">Console Opérations</h3>
+              </div>
+              <div className="flex flex-col gap-2">
+                {[
+                  { label: "Ajouter un Produit", icon: Package, href: ROUTES.ADMIN.PRODUCT_NEW },
+                  { label: "Code de Promotion", icon: CreditCard, href: ROUTES.ADMIN.PROMO_NEW },
+                  { label: "Assistance Système", icon: Users, href: ROUTES.ADMIN.SUPPORT },
+                  { label: "Paramètres Maison", icon: Layers, href: ROUTES.ADMIN.SETTINGS }
+                ].map((action, idx) => (
+                  <Link key={idx} href={action.href}>
+                    <button className="w-full h-12 bg-white border border-neutral-100 hover:border-black rounded-sm flex items-center justify-between px-4 transition-all group/btn">
+                       <div className="flex items-center gap-3">
+                          <action.icon className="h-3.5 w-3.5 text-neutral-300 group-hover/btn:text-black transition-all" />
+                          <span className="text-[9px] font-bold text-black uppercase tracking-widest">{action.label}</span>
+                       </div>
+                       <ArrowUpRight className="h-3.5 w-3.5 text-neutral-200 group-hover/btn:text-black transition-all" />
+                    </button>
+                  </Link>
+                ))}
               </div>
            </Card>
 
-           <Card className="p-8 border-border shadow-sm rounded-3xl">
-              <h3 className="text-sm font-black uppercase tracking-widest text-text-primary mb-6">Objectifs Journaliers</h3>
-              <div className="space-y-6">
-                <div className="flex flex-col gap-2">
-                  <div className="flex justify-between text-xs font-bold text-text-muted uppercase tracking-tighter">
-                    <span>Objectif Ventes</span>
-                    <span>75%</span>
+           {/* Metrics Registry */}
+           <Card className="p-8 border-neutral-200 shadow-sm rounded-sm bg-white">
+              <div className="flex items-center justify-between mb-8 pb-4 border-b border-neutral-100">
+                 <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-black">Indicateurs Objectifs</h3>
+                 <Calendar className="h-3.5 w-3.5 text-neutral-200" />
+              </div>
+              <div className="space-y-8">
+                {[
+                  { label: "Objectif Chiffre mensuel", current: 75, goal: "50k €" },
+                  { label: "Acquisition de Clientèle", current: 40, goal: "200 Users" }
+                ].map((goal, idx) => (
+                  <div key={idx} className="flex flex-col gap-3">
+                    <div className="flex justify-between items-end">
+                       <span className="text-[8px] font-bold text-neutral-400 uppercase tracking-widest">{goal.label}</span>
+                       <span className="text-xs font-bold text-black tabular-nums">{goal.current}%</span>
+                    </div>
+                    <div className="h-1.5 w-full bg-neutral-50 rounded-sm overflow-hidden border border-neutral-100">
+                       <div 
+                         style={{ width: `${goal.current}%` }}
+                         className="h-full bg-black rounded-sm transition-all duration-1000"
+                        />
+                    </div>
+                    <p className="text-[7px] font-bold uppercase text-neutral-300 tracking-widest text-right">Cible: {goal.goal}</p>
                   </div>
-                  <div className="h-2 w-full bg-surface-alt rounded-full overflow-hidden">
-                    <div className="h-full w-3/4 bg-accent rounded-full"></div>
-                  </div>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <div className="flex justify-between text-xs font-bold text-text-muted uppercase tracking-tighter">
-                    <span>Nouveaux Clients</span>
-                    <span>40%</span>
-                  </div>
-                  <div className="h-2 w-full bg-surface-alt rounded-full overflow-hidden">
-                    <div className="h-full w-2/5 bg-accent rounded-full"></div>
-                  </div>
-                </div>
+                ))}
+              </div>
+              
+              <div className="mt-10 p-5 bg-neutral-900 border border-neutral-800 rounded-sm flex flex-col items-center text-center gap-2">
+                 <Activity className="h-4 w-4 text-neutral-500" />
+                 <p className="text-[8px] font-bold uppercase tracking-widest text-white">État Logistique</p>
+                 <p className="text-[8px] font-medium text-neutral-500 uppercase tracking-widest leading-relaxed">
+                    Surveillance des flux de stock en cours. <br />
+                    Toutes les pièces sont tracées.
+                 </p>
               </div>
            </Card>
         </section>
       </div>
     </div>
   );
+}
+
+function cn(...inputs: any[]) {
+  return inputs.filter(Boolean).join(" ");
 }

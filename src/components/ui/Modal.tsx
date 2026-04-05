@@ -51,7 +51,7 @@ export function Modal({ isOpen, onClose, title, children, className }: ModalProp
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             className={cn(
-              "relative z-10 w-full max-w-lg overflow-hidden rounded-2xl bg-surface p-6 shadow-2xl",
+              "relative z-10 w-full max-w-lg overflow-hidden rounded-sm bg-surface p-6 shadow-2xl",
               className
             )}
           >
@@ -60,7 +60,7 @@ export function Modal({ isOpen, onClose, title, children, className }: ModalProp
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-8 w-8 p-0 rounded-full"
+                className="h-8 w-8 p-0 rounded-sm"
                 onClick={onClose}
               >
                 <X className="h-5 w-5" />

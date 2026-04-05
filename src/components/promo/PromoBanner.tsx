@@ -1,8 +1,6 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Sparkles, Ticket, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
 import { ROUTES } from '@/lib/utils/constants/routes';
@@ -20,79 +18,49 @@ export function PromoBanner({ promo }: PromoBannerProps) {
   const isPercentage = promo.type === 'POURCENTAGE';
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, scale: 0.95 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-      className="group relative overflow-hidden bg-accent rounded-[60px] p-12 sm:p-24 shadow-2xl shadow-accent/30 text-white"
-    >
-       {/* High-End Background Patterns */}
-       <div className="absolute top-0 right-0 h-[500px] w-[500px] bg-[radial-gradient(circle_at_center,_var(--tw-gradient-from)_0%,_transparent_60%)] from-white/20 -translate-y-1/2 translate-x-1/2 blur-2xl"></div>
-       <div className="absolute -bottom-20 -left-10 h-64 w-64 bg-accent-light/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000 ease-in-out"></div>
+    <div className="group relative overflow-hidden bg-neutral-50 border border-neutral-100 rounded-sm p-12 md:p-20 text-center flex flex-col items-center gap-10">
+       {/* Architectural Accents */}
+       <div className="absolute top-0 right-0 h-48 w-48 bg-black/[0.03] -translate-y-1/2 translate-x-1/2 rotate-45"></div>
+       <div className="absolute bottom-0 left-0 h-32 w-32 border-l border-b border-neutral-200 -translate-x-1/2 translate-y-1/2"></div>
        
-       {/* Animated Floating Sparks */}
-       <div className="absolute inset-0 z-10 pointer-events-none opacity-40">
-          <motion.div 
-            animate={{ 
-              y: [0, -100, 0],
-              x: [0, 50, 0],
-              opacity: [0.2, 0.5, 0.2] 
-            }}
-            transition={{ duration: 10, repeat: Infinity }}
-            className="absolute top-1/4 left-1/4 h-2 w-2 bg-white rounded-full blur-sm" 
-          />
-       </div>
-
-       <div className="relative z-20 flex flex-col items-center text-center max-w-3xl mx-auto gap-10">
-          <div className="flex items-center gap-4 animate-pulse">
-             <div className="h-[1px] w-12 bg-white/40"></div>
-             <Sparkles className="h-6 w-6 text-white" />
-             <span className="text-xs font-black uppercase tracking-[0.4em] italic text-white/80">Offre Exclusive Velure</span>
-             <div className="h-[1px] w-12 bg-white/40"></div>
-          </div>
-          
-          <div className="flex flex-col gap-4">
-             <h2 className="text-5xl sm:text-7xl font-black tracking-tighter uppercase leading-[0.95]">
-                Dotez-vous de<br />
-                <span className="text-white/40 italic relative">L&apos;Incomparable</span>.
+       <div className="relative z-20 flex flex-col items-center max-w-2xl mx-auto gap-8">
+          <div className="flex flex-col gap-3">
+             <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-black uppercase leading-tight">
+                Offre Privilège
              </h2>
-             <p className="text-lg font-medium text-white/70 max-w-xl mx-auto mt-6">
-                Profitez d&apos;une réduction exceptionnelle sur l&apos;ensemble de notre catalogue prestige.
+             <p className="text-sm font-medium text-neutral-500 leading-relaxed max-w-lg mx-auto px-8 border-x border-neutral-100">
+                Des conditions exceptionnelles sur nos sélections. 
+                Renouvelez votre garde-robe avec Velure.
              </p>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-xl border border-white/20 p-8 sm:p-12 rounded-[48px] flex flex-col items-center gap-6 shadow-2xl transition-all hover:scale-105 duration-500">
-             <div className="flex items-center gap-4 mb-4">
-                <Ticket className="h-6 w-6 text-white" />
-                <span className="text-sm font-black uppercase tracking-widest italic opacity-60">Code d&apos;accès privilège</span>
+          {/* Sharp Promo Identity */}
+          <div className="w-full max-w-sm bg-white p-10 border border-neutral-200 rounded-sm flex flex-col items-center gap-6 shadow-sm hover:border-black transition-all">
+             <div className="flex flex-col items-center gap-1">
+                <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-neutral-300">Réduction Immédiate</span>
+                <p className="text-5xl font-bold text-black tabular-nums">
+                    -{isPercentage ? Math.floor(promo.reduction) : promo.reduction}{isPercentage ? '%' : ' FCFA'}
+                </p>
              </div>
-             
-             <div className="flex flex-col items-center gap-2">
-                <h3 className="text-6xl sm:text-8xl font-black tracking-tighter text-white uppercase tabular-nums">
-                   -{isPercentage ? Math.floor(promo.reduction) : promo.reduction}
-                   <span className="text-4xl text-white/50 ml-2">{isPercentage ? '%' : '€'}</span>
-                </h3>
-                <div className="px-10 py-5 bg-white text-accent rounded-3xl font-black text-3xl sm:text-4xl shadow-xl tracking-[0.1em] transition-all hover:rotate-3 cursor-pointer group-hover:scale-110 duration-300">
+
+             <div className="w-full flex flex-col gap-3 pt-6 border-t border-neutral-100">
+                <span className="text-xs font-medium uppercase tracking-[0.2em] text-neutral-400">Code Promo</span>
+                <div className="h-14 bg-black text-white rounded-sm flex items-center justify-center font-bold text-xl tracking-[0.4em] select-all cursor-copy">
                    {promo.code}
                 </div>
              </div>
              
-             <p className="text-xs font-bold uppercase tracking-widest text-white/50 mt-4 italic">
-                Dès {promo.montantMinimum || 0} € d&apos;achat • Limité dans le temps
+             <p className="text-[10px] font-medium text-neutral-500">
+                Dès {promo.montantMinimum ? new Intl.NumberFormat('fr-FR').format(promo.montantMinimum) : 0} FCFA d&apos;achats &bull; Sur une sélection d&apos;articles
              </p>
           </div>
 
           <Link href={ROUTES.PRODUCTS}>
-            <Button className="h-16 px-14 bg-white text-accent hover:bg-white/90 rounded-2xl font-black uppercase tracking-widest shadow-2xl shadow-black/10 group overflow-hidden relative">
-               <span className="relative z-10 flex items-center gap-3">
-                  Utiliser maintenant
-                  <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-               </span>
-               <div className="absolute inset-0 bg-surface-alt -translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+            <Button variant="outline" className="h-12 px-12 rounded-sm border-black text-black text-[10px] uppercase font-bold tracking-[0.3em] hover:bg-black hover:text-white transition-all">
+               Visualiser le Catalogue
             </Button>
           </Link>
        </div>
-    </motion.div>
+    </div>
   );
 }

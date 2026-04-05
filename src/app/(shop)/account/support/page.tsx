@@ -36,14 +36,16 @@ export default async function SupportPage() {
     <div className="flex flex-col gap-8">
       <header className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
         <div>
-          <h2 className="text-3xl font-black uppercase tracking-tighter text-text-primary">
-            Support <span className="text-accent italic">Client</span>
-          </h2>
-          <p className="text-text-muted mt-2 font-medium">Mes tickets et demandes d&apos;assistance</p>
+          <h1 className="text-xl md:text-2xl font-bold tracking-tight text-text-primary uppercase mb-2">
+             Assistance Technique
+          </h1>
+          <p className="text-[10px] font-bold text-text-hint uppercase tracking-widest pl-4 border-l border-border">
+             Registre des Requêtes et Support Client
+          </p>
         </div>
         
         <Link href={ROUTES.CONTACT}>
-          <Button className="rounded-2xl h-12 px-8 font-black uppercase tracking-widest shadow-lg shadow-accent/10 transition-transform hover:scale-105 active:scale-95">
+          <Button className="rounded-sm h-12 px-8 font-bold uppercase tracking-widest shadow-lg shadow-accent/10 transition-transform hover:scale-105 active:scale-95">
             Nouveau Ticket
           </Button>
         </Link>
@@ -51,8 +53,8 @@ export default async function SupportPage() {
       
       <div className="grid grid-cols-1 gap-4">
         {conversations.length === 0 ? (
-          <div className="bg-surface rounded-3xl p-8 py-20 border border-border shadow-sm flex flex-col items-center justify-center text-center">
-            <div className="h-20 w-20 bg-accent-light text-accent rounded-full flex items-center justify-center mb-6">
+          <div className="bg-surface rounded-sm p-8 py-20 border border-border shadow-sm flex flex-col items-center justify-center text-center">
+            <div className="h-20 w-20 bg-accent-light text-accent rounded-sm flex items-center justify-center mb-6">
               <LifeBuoy className="h-10 w-10" />
             </div>
             <h3 className="text-xl font-bold text-text-primary mb-2">Aucun ticket ouvert</h3>
@@ -65,18 +67,18 @@ export default async function SupportPage() {
             <Link 
               key={conv.id} 
               href={ROUTES.ACCOUNT.SUPPORT_DETAIL(conv.id)}
-              className="bg-surface rounded-3xl p-6 border border-border shadow-sm hover:border-accent hover:shadow-xl hover:shadow-accent/5 transition-all group flex items-center justify-between"
+              className="bg-surface rounded-sm p-6 border border-border shadow-sm hover:border-accent hover:shadow-xl hover:shadow-accent/5 transition-all group flex items-center justify-between"
             >
               <div className="flex items-center gap-6">
-                 <div className={`h-14 w-14 rounded-2xl flex items-center justify-center transition-colors ${conv.statut === 'OUVERTE' ? 'bg-accent-light text-accent' : 'bg-surface-alt text-text-hint'}`}>
+                 <div className={`h-14 w-14 rounded-sm flex items-center justify-center transition-colors ${conv.statut === 'OUVERTE' ? 'bg-accent-light text-accent' : 'bg-surface-alt text-text-hint'}`}>
                     <MessageSquare className="h-6 w-6" />
                  </div>
                  <div className="flex flex-col">
                     <div className="flex items-center gap-3 mb-1">
-                       <h3 className="text-base font-black text-text-primary uppercase tracking-tight group-hover:text-accent transition-colors">
+                       <h3 className="text-base font-bold text-text-primary uppercase tracking-tight group-hover:text-accent transition-colors">
                           Ticket #{conv.id.slice(0, 8).toUpperCase()}
                        </h3>
-                       <span className={`inline-flex px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${conv.statut === 'OUVERTE' ? 'bg-success-bg text-success' : 'bg-surface-alt text-text-hint border border-border'}`}>
+                       <span className={`inline-flex px-3 py-1 rounded-sm text-[9px] font-bold uppercase tracking-widest ${conv.statut === 'OUVERTE' ? 'bg-success-bg text-success' : 'bg-surface-alt text-text-hint border border-border'}`}>
                           {conv.statut === 'OUVERTE' ? 'Ouvert' : 'Fermé'}
                        </span>
                     </div>
@@ -95,11 +97,11 @@ export default async function SupportPage() {
         )}
       </div>
 
-      <div className="bg-surface-alt/10 rounded-[32px] p-8 border border-border mt-8">
+      <div className="bg-surface-alt/10 rounded-sm p-8 border border-border mt-8">
          <div className="flex items-start gap-4">
             <CheckCircle2 className="h-6 w-6 text-accent shrink-0" />
             <div>
-               <h4 className="text-sm font-black uppercase tracking-tight text-text-primary mb-2">Engagement Velure</h4>
+               <h4 className="text-sm font-bold uppercase tracking-tight text-text-primary mb-2">Engagement Velure</h4>
                <p className="text-xs text-text-muted font-medium leading-relaxed">
                   Notre équipe support s&apos;engage à vous répondre sous un délai de 24h ouvrées. 
                   Chaque demande est traitée avec le plus grand soin par nos conseillers personnels.

@@ -45,7 +45,7 @@ export function AdminChat({ conversationId, customerName }: AdminChatProps) {
   }
 
   return (
-    <div className="flex flex-col h-[calc(100vh-280px)] bg-white rounded-[32px] border border-border shadow-sm overflow-hidden">
+    <div className="flex flex-col h-[calc(100vh-280px)] bg-white rounded-sm border border-border shadow-sm overflow-hidden">
       {/* Messages Area */}
       <div 
         ref={scrollRef}
@@ -70,12 +70,12 @@ export function AdminChat({ conversationId, customerName }: AdminChatProps) {
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           placeholder={`Répondre à ${customerName}...`} 
-          className="flex-grow h-14 bg-surface-alt rounded-2xl border border-transparent focus:border-accent focus:bg-white focus:ring-4 focus:ring-accent/5 px-6 text-sm font-bold placeholder:text-text-hint outline-none transition-all"
+          className="flex-grow h-14 bg-surface-alt rounded-sm border border-transparent focus:border-accent focus:bg-white focus:ring-4 focus:ring-accent/5 px-6 text-sm font-bold placeholder:text-text-hint outline-none transition-all"
         />
         <Button 
           type="submit" 
           disabled={!inputValue.trim() || sending}
-          className="h-14 px-8 rounded-2xl font-black uppercase tracking-widest shadow-xl shadow-accent/20 transition-all hover:scale-105 active:scale-95 disabled:grayscale"
+          className="h-14 px-8 rounded-sm font-bold uppercase tracking-widest shadow-xl shadow-accent/20 transition-all hover:scale-105 active:scale-95 disabled:grayscale"
         >
           {sending ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Répondre'}
           <Send className="h-4 w-4 ml-3" />

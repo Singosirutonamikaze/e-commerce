@@ -40,13 +40,13 @@ export default async function AdminOrderDetailPage({ params }: { params: { id: s
   return (
     <div className="flex flex-col gap-10">
       <header className="mb-6 flex flex-col gap-4">
-        <Link href={ROUTES.ADMIN.ORDERS} className="flex items-center gap-2 text-xs font-black uppercase text-accent hover:text-accent-hover tracking-widest transition-colors mb-2 group">
+        <Link href={ROUTES.ADMIN.ORDERS} className="flex items-center gap-2 text-xs font-bold uppercase text-accent hover:text-accent-hover tracking-widest transition-colors mb-2 group">
           <ChevronLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
           Retour à la gestion
         </Link>
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
           <div className="flex flex-col gap-2">
-            <h2 className="text-3xl font-black text-text-primary tracking-tighter uppercase leading-tight">
+            <h2 className="text-3xl font-bold text-text-primary tracking-tighter uppercase leading-tight">
               Détails <span className="text-accent italic">Commande</span>
             </h2>
             <p className="text-sm font-medium text-text-muted">
@@ -54,7 +54,7 @@ export default async function AdminOrderDetailPage({ params }: { params: { id: s
             </p>
           </div>
           <div className="flex items-center gap-4">
-             <span className="text-xs font-black uppercase text-text-hint tracking-widest">#{order.id.slice(0, 12).toUpperCase()}</span>
+             <span className="text-xs font-bold uppercase text-text-hint tracking-widest">#{order.id.slice(0, 12).toUpperCase()}</span>
              <Badge 
               variant={
                 order.statut === 'LIVRE' ? 'success' : 
@@ -62,7 +62,7 @@ export default async function AdminOrderDetailPage({ params }: { params: { id: s
                 order.statut === 'EXPEDIE' ? 'accent' : 
                 'warning'
               } 
-              className="font-bold h-10 px-6 rounded-full uppercase tracking-widest text-[11px] shadow-sm"
+              className="font-bold h-10 px-6 rounded-sm uppercase tracking-widest text-[11px] shadow-sm"
              >
                {order.statut}
              </Badge>
@@ -73,35 +73,35 @@ export default async function AdminOrderDetailPage({ params }: { params: { id: s
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
         <div className="lg:col-span-2 flex flex-col gap-8">
           {/* Status Management */}
-          <section className="bg-accent-light p-8 rounded-3xl border border-accent/10 shadow-sm">
-             <h3 className="text-sm font-black uppercase tracking-widest text-accent mb-6">Mettre à jour le statut</h3>
+          <section className="bg-accent-light p-8 rounded-sm border border-accent/10 shadow-sm">
+             <h3 className="text-sm font-bold uppercase tracking-widest text-accent mb-6">Mettre à jour le statut</h3>
              <form action={handleStatusChange} className="flex flex-wrap items-center gap-4">
                 <input type="hidden" name="orderId" value={order.id} />
                 <select 
                   name="status" 
                   defaultValue={order.statut}
-                  className="h-14 px-6 bg-white rounded-2xl border border-accent/20 text-sm font-black uppercase tracking-widest focus:ring-2 focus:ring-accent outline-none appearance-none cursor-pointer flex-grow"
+                  className="h-14 px-6 bg-white rounded-sm border border-accent/20 text-sm font-bold uppercase tracking-widest focus:ring-2 focus:ring-accent outline-none appearance-none cursor-pointer flex-grow"
                 >
                   {statusOptions.map(opt => (
                     <option key={opt} value={opt}>{opt}</option>
                   ))}
                 </select>
-                <Button type="submit" className="h-14 px-10 rounded-2xl font-black uppercase tracking-widest shadow-xl shadow-accent/20">
+                <Button type="submit" className="h-14 px-10 rounded-sm font-bold uppercase tracking-widest shadow-xl shadow-accent/20">
                   Enregistrer
                 </Button>
              </form>
           </section>
 
           {/* Items List */}
-          <section className="bg-surface rounded-3xl border border-border overflow-hidden shadow-sm">
+          <section className="bg-surface rounded-sm border border-border overflow-hidden shadow-sm">
             <div className="px-8 py-6 border-b border-border bg-surface-alt/50 flex items-center gap-3">
               <Package className="h-5 w-5 text-accent" />
-              <h3 className="text-sm font-black uppercase tracking-widest text-text-primary">Articles</h3>
+              <h3 className="text-sm font-bold uppercase tracking-widest text-text-primary">Articles</h3>
             </div>
             <div className="flex flex-col">
               {order.orderItems.map((item) => (
                 <div key={item.id} className="p-8 border-b border-border last:border-0 flex gap-6 group hover:bg-surface-alt/10 transition-all">
-                  <div className="relative h-24 w-20 bg-surface-alt rounded-2xl overflow-hidden shrink-0 border border-border">
+                  <div className="relative h-24 w-20 bg-surface-alt rounded-sm overflow-hidden shrink-0 border border-border">
                     <Image
                       src={item.produit?.images[0]?.url || item.imageProduit || '/placeholder.png'}
                       alt={item.nomProduit}
@@ -114,11 +114,11 @@ export default async function AdminOrderDetailPage({ params }: { params: { id: s
                     <div className="flex justify-between items-start">
                       <div>
                         <h4 className="text-lg font-bold text-text-primary">{item.nomProduit}</h4>
-                        <p className="text-xs font-black uppercase tracking-widest text-text-hint mt-1">ID: {item.produitId?.slice(0,8) || 'Non assigné'}</p>
+                        <p className="text-xs font-bold uppercase tracking-widest text-text-hint mt-1">ID: {item.produitId?.slice(0,8) || 'Non assigné'}</p>
                       </div>
-                      <p className="text-sm font-black text-text-primary">x{item.quantite}</p>
+                      <p className="text-sm font-bold text-text-primary">x{item.quantite}</p>
                     </div>
-                    <p className="text-lg font-black text-accent">{formatPrice(Number(item.prixUnitaire) * item.quantite)}</p>
+                    <p className="text-lg font-bold text-accent">{formatPrice(Number(item.prixUnitaire) * item.quantite)}</p>
                   </div>
                 </div>
               ))}
@@ -129,14 +129,14 @@ export default async function AdminOrderDetailPage({ params }: { params: { id: s
         {/* Sidebar */}
         <div className="lg:col-span-1 flex flex-col gap-10">
           {/* Customer Card */}
-          <section className="bg-surface rounded-3xl p-8 border border-border shadow-sm">
+          <section className="bg-surface rounded-sm p-8 border border-border shadow-sm">
             <div className="flex items-center gap-3 mb-6">
               <User className="h-5 w-5 text-accent" />
-              <h3 className="text-sm font-black uppercase tracking-widest text-text-primary">Client</h3>
+              <h3 className="text-sm font-bold uppercase tracking-widest text-text-primary">Client</h3>
             </div>
             <div className="flex flex-col gap-4">
                <div className="flex items-center gap-4">
-                  <div className="h-12 w-12 rounded-2xl bg-accent-light text-accent flex items-center justify-center font-black">
+                  <div className="h-12 w-12 rounded-sm bg-accent-light text-accent flex items-center justify-center font-bold">
                      {order.user.prenom[0]}{order.user.nom[0]}
                   </div>
                   <div className="flex flex-col">
@@ -160,10 +160,10 @@ export default async function AdminOrderDetailPage({ params }: { params: { id: s
           </section>
 
           {/* Delivery Card */}
-          <section className="bg-surface rounded-3xl p-8 border border-border shadow-sm">
+          <section className="bg-surface rounded-sm p-8 border border-border shadow-sm">
             <div className="flex items-center gap-3 mb-6">
               <MapPin className="h-5 w-5 text-accent" />
-              <h3 className="text-sm font-black uppercase tracking-widest text-text-primary">Livraison</h3>
+              <h3 className="text-sm font-bold uppercase tracking-widest text-text-primary">Livraison</h3>
             </div>
             <div className="text-sm font-medium text-text-muted leading-relaxed">
               <p className="text-text-primary font-bold mb-1">{order.adresse.prenom} {order.adresse.nom}</p>
@@ -175,10 +175,10 @@ export default async function AdminOrderDetailPage({ params }: { params: { id: s
           </section>
 
           {/* Summary */}
-          <section className="bg-surface rounded-3xl p-8 border border-border shadow-sm">
+          <section className="bg-surface rounded-sm p-8 border border-border shadow-sm">
             <div className="flex items-center gap-3 mb-8">
               <CreditCard className="h-5 w-5 text-accent" />
-              <h3 className="text-sm font-black uppercase tracking-widest text-text-primary font-bold tracking-tight">Récapitulatif</h3>
+              <h3 className="text-sm font-bold uppercase tracking-widest text-text-primary font-bold tracking-tight">Récapitulatif</h3>
             </div>
 
             <div className="space-y-4 mb-8">
@@ -201,8 +201,8 @@ export default async function AdminOrderDetailPage({ params }: { params: { id: s
             <hr className="border-border mb-6" />
 
             <div className="flex justify-between items-end">
-              <span className="text-sm font-black text-text-primary uppercase tracking-tighter">Total</span>
-              <span className="text-3xl font-black text-accent">{formatPrice(Number(order.total))}</span>
+              <span className="text-sm font-bold text-text-primary uppercase tracking-tighter">Total</span>
+              <span className="text-3xl font-bold text-accent">{formatPrice(Number(order.total))}</span>
             </div>
           </section>
         </div>

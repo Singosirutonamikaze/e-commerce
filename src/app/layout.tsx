@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "VELURE | Boutique en ligne moderne",
-  description: "Découvrez notre collection exclusive de chaussures, chemises et accessoires.",
+  title: "V | Boutique en ligne moderne",
+  description: "Boutique de luxe au design architectural.",
   keywords: ["e-commerce", "mode", "chaussures", "chemises", "accessoires", "luxe"],
 }
 

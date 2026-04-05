@@ -17,17 +17,33 @@ export async function login(formData: LoginInput) {
   const { email, password } = validatedFields.data;
   const supabase = await createClient();
 
-  const { error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
   if (error) {
-    return { error: 'Identifiants invalides' };
+    console.error('Erreur Supabase au login:', error);
+    if (error.message.includes('Email not confirmed')) {
+      return { error: 'Veuillez confirmer votre numéro ou adresse email avant de vous connecter.' };
+    }
+    return { error: error.message || 'Identifiants invalides' };
+  }
+
+  let role = 'CLIENT';
+  if (data?.user) {
+    const dbUser = await prisma.user.findUnique({
+      where: { id: data.user.id },
+      select: { role: true }
+    });
+    if (dbUser) {
+      role = dbUser.role;
+    }
   }
 
   revalidatePath(ROUTES.HOME);
-  return { success: true };
+  revalidatePath(ROUTES.ADMIN.ROOT);
+  return { success: true, role };
 }
 
 export async function register(formData: RegisterInput) {
@@ -38,15 +54,20 @@ export async function register(formData: RegisterInput) {
   }
 
   const { email, password, prenom, nom } = validatedFields.data;
-  const supabase = await createClient();
+  const { createClient: createSupabaseClient } = await import('@supabase/supabase-js');
+  
+  // Bypass email verification using admin client
+  const supabaseAdmin = createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
 
   // Inscription Supabase Auth
-  const { data: { user }, error: authError } = await supabase.auth.signUp({
+  const { data: { user }, error: authError } = await supabaseAdmin.auth.admin.createUser({
     email,
     password,
-    options: {
-      data: { prenom, nom }
-    }
+    email_confirm: true,
+    user_metadata: { prenom, nom }
   });
 
   if (authError) {

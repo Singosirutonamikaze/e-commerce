@@ -1,35 +1,28 @@
 import React from 'react';
 import { LoginForm } from '@/components/auth/LoginForm/LoginForm';
-import { ArrowLeft, Sparkles } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { ROUTES } from '@/lib/utils/constants/routes';
 
 export default function LoginPage() {
   return (
-    <div className="w-full max-w-md flex flex-col">
-      <header className="mb-10 text-center sm:text-left">
-        <Link href={ROUTES.HOME} className="inline-flex items-center gap-2 text-xs font-black uppercase text-accent hover:text-accent-hover tracking-widest transition-colors mb-8 group">
-          <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
-          Retour boutique
+    <div className="w-full flex flex-col">
+      <header className="mb-8 flex flex-col items-start w-full">
+        <Link href={ROUTES.HOME} className="inline-flex items-center gap-2 text-[9px] font-bold uppercase text-neutral-400 hover:text-black tracking-[0.2em] transition-all mb-8 group">
+          <ArrowLeft className="h-3 w-3" />
+          Retour
         </Link>
-        <div className="flex items-center gap-2 mb-4 justify-center sm:justify-start">
-          <Sparkles className="h-6 w-6 text-accent" />
-          <span className="text-sm font-black uppercase tracking-widest text-accent italic">Ravi de vous revoir</span>
-        </div>
-        <h1 className="text-4xl font-black tracking-tighter text-text-primary uppercase mb-3">
-          Se <span className="text-accent italic">Connecter</span>
+        <h1 className="text-3xl md:text-4xl font-serif text-black">
+          Connexion
         </h1>
-        <p className="text-text-muted font-medium">
-          Accédez à votre compte premium Velure pour suivre vos commandes et gérer vos favoris.
-        </p>
       </header>
 
       <LoginForm />
 
-      <footer className="mt-10 text-center">
-        <p className="text-sm text-text-muted font-medium">
+      <footer className="mt-8 pt-8 border-t border-neutral-100 text-center">
+        <p className="text-xs text-neutral-500 font-medium">
           Pas encore de compte ?{' '}
-          <Link href={ROUTES.AUTH.REGISTER} className="text-accent font-black hover:underline underline-offset-4">
+          <Link href={ROUTES.AUTH.REGISTER} className="text-black font-bold hover:underline underline-offset-4">
             Créer un compte
           </Link>
         </p>

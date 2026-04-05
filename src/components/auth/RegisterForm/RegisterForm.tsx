@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,7 +10,6 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { useUIStore } from '@/store/ui.store';
 import { Mail, Lock, User, Loader2, ArrowRight, ShieldCheck } from 'lucide-react';
-import Link from 'next/link';
 import { ROUTES } from '@/lib/utils/constants/routes';
 
 export function RegisterForm() {
@@ -40,16 +39,16 @@ export function RegisterForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <label className="text-xs font-black uppercase tracking-widest text-text-muted px-1">Prénom</label>
+          <label className="text-xs font-bold uppercase tracking-widest text-text-muted px-1">Prénom</label>
           <div className="relative">
             <Input 
               {...register('prenom')} 
               error={!!errors.prenom} 
               placeholder="Prénom" 
-              className="h-12 pl-10 rounded-xl" 
+              className="h-12 pl-10 rounded-sm" 
             />
             <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-text-hint" />
           </div>
@@ -57,13 +56,13 @@ export function RegisterForm() {
         </div>
 
         <div className="space-y-2">
-          <label className="text-xs font-black uppercase tracking-widest text-text-muted px-1">Nom</label>
+          <label className="text-xs font-bold uppercase tracking-widest text-text-muted px-1">Nom</label>
           <div className="relative">
             <Input 
               {...register('nom')} 
               error={!!errors.nom} 
               placeholder="Nom" 
-              className="h-12 pl-10 rounded-xl" 
+              className="h-12 pl-10 rounded-sm" 
             />
             <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-text-hint" />
           </div>
@@ -72,13 +71,13 @@ export function RegisterForm() {
       </div>
 
       <div className="space-y-2">
-        <label className="text-xs font-black uppercase tracking-widest text-text-muted px-1">Email</label>
+        <label className="text-xs font-bold uppercase tracking-widest text-text-muted px-1">Email</label>
         <div className="relative">
           <Input 
             {...register('email')} 
             error={!!errors.email} 
             placeholder="votre@email.com" 
-            className="h-12 pl-10 rounded-xl" 
+            className="h-12 pl-10 rounded-sm" 
           />
           <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-text-hint" />
         </div>
@@ -86,31 +85,28 @@ export function RegisterForm() {
       </div>
 
       <div className="space-y-2">
-        <label className="text-xs font-black uppercase tracking-widest text-text-muted px-1">Mot de passe</label>
+        <label className="text-xs font-bold uppercase tracking-widest text-text-muted px-1">Mot de passe</label>
         <div className="relative">
           <Input 
             {...register('password')} 
             type="password"
             error={!!errors.password} 
             placeholder="••••••••" 
-            className="h-12 pl-10 rounded-xl" 
+            className="h-12 pl-10 rounded-sm" 
           />
           <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-text-hint" />
         </div>
         {errors.password && <p className="text-xs text-danger font-bold mt-1">{errors.password.message}</p>}
       </div>
 
-      <div className="flex items-center gap-3 p-4 bg-surface-alt/50 rounded-2xl border border-border mt-2">
-        <ShieldCheck className="h-6 w-6 text-success shrink-0" />
-        <p className="text-xs text-text-muted leading-relaxed font-medium">
-          En m&apos;inscrivant, j&apos;accepte les **Conditions Générales** et la **Politique de Confidentialité** de Velure.
-        </p>
-      </div>
+      <p className="text-xs text-neutral-500 font-medium text-center mt-2 px-4">
+        En vous inscrivant, vous acceptez nos conditions générales.
+      </p>
 
       <Button 
         type="submit" 
         disabled={loading}
-        className="h-14 text-lg font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-accent/10 mt-2 group"
+        className="h-12 w-full text-[10px] font-bold uppercase tracking-[0.2em] rounded-sm bg-black text-white hover:bg-neutral-900 transition-all shadow-md shadow-black/5 mt-2 flex items-center justify-center group"
       >
         {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : (
           <>

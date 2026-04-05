@@ -27,15 +27,15 @@ export function ChatBubble({ message }: ChatBubbleProps) {
       )}
     >
       <div className={cn(
-        "px-5 py-3 rounded-[24px] text-sm font-medium shadow-sm transition-all",
+        "px-5 py-3 rounded-sm text-sm font-bold shadow-sm transition-all",
         isMe 
-          ? "bg-accent text-white rounded-tr-none" 
-          : "bg-white text-text-primary border border-border rounded-tl-none hover:bg-surface-alt/10"
+          ? "bg-accent text-white rounded-sm" 
+          : "bg-white text-text-primary border border-border rounded-sm hover:bg-surface-alt/10"
       )}>
         {message.contenu}
       </div>
       <div className="flex items-center gap-1.5 mt-2 px-1">
-        <span className="text-[9px] font-black uppercase text-text-hint tracking-widest">
+        <span className="text-[9px] font-bold uppercase text-text-hint tracking-widest">
           {new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
         </span>
         {isMe && <CheckCheck className="h-3 w-3 text-accent" />}
