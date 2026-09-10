@@ -1,4 +1,4 @@
-# Velure — Plateforme E-Commerce Haute Couture & Quiet Luxury
+# Velure : Plateforme E-Commerce Haute Couture & Quiet Luxury
 
 Velure est une application web e-commerce moderne dédiée au luxe discret et à la haute couture, conçue avec **Next.js 15 (App Router)**, **React 19**, **TypeScript**, **Tailwind CSS**, **Prisma ORM (PostgreSQL)** et **Supabase (Auth & Realtime)**.
 
