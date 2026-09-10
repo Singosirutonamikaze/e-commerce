@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { getWishlist, toggleWishlist } from '@/lib/actions/user.actions'
+import { getWishlist, toggleWishlist } from '@/lib/actions/user'
 import { ProductWithImages } from '@/types'
 import type { Wishlist } from '@prisma/client'
 

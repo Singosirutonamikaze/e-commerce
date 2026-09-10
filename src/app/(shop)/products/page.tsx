@@ -1,51 +1,41 @@
 import { ProductGrid } from "@/components/product/ProductGrid/ProductGrid";
-import { getProducts } from "@/lib/actions/product.actions";
+import { getProducts } from "@/lib/actions/product";
 
 export default async function ProductsPage() {
   const products = await getProducts({});
 
   return (
-    <main className="pt-24 pb-20 px-6 min-h-screen bg-bg">
-      <div className="max-w-7xl mx-auto">
-        <header className="mb-16">
-          <div className="flex flex-col gap-4">
-            <div className="flex items-center gap-3">
-              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-accent">
-                Registre des Articles
-              </span>
-            </div>
-            <h1 className="text-3xl md:text-4xl font-serif text-black mb-6">
-              Catalogue <span className="text-neutral-300">officiel</span>
+    <main className="pt-28 pb-16 min-h-screen text-slate-100">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+        <header className="mb-8">
+          <div className="flex flex-col gap-1">
+            <span className="text-xs font-medium text-slate-400">
+              Catalogue
+            </span>
+            <h1 className="text-2xl md:text-3xl font-bold text-white">
+              Tous nos produits
             </h1>
-            <p className="text-sm font-medium text-text-muted max-w-xl leading-relaxed pl-4 border-l border-neutral-100">
-              Découvrez notre sélection de pièces d&apos;exception, alliant
-              design moderne et matériaux d&apos;exception pour une garde-robe
-              sans compromis.
+            <p className="text-xs md:text-sm text-slate-400 max-w-xl leading-relaxed">
+              Découvrez notre sélection de pièces aux coupes épurées et matières nobles.
             </p>
           </div>
         </header>
 
-        {/* Filters Placeholder */}
-        <div className="mb-12 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <span className="text-sm font-bold uppercase text-text-hint tracking-widest">
-              {products.length} Produits
-            </span>
-          </div>
+        <div className="mb-6 flex items-center justify-between">
+          <span className="text-xs text-slate-400">
+            {products.length} {products.length > 1 ? "produits disponibles" : "produit disponible"}
+          </span>
 
-          <div className="flex items-center gap-2">
-            <select
-              title="Trier les produits"
-              className="bg-surface border border-border rounded-sm px-4 py-2 text-sm font-bold text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/50 appearance-none cursor-pointer"
-            >
-              <option>Les plus récents</option>
-              <option>Prix croissant</option>
-              <option>Prix décroissant</option>
-            </select>
-          </div>
+          <select
+            title="Trier les produits"
+            className="bg-slate-900 border border-slate-800 rounded-sm px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-slate-600 cursor-pointer"
+          >
+            <option>Plus récents</option>
+            <option>Prix croissant</option>
+            <option>Prix décroissant</option>
+          </select>
         </div>
 
-        {/* Content */}
         <ProductGrid products={products} />
       </div>
     </main>

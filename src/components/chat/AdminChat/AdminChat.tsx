@@ -41,52 +41,65 @@ export function AdminChat({
 
   if (loading) {
     return (
-      <div className="flex-1 flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-accent" />
+      <div className="flex-1 flex items-center justify-center min-h-100 bg-slate-950/60 rounded-lg border border-slate-800/80">
+        <Loader2 className="h-8 w-8 animate-spin text-slate-400" />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-[calc(100vh-280px)] bg-white rounded-sm border border-border shadow-sm overflow-hidden">
-      {/* Messages Area */}
+    <div className="flex flex-col h-[calc(100vh-280px)] min-h-125 bg-slate-950/80 backdrop-blur-xl rounded-lg border border-slate-800/80 shadow-sm overflow-hidden">
       <div
         ref={scrollRef}
-        className="flex-1 overflow-y-auto p-8 flex flex-col gap-6 bg-surface-alt/10"
+        className="flex-1 overflow-y-auto p-6 flex flex-col gap-4 bg-slate-950/40"
       >
         {messages.length > 0 ? (
           messages.map((msg: MessageWithSender) => (
-            <ChatBubble key={msg.id} message={msg} />
+            <ChatBubble
+              key={msg.id}
+              message={msg}
+              isMe={msg.expediteur.role === "ADMIN"}
+            />
           ))
         ) : (
-          <div className="flex-1 flex flex-col items-center justify-center text-text-hint gap-4 opacity-40">
-            <User className="h-12 w-12" />
-            <p className="text-sm font-bold uppercase tracking-widest">
-              Aucun historique
+          <div className="flex-1 flex flex-col items-center justify-center text-slate-500 gap-3 opacity-60">
+            <div className="h-12 w-12 bg-slate-900 border border-slate-800 rounded-lg flex items-center justify-center text-slate-400">
+              <User className="h-6 w-6" />
+            </div>
+            <p className="text-sm font-medium text-slate-300">
+              Aucun historique de message
+            </p>
+            <p className="text-xs text-slate-500">
+              Commencez la conversation avec {customerName}.
             </p>
           </div>
         )}
       </div>
 
-      {/* Input Area */}
       <form
         onSubmit={handleSend}
-        className="p-6 bg-white border-t border-border flex items-center gap-4"
+        className="p-4 bg-slate-900/60 border-t border-slate-800/80 backdrop-blur-md flex items-center gap-3"
       >
         <input
           type="text"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           placeholder={`Répondre à ${customerName}...`}
-          className="grow h-14 bg-surface-alt rounded-sm border border-transparent focus:border-accent focus:bg-white focus:ring-4 focus:ring-accent/5 px-6 text-sm font-bold placeholder:text-text-hint outline-none transition-all"
+          className="grow h-11 bg-slate-950 border border-slate-800/80 rounded-lg px-4 text-sm text-slate-100 placeholder:text-slate-500 focus:border-slate-600 focus:ring-1 focus:ring-slate-600 outline-none transition-all"
         />
         <Button
           type="submit"
           disabled={!inputValue.trim() || sending}
-          className="h-14 px-8 rounded-sm font-bold uppercase tracking-widest shadow-xl shadow-accent/20 transition-all hover:scale-105 active:scale-95 disabled:grayscale"
+          className="h-11 px-5 bg-white text-slate-950 hover:bg-slate-200 font-medium rounded-lg text-xs tracking-wide transition-all shadow-sm flex items-center gap-2 shrink-0 disabled:opacity-40 disabled:hover:bg-white"
         >
-          {sending ? <Loader2 className="h-5 w-5 animate-spin" /> : "Répondre"}
-          <Send className="h-4 w-4 ml-3" />
+          {sending ? (
+            <Loader2 className="h-4 w-4 animate-spin text-slate-950" />
+          ) : (
+            <>
+              <span>Répondre</span>
+              <Send className="h-3.5 w-3.5" />
+            </>
+          )}
         </Button>
       </form>
     </div>

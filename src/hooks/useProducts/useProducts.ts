@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { getProducts } from '@/lib/actions/product.actions'
+import { getProducts } from '@/lib/actions/product'
 import { ProductWithImages } from '@/types'
 
 export function useProducts() {

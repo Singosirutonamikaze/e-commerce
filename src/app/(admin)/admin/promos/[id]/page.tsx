@@ -5,8 +5,10 @@ import { PromoForm } from "@/components/admin/PromoForm/PromoForm"
 import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
 
-export default async function EditPromoPage({ params }: { params: { id: string } }) {
-  const { id } = await params
+export default async function EditPromoPage({
+  params,
+}: Readonly<{ params: Promise<{ id: string }> }>) {
+  const { id } = await params;
   
   const promo = await prisma.promo.findUnique({
     where: { id }

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { validatePromoCode } from '@/lib/actions/promo.actions'
+import { validatePromoCode } from '@/lib/actions/promo'
 import type { Promo } from '@prisma/client'
 
 export function usePromo() {
@@ -9,12 +9,22 @@ export function usePromo() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const validateCode = async (code: string, cartTotal: number) => {
+  const validateCode = async (code: string, cartTotal?: number) => {
     try {
       setLoading(true)
       const result = await validatePromoCode(code)
       
       if (result.success && result.promo) {
+        if (
+          cartTotal !== undefined &&
+          result.promo.montantMinimum &&
+          cartTotal < Number(result.promo.montantMinimum)
+        ) {
+          setError(`Montant minimum d'achat non atteint (${result.promo.montantMinimum} FCFA)`)
+          setAppliedPromo(null)
+          return null
+        }
+
         setAppliedPromo(result.promo)
         setError(null)
         return result.promo

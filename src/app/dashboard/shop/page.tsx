@@ -1,4 +1,4 @@
-import { getCategories } from "@/lib/actions/category.actions";
+import { getCategories } from "@/lib/actions/category";
 import { ShopTable } from "@/components/dashboard/ShopTable/ShopTable";
 
 export default async function DashboardShopPage() {
@@ -6,25 +6,26 @@ export default async function DashboardShopPage() {
 
   return (
     <section className="space-y-6">
-      <div className="flex flex-col gap-2">
-        <span className="text-xs font-semibold tracking-[0.2em] text-neutral-400">
-          Dashboard / Univers
-        </span>
-        <h2 className="text-2xl md:text-3xl font-bold text-black">
+      <div className="flex flex-col gap-1 border-b border-slate-800/80 pb-6">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="text-xs font-semibold text-slate-400">
+            Univers
+          </span>
+        </div>
+        <h1 className="text-2xl md:text-3xl font-serif text-white tracking-tight">
           Exploration des univers
-        </h2>
-        <p className="text-sm text-neutral-600">
-          Tableau des catégories et univers de notre boutique. Cliquez pour
-          explorez ou éditer.
+        </h1>
+        <p className="text-xs md:text-sm text-slate-400 mt-1">
+          Accédez à l&apos;ensemble des collections et catégories de la boutique.
         </p>
       </div>
 
       {categories.length > 0 ? (
         <ShopTable categories={categories} />
       ) : (
-        <div className="rounded-sm border border-dashed border-neutral-300 bg-white p-8 text-center">
-          <p className="text-sm font-semibold tracking-wide text-neutral-400">
-            Aucune catégorie disponible.
+        <div className="border border-slate-800/80 bg-slate-950/60 backdrop-blur-md p-8 text-center">
+          <p className="text-xs font-medium text-slate-400">
+            Aucune catégorie disponible actuellement.
           </p>
         </div>
       )}

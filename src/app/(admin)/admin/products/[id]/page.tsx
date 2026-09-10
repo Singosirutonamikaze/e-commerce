@@ -4,9 +4,11 @@ import { ProductForm } from "@/components/admin/ProductForm/ProductForm"
 import { ChevronLeft, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
-import { getProduct } from '@/lib/actions/product.actions'
+import { getProduct } from '@/lib/actions/product'
 
-export default async function EditProductPage({ params }: { params: { id: string } }) {
+export default async function EditProductPage({
+  params,
+}: Readonly<{ params: Promise<{ id: string }> }>) {
   const { id } = await params;
 
   const [product, categories] = await Promise.all([

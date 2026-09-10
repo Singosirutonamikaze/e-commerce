@@ -1,16 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useMemo } from "react";
-import { usePathname } from "next/navigation";
-import { Search, Heart, ShoppingBag, User } from "lucide-react";
+import { Search, Heart, ShoppingBag } from "lucide-react";
 import { ROUTES } from "@/lib/utils/constants/routes";
 import { Button } from "@/components/ui/Button";
-import { useCartStore } from "@/store/cart.store";
-import { useUIStore } from "@/store/ui.store";
+import { useCartStore, useUIStore } from "@/store";
 
 export function DashboardHeader() {
-  const pathname = usePathname();
   const items = useCartStore((state) => state.items);
   const openCartDrawer = useUIStore((state) => state.openCartDrawer);
 
@@ -20,27 +18,30 @@ export function DashboardHeader() {
   );
 
   return (
-    <header className="sticky top-0 z-30 mb-10 border-b border-neutral-200 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-5">
-          <Link
-            href={ROUTES.DASHBOARD.ROOT}
-            className="flex h-9 w-9 items-center justify-center rounded-sm bg-black text-lg font-bold text-white"
-          >
-            V
-          </Link>
+    <header className="sticky top-0 z-30 mb-4 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md">
+      <div className="mx-auto flex h-14 max-w-full items-center justify-between px-6 lg:px-8">
+        <Link href={ROUTES.HOME} className="flex items-center group">
+          <div className="flex items-center gap-2 transition-transform hover:scale-105">
+            <Image
+              src="/favicon.ico"
+              alt="Velure Logo"
+              width={22}
+              height={22}
+              priority
+              className="h-5.5 w-5.5 object-contain"
+            />
+            <span className="font-serif text-base font-bold tracking-wider text-white">
+              VELURE
+            </span>
+          </div>
+        </Link>
 
-          <p className="hidden text-xs font-semibold tracking-[0.2em] text-neutral-500 sm:block text-style-font text-style-font-static">
-            Espace dashboard
-          </p>
-        </div>
-
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-3">
           <Button
             type="button"
             variant="ghost"
             size="icon"
-            className="h-9 w-9 rounded-sm"
+            className="h-8 w-8 rounded-none hover:bg-slate-900 text-slate-400 hover:text-white"
             aria-label="Recherche dashboard"
             title="Recherche dashboard"
           >
@@ -52,13 +53,11 @@ export function DashboardHeader() {
               type="button"
               variant="ghost"
               size="icon"
-              className="h-9 w-9 rounded-sm"
-              aria-label="Liste de souhaits"
-              title="Liste de souhaits"
+              className="h-8 w-8 rounded-none hover:bg-slate-900 text-slate-400 hover:text-white"
+              aria-label="Favoris"
+              title="Favoris"
             >
-              <Heart
-                className={`h-4 w-4 ${pathname === ROUTES.DASHBOARD.WISHLIST ? "text-black" : "text-neutral-500"}`}
-              />
+              <Heart className="h-4 w-4" />
             </Button>
           </Link>
 
@@ -66,30 +65,18 @@ export function DashboardHeader() {
             type="button"
             variant="ghost"
             size="icon"
-            className="relative h-9 w-9 rounded-sm"
-            aria-label="Ouvrir le panier"
-            title="Ouvrir le panier"
             onClick={openCartDrawer}
+            className="relative h-8 w-8 rounded-none hover:bg-slate-900 text-slate-400 hover:text-white"
+            aria-label="Panier"
+            title="Panier"
           >
             <ShoppingBag className="h-4 w-4" />
             {totalItems > 0 && (
-              <span className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-sm bg-black px-1 text-[9px] font-bold text-white">
+              <span className="absolute top-0.5 right-0.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-white text-[9px] font-bold text-slate-950">
                 {totalItems}
               </span>
             )}
           </Button>
-
-          <Link href={ROUTES.DASHBOARD.PROFILE}>
-            <Button
-              type="button"
-              variant="default"
-              size="sm"
-              className="h-9 rounded-sm px-4 text-xs font-semibold"
-            >
-              <User className="mr-2 h-4 w-4" />
-              Profil
-            </Button>
-          </Link>
         </div>
       </div>
     </header>

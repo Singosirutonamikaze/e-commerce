@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { getOrders } from '@/lib/actions/order.actions'
+import { getOrders } from '@/lib/actions/order'
 import type { Order, OrderItem } from '@prisma/client'
 
 export type OrderWithItems = Order & {
@@ -19,7 +19,7 @@ export function useOrders() {
     try {
       setLoading(true)
       const data = await getOrders()
-      // @ts-ignore - Prisma return type handling
+      // @ts-expect-error - Prisma return type handling
       setOrders(data)
       setError(null)
     } catch (err) {

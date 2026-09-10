@@ -6,11 +6,13 @@ import { MapPin, Package, CreditCard, ChevronLeft, User, Phone, Mail } from 'luc
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
-import { updateOrderStatus } from '@/lib/actions/order.actions';
+import { updateOrderStatus } from '@/lib/actions/order';
 import { OrderStatus } from '@/types';
 import { ROUTES } from '@/lib/utils/constants/routes';
 
-export default async function AdminOrderDetailPage({ params }: { params: { id: string } }) {
+export default async function AdminOrderDetailPage({
+  params,
+}: Readonly<{ params: Promise<{ id: string }> }>) {
   const { id } = await params;
   
   const order = await prisma.order.findUnique({

@@ -1,22 +1,12 @@
 import type { Metadata } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
 import "@/styles/globals.css"
 import { cn } from "@/lib/utils/cn"
 import { GlobalUI } from "@/components/ui/GlobalUI"
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-})
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-})
-
 export const metadata: Metadata = {
-  title: "V | Boutique en ligne moderne",
-  description: "Boutique de luxe au design architectural.",
+  title: "Velure | Boutique en ligne de luxe",
+  icons: "/favicon.ico",
+  description: "Boutique de luxe au design architectural et discret.",
   keywords: ["e-commerce", "mode", "chaussures", "chemises", "accessoires", "luxe"],
 }
 
@@ -29,13 +19,11 @@ export default function RootLayout({
     <html lang="fr" suppressHydrationWarning>
       <body
         className={cn(
-          "min-h-screen bg-bg font-sans antialiased",
-          geistSans.variable,
-          geistMono.variable
+          "min-h-screen bg-slate-950 font-sans text-slate-100 antialiased selection:bg-slate-800 selection:text-slate-100 flex flex-col"
         )}
       >
-        {children}
         <GlobalUI />
+        {children}
       </body>
     </html>
   )

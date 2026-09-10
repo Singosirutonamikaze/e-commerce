@@ -3,9 +3,9 @@ import prisma from "@/lib/prisma/client";
 import { CategoriesTable } from "@/components/admin/CategoriesTable/CategoriesTable";
 
 interface CategoriesPageProps {
-  searchParams?: {
+  searchParams?: Promise<{
     page?: string;
-  };
+  }>;
 }
 
 const PAGE_SIZE = 8;
@@ -13,7 +13,8 @@ const PAGE_SIZE = 8;
 export default async function AdminCategoriesPage({
   searchParams,
 }: Readonly<CategoriesPageProps>) {
-  const currentPage = Math.max(1, Number(searchParams?.page || "1"));
+  const resolvedSearchParams = await searchParams;
+  const currentPage = Math.max(1, Number(resolvedSearchParams?.page || "1"));
 
   const [totalCount, categories] = await Promise.all([
     prisma.category.count(),

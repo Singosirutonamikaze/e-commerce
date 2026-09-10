@@ -1,13 +1,15 @@
 import React from 'react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { getCustomer } from '@/lib/actions/user.actions'
+import { getCustomer } from '@/lib/actions/user'
 import { formatDate, formatPrice } from '@/lib/utils/format'
-import { User, Mail, Phone, Calendar, MapPin, Package, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Mail, Phone, Calendar, MapPin, Package, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Badge } from '@/components/ui/Badge'
 
-export default async function CustomerDetailsPage({ params }: { params: { id: string } }) {
-  const { id } = await params
+export default async function CustomerDetailsPage({
+  params,
+}: Readonly<{ params: Promise<{ id: string }> }>) {
+  const { id } = await params;
   const customer = await getCustomer(id)
   
   if (!customer) {
@@ -56,7 +58,7 @@ export default async function CustomerDetailsPage({ params }: { params: { id: st
 
           <section className="bg-surface rounded-sm p-6 border border-border shadow-sm flex flex-col gap-4">
             <h3 className="text-sm font-bold uppercase tracking-widest text-text-primary flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-accent" /> Carnet d'adresses
+              <MapPin className="h-4 w-4 text-accent" /> Carnet d&apos;adresses
             </h3>
             {customer.addresses && customer.addresses.length > 0 ? (
                <div className="flex flex-col gap-3">

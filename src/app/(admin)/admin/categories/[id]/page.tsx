@@ -5,8 +5,10 @@ import { CategoryForm } from "@/components/admin/CategoryForm/CategoryForm"
 import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
 
-export default async function EditCategoryPage({ params }: { params: { id: string } }) {
-  const { id } = await params
+export default async function EditCategoryPage({
+  params,
+}: Readonly<{ params: Promise<{ id: string }> }>) {
+  const { id } = await params;
   
   const [category, categories] = await Promise.all([
     prisma.category.findUnique({

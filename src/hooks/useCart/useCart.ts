@@ -1,7 +1,6 @@
 'use client';
 
-import { useCartStore, CartItem } from '@/store/cart.store';
-import { useUIStore } from '@/store/ui.store';
+import { useCartStore, CartItem,useUIStore } from '@/store';
 
 export function useCart() {
   const { 

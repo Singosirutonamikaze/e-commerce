@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { Users, ChevronRight, Mail, Calendar, UserCheck } from "lucide-react";
-import { getCustomers } from "@/lib/actions/user.actions";
+import { getCustomers } from "@/lib/actions/user";
 import { formatDate } from "@/lib/utils/format";
 import { ROUTES } from "@/lib/utils/constants/routes";
 import { Card } from "@/components/ui/Card";

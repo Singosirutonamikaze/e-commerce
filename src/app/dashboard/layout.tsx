@@ -21,15 +21,15 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="flex min-h-screen bg-neutral-50">
+    <div className="flex min-h-screen bg-slate-950 text-slate-100">
       <DashboardSidebar />
 
-      <main className="flex-1">
+      <main className="flex-1 min-w-0 flex flex-col">
         <DashboardHeader />
         <CartDrawer />
 
-        <div className="mx-auto w-full max-w-7xl px-4 pb-8 md:px-6 lg:px-8">
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="mx-auto w-full max-w-full px-4 pb-12 md:px-8 flex-1">
+          <div>
             {children}
           </div>
         </div>

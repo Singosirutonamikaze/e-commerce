@@ -1,0 +1,32 @@
+# =============================================================================
+# Development Dockerfile with Live Reloading (Next.js + Prisma + pnpm)
+# =============================================================================
+
+FROM node:20-alpine
+
+RUN apk add --no-cache libc6-compat openssl && \
+    corepack enable && \
+    corepack prepare pnpm@latest --activate
+
+WORKDIR /app
+
+# Copy dependency specifications
+COPY --chown=node:node package.json pnpm-lock.yaml ./
+COPY --chown=node:node prisma ./prisma/
+
+# Install dependencies and generate Prisma client
+RUN pnpm install && \
+    npx prisma generate && \
+    chown -R node:node /app
+
+# Switch to non-root user
+USER node
+
+# Expose Next.js default port
+EXPOSE 3000
+
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
+ENV NEXT_TELEMETRY_DISABLED=1
+
+CMD ["pnpm", "dev"]

@@ -6,10 +6,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { promoSchema, PromoInput } from "@/lib/utils/validators";
-import { createPromoCode, updatePromoCode } from "@/lib/actions/promo.actions";
+import { createPromoCode, updatePromoCode } from "@/lib/actions/promo";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { useUIStore } from "@/store/ui.store";
+import { useUIStore } from "@/store/ui/ui.store";
 import { Save, Ticket, Calendar, Loader2 } from "lucide-react";
 import { Promo } from "@prisma/client";
 import { ROUTES } from "@/lib/utils/constants/routes";
@@ -149,7 +149,7 @@ export function PromoForm({ initialData }: Readonly<PromoFormProps>) {
                 htmlFor="promo-minimum"
                 className="text-xs font-bold uppercase tracking-widest text-text-hint px-1"
               >
-                Seuil minimal d'achat (FCFA)
+                Seuil minimal d&apos;achat (FCFA)
               </label>
               <Input
                 id="promo-minimum"
@@ -175,7 +175,7 @@ export function PromoForm({ initialData }: Readonly<PromoFormProps>) {
                 htmlFor="promo-expiration"
                 className="text-xs font-bold uppercase tracking-widest text-text-hint px-1"
               >
-                Date d'expiration
+                Date d&apos;expiration
               </label>
               <Input
                 id="promo-expiration"
@@ -191,7 +191,7 @@ export function PromoForm({ initialData }: Readonly<PromoFormProps>) {
                 htmlFor="promo-limit"
                 className="text-xs font-bold uppercase tracking-widest text-text-hint px-1"
               >
-                Limit d'utilisation (Optionnel)
+                Limit d&apos;utilisation (Optionnel)
               </label>
               <Input
                 id="promo-limit"

@@ -80,45 +80,45 @@ export function CategoriesTable({
 
   return (
     <div className="flex flex-col gap-10">
-      <header className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
+      <header className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
-          <h1 className="mb-2 text-3xl font-bold uppercase tracking-tighter text-text-primary">
-            Gestion des <span className="italic text-accent">Categories</span>
+          <h1 className="mb-1 text-2xl md:text-3xl font-bold tracking-tight text-neutral-900">
+            Gestion des <span className="text-sky-600">Catégories</span>
           </h1>
-          <p className="text-sm font-medium text-text-muted">
-            Table de gestion avec pagination et actions de contrôle.
+          <p className="text-xs md:text-sm text-neutral-500">
+            Gérez vos catégories de produits et organisez votre boutique.
           </p>
         </div>
         <Button
           onClick={() => setShowAddModal(true)}
-          className="h-14 rounded-sm px-10 font-bold uppercase tracking-widest shadow-xl shadow-accent/20 transition-all hover:scale-105 active:scale-95"
+          className="h-10 rounded-lg px-5 text-xs font-semibold bg-sky-600 text-white hover:bg-sky-700 shadow-sm transition-all"
         >
-          <Plus className="mr-3 h-5 w-5" />
-          Nouvelle Categorie
+          <Plus className="mr-2 h-4 w-4" />
+          Nouvelle Catégorie
         </Button>
       </header>
 
-      <div className="overflow-hidden rounded-sm border border-border bg-white shadow-sm">
-        <div className="border-b border-border bg-surface-alt/40 px-8 py-6">
-          <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-text-hint">
-            {totalCount} categories indexees
+      <div className="overflow-hidden rounded-lg border border-neutral-200/80 bg-white shadow-sm">
+        <div className="border-b border-neutral-100 bg-neutral-50/50 px-6 py-4">
+          <p className="text-xs font-medium text-neutral-500">
+            {totalCount} catégories enregistrées
           </p>
         </div>
 
         <div className="overflow-x-auto">
           <table className="min-w-full text-left">
             <thead>
-              <tr className="border-b border-border bg-neutral-50">
-                <th className="px-8 py-4 text-[9px] font-bold uppercase tracking-[0.3em] text-text-hint">
-                  Categorie
+              <tr className="border-b border-neutral-100 bg-neutral-50/80">
+                <th className="px-6 py-3.5 text-xs font-semibold text-neutral-600">
+                  Catégorie
                 </th>
-                <th className="px-8 py-4 text-[9px] font-bold uppercase tracking-[0.3em] text-text-hint">
-                  Slug
+                <th className="px-6 py-3.5 text-xs font-semibold text-neutral-600">
+                  Identifiant (Slug)
                 </th>
-                <th className="px-8 py-4 text-center text-[9px] font-bold uppercase tracking-[0.3em] text-text-hint">
+                <th className="px-6 py-3.5 text-center text-xs font-semibold text-neutral-600">
                   Produits
                 </th>
-                <th className="px-8 py-4 text-right text-[9px] font-bold uppercase tracking-[0.3em] text-text-hint">
+                <th className="px-6 py-3.5 text-right text-xs font-semibold text-neutral-600">
                   Actions
                 </th>
               </tr>
@@ -127,19 +127,19 @@ export function CategoriesTable({
               {categories.map((category) => (
                 <tr
                   key={category.id}
-                  className="border-b border-border last:border-0 hover:bg-surface-alt/20"
+                  className="border-b border-neutral-100 last:border-0 hover:bg-neutral-50/60 transition-colors"
                 >
-                  <td className="px-8 py-5">
+                  <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-accent-light text-accent">
-                        <Layers className="h-5 w-5" />
+                      <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-sky-50 text-sky-600">
+                        <Layers className="h-4 w-4" />
                       </div>
-                      <span className="text-sm font-bold uppercase tracking-tight text-text-primary">
+                      <span className="text-sm font-semibold text-neutral-900">
                         {category.nom}
                       </span>
                     </div>
                   </td>
-                  <td className="px-8 py-5 text-xs font-bold uppercase tracking-widest text-text-hint">
+                  <td className="px-6 py-4 text-xs font-normal text-neutral-500">
                     {category.slug}
                   </td>
                   <td className="px-8 py-5 text-center text-sm font-bold text-text-primary">

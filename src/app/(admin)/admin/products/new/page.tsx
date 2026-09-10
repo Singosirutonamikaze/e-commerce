@@ -20,7 +20,7 @@ export default async function NewProductPage() {
           Ajouter un <span className="text-accent italic">Nouveau Produit</span>
         </h1>
         <p className="text-sm font-medium text-text-muted">
-          Remplissez les informations ci-dessous pour publier une nouvelle pièce d'exception dans votre catalogue.
+          Remplissez les informations ci-dessous pour publier une nouvelle pièce d&apos;exception dans votre catalogue.
         </p>
       </header>
 

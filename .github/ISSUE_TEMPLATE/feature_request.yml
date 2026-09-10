@@ -1,0 +1,33 @@
+name: "✨ Nouvelle Fonctionnalité (Feature Request)"
+description: "Proposer une nouvelle fonctionnalité pour la plateforme Velure"
+title: "feat: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Merci de proposer une amélioration pour le projet Velure !
+  - type: textarea
+    id: description
+    attributes:
+      label: Description de la fonctionnalité
+      description: Expliquez clairement ce que cette fonctionnalité apporte.
+      placeholder: "En tant qu'utilisateur, je souhaite..."
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Périmètre & Spécifications
+      description: Détaillez les étapes d'implémentation et les composants concernés.
+      placeholder: "- [ ] Intégration composant UI\n- [ ] Server Action / API route\n- [ ] Schéma Prisma"
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Critères d'acceptation
+      description: Quelles sont les conditions pour considérer la tâche comme terminée ?
+      placeholder: "- Testé et fonctionnel\n- Typage TypeScript strict validé"
+    validations:
+      required: true

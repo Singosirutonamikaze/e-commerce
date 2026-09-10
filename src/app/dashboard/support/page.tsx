@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { ROUTES } from "@/lib/utils/constants/routes";
 import prisma from "@/lib/prisma/client";
-import { LifeBuoy, MessageSquare, ChevronRight, Clock } from "lucide-react";
+import { MessageSquare, ChevronRight, Clock, Plus } from "lucide-react";
 import Link from "next/link";
 import { formatDate } from "@/lib/utils/format";
 import { Button } from "@/components/ui/Button";
@@ -35,19 +35,25 @@ export default async function SupportPage() {
   });
 
   return (
-    <div className="flex flex-col gap-8">
-      <header className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+    <div className="flex flex-col gap-6">
+      <header className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-800/80 pb-6">
         <div>
-          <h1 className="text-xl md:text-2xl font-bold tracking-tight text-text-primary mb-2">
-            Assistance technique
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-xs font-semibold text-slate-400">
+              Assistance
+            </span>
+          </div>
+          <h1 className="text-2xl md:text-3xl font-serif text-white tracking-tight">
+            Support et tickets
           </h1>
-          <p className="text-[10px] font-bold text-text-hint tracking-widest pl-4 border-l border-border">
-            Registre des requêtes et support client
+          <p className="text-xs md:text-sm text-slate-400 mt-1">
+            Échangez directement avec notre équipe pour toute question sur vos commandes.
           </p>
         </div>
 
         <Link href={ROUTES.CONTACT}>
-          <Button className="rounded-sm h-12 px-8 font-bold tracking-widest shadow-lg shadow-accent/10 transition-transform hover:scale-105 active:scale-95">
+          <Button className="h-8 px-4 font-semibold text-xs bg-white text-slate-950 hover:bg-slate-200 flex items-center gap-1.5">
+            <Plus className="h-3.5 w-3.5" />
             Nouveau ticket
           </Button>
         </Link>
@@ -58,37 +64,46 @@ export default async function SupportPage() {
           {conversations.map((conversation) => (
             <Link
               key={conversation.id}
-              href={ROUTES.DASHBOARD.SUPPORT_DETAIL(conversation.id)}
-              className="group flex items-center justify-between rounded-sm border border-border p-4 bg-surface transition-all hover:border-text-primary hover:bg-surface-alt"
+              href={`/dashboard/support/${conversation.id}`}
+              className="border border-slate-800/80 bg-slate-950/60 backdrop-blur-md p-5 flex items-center justify-between gap-4 hover:border-slate-700 hover:bg-slate-900/40 transition-all group"
             >
-              <div className="flex items-center gap-4">
-                <div className="relative h-12 w-12 flex items-center justify-center rounded-sm bg-surface-alt text-accent">
-                  <MessageSquare className="h-5 w-5" />
+              <div className="flex items-center gap-3.5">
+                <div className="h-9 w-9 bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-300">
+                  <MessageSquare className="h-4 w-4" />
                 </div>
-                <div>
-                  <div className="font-bold text-text-primary">Ticket</div>
-                  <p className="text-sm text-text-muted">
-                    {conversation.messages[0]?.contenu.substring(0, 40)}...
-                  </p>
-                  <div className="mt-1 flex items-center gap-2 text-xs text-text-hint">
+                <div className="flex flex-col">
+                  <h3 className="text-sm font-semibold text-white group-hover:text-slate-200">
+                    {conversation.messages[0]?.contenu || "Demande d'assistance"}
+                  </h3>
+                  <span className="text-xs text-slate-400 flex items-center gap-1 mt-0.5">
                     <Clock className="h-3 w-3" />
-                    {formatDate(new Date(conversation.updatedAt))}
-                  </div>
+                    Mis à jour le {formatDate(new Date(conversation.updatedAt))}
+                  </span>
                 </div>
               </div>
-              <ChevronRight className="h-5 w-5 text-text-muted transition-transform group-hover:translate-x-1" />
+
+              <ChevronRight className="h-4 w-4 text-slate-400 group-hover:text-white group-hover:translate-x-1 transition-transform" />
             </Link>
           ))}
         </div>
       ) : (
-        <div className="rounded-sm border-2 border-dashed border-border bg-surface p-12 text-center">
-          <LifeBuoy className="mx-auto h-12 w-12 text-text-hint/30 mb-4" />
-          <h3 className="text-lg font-bold text-text-primary mb-2">
-            Aucune conversation
-          </h3>
-          <p className="text-text-muted mb-6">
-            Vous n&apos;avez pas encore contacté le support.
-          </p>
+        <div className="flex flex-col items-center justify-center py-20 text-center bg-slate-950/60 backdrop-blur-md border border-slate-800/80 p-8 gap-5">
+          <div className="h-14 w-14 bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400">
+            <MessageSquare className="h-7 w-7 opacity-50" />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-white mb-1">
+              Aucun ticket ouvert
+            </h3>
+            <p className="text-slate-400 text-xs sm:text-sm max-w-sm mb-6 leading-relaxed">
+              Vous n&apos;avez aucune conversation en cours avec notre service client.
+            </p>
+            <Link href={ROUTES.CONTACT}>
+              <Button className="h-9 px-6 text-xs font-semibold bg-white text-slate-950 hover:bg-slate-200">
+                Ouvrir un ticket
+              </Button>
+            </Link>
+          </div>
         </div>
       )}
     </div>

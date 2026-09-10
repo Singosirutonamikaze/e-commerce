@@ -9,41 +9,49 @@ interface ChatBubbleProps {
     id: string;
     contenu: string;
     createdAt: Date | string;
-    expediteur: {
+    expediteur?: {
       role: string;
       prenom?: string;
     };
   };
+  isMe?: boolean;
 }
 
-export function ChatBubble({ message }: Readonly<ChatBubbleProps>) {
-  const isMe = message.expediteur.role === "ADMIN"; // Simplified logic for admin chat view
+export function ChatBubble({ message, isMe: isMeProp }: Readonly<ChatBubbleProps>) {
+  const isMe = isMeProp ?? (message.expediteur?.role === "ADMIN");
+
+  const formattedTime = new Date(message.createdAt).toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
   return (
     <div
       className={cn(
-        "flex flex-col max-w-[75%] md:max-w-[70%]",
-        isMe ? "ml-auto items-end" : "mr-auto items-start",
+        "flex flex-col max-w-[82%] sm:max-w-[72%]",
+        isMe ? "ml-auto items-end" : "mr-auto items-start"
       )}
     >
+      {!isMe && message.expediteur?.prenom && (
+        <span className="text-[11px] font-medium text-slate-400 mb-1 px-1">
+          {message.expediteur.prenom}
+        </span>
+      )}
       <div
         className={cn(
-          "px-5 py-3 rounded-sm text-sm font-bold shadow-sm transition-all",
+          "px-4 py-2.5 text-sm leading-relaxed transition-all shadow-sm",
           isMe
-            ? "bg-accent text-white rounded-sm"
-            : "bg-white text-text-primary border border-border rounded-sm hover:bg-surface-alt/10",
+            ? "bg-white text-slate-950 font-normal rounded-lg rounded-br-xs"
+            : "bg-slate-900 border border-slate-800/90 text-slate-100 font-normal rounded-lg rounded-bl-xs"
         )}
       >
         {message.contenu}
       </div>
-      <div className="flex items-center gap-1.5 mt-2 px-1">
-        <span className="text-[9px] font-bold uppercase text-text-hint tracking-widest">
-          {new Date(message.createdAt).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
+      <div className="flex items-center gap-1.5 mt-1 px-1">
+        <span className="text-[10px] text-slate-500 font-normal">
+          {formattedTime}
         </span>
-        {isMe && <CheckCheck className="h-3 w-3 text-accent" />}
+        {isMe && <CheckCheck className="h-3 w-3 text-slate-400" />}
       </div>
     </div>
   );

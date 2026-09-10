@@ -6,10 +6,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { categorySchema, CategoryInput } from "@/lib/utils/validators";
-import { createCategory, updateCategory } from "@/lib/actions/category.actions";
+import { createCategory, updateCategory } from "@/lib/actions/category";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { useUIStore } from "@/store/ui.store";
+import { useUIStore } from "@/store/ui/ui.store";
 import { Save, Info, Layers, Loader2 } from "lucide-react";
 import { Category } from "@prisma/client";
 import { ROUTES } from "@/lib/utils/constants/routes";
@@ -101,7 +101,7 @@ export function CategoryForm({
                 htmlFor="category-image-url"
                 className="text-xs font-bold uppercase tracking-widest text-text-hint px-1"
               >
-                URL de l'image (Optionnel)
+                URL de l&apos;image (Optionnel)
               </label>
               <Input
                 id="category-image-url"
@@ -126,7 +126,7 @@ export function CategoryForm({
                 htmlFor="category-order"
                 className="text-xs font-bold uppercase tracking-widest text-text-hint px-1"
               >
-                Ordre d'affichage
+                Ordre d&apos;affichage
               </label>
               <Input
                 id="category-order"

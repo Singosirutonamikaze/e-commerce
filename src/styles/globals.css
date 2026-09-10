@@ -1,45 +1,58 @@
 @import "tailwindcss";
 
 :root {
-  --color-bg: #FFFFFF;
+  --color-bg: #FAFAF9;
   --color-surface: #FFFFFF;
-  --color-surface-alt: #FAFAFA;
-  --color-border: #E5E5E5;
+  --color-surface-alt: #F5F5F4;
+  --color-border: #E7E5E4;
 
-  --color-text-primary: #000000;
-  --color-text-muted: #666666;
-  --color-text-hint: #999999;
+  --color-text-primary: #1C1917;
+  --color-text-muted: #57534E;
+  --color-text-hint: #78716C;
 
-  --color-accent: #000000;
-  --color-accent-blue: #000000;
-  --color-accent-light: #F5F5F5;
+  --color-accent: #0F284E;
+  --color-accent-hover: #0A1C36;
+  --color-accent-blue: #1E3A8A;
+  --color-accent-light: #F0F4F8;
 
-  --color-success: #000000;
+  --color-success: #16A34A;
   --color-success-bg: #F0FDF4;
-  --color-warning: #000000;
+  --color-warning: #D97706;
   --color-warning-bg: #FFFBEB;
-  --color-danger: #D00000;
+  --color-danger: #DC2626;
   --color-danger-bg: #FEF2F2;
 
   --font-sans: "Inter", system-ui, sans-serif;
   --font-serif: "Inter", serif;
 
-  --radius-sm: 0.125rem;
-  --radius-md: 0.125rem;
-  --radius-lg: 0.125rem;
-  --radius-xl: 0.125rem;
-  --radius-2xl: 0.125rem;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 0.75rem;
 }
 
 @layer base {
+  html,
+  body,
+  * {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+
+  *::-webkit-scrollbar {
+    display: none !important;
+    width: 0px !important;
+    height: 0px !important;
+    background: transparent !important;
+  }
+
   body {
-    background-color: var(--color-bg);
+    background-color: #020617;
     color: var(--color-text-primary);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
   }
 
   h1 {
@@ -132,4 +145,25 @@
 ::-webkit-scrollbar {
   display: none;
   width: 0px;
+}
+@keyframes scannerSweep {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.scanner-beam {
+  animation: scannerSweep 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.scanner-glow {
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.25), inset 0 0 8px rgba(34, 197, 94, 0.15);
 }

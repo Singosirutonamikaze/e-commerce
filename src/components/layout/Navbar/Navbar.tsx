@@ -1,14 +1,15 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { Button } from "@/components/ui/Button";
+import { ScannerNavLink } from "@/components/ui/ScannerNavLink";
+import { createClient } from "@/lib/supabase/client";
+import { ROUTES } from "@/lib/utils/constants/routes";
+import { User as SupabaseUser } from "@supabase/supabase-js";
+import { Heart, Menu, Search, ShoppingBag, User, X } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ShoppingBag, User, Search, Menu, X, Heart } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { cn } from "@/lib/utils/cn";
-import { ROUTES } from "@/lib/utils/constants/routes";
-import { createClient } from "@/lib/supabase/client";
-import { User as SupabaseUser } from "@supabase/supabase-js";
+import { useEffect, useState } from "react";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -60,44 +61,43 @@ export function Navbar() {
 
   return (
     <nav
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled || !pathname.startsWith("/") || pathname !== "/"
-          ? "bg-white border-b border-neutral-100 py-3"
-          : "bg-transparent py-6",
-      )}
+      className={
+        isScrolled || pathname !== "/"
+          ? "fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-slate-950/90 backdrop-blur-md border-b border-slate-800/80 py-3"
+          : "fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent py-5"
+      }
     >
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <div className="hidden md:flex items-center gap-8">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between">
+        <div className="hidden md:flex items-center gap-3">
           {navLinks.map((link) => (
-            <Link
+            <ScannerNavLink
               key={link.name}
               href={link.href}
-              className={cn(
-                "text-[10px] font-bold tracking-[0.15em] transition-all hover:text-black",
-                pathname === link.href
-                  ? "text-black underline underline-offset-4"
-                  : "text-neutral-500",
-              )}
-            >
-              {link.name}
-            </Link>
+              label={link.name}
+            />
           ))}
         </div>
 
-        {/* Center: Minimalist Logo Only */}
-        <Link href={ROUTES.HOME} className="flex items-center justify-center">
-          <div className="h-10 w-10 bg-black rounded-sm flex items-center justify-center text-white font-bold text-xl transition-transform hover:scale-105">
-            V
+        <Link href={ROUTES.HOME} className="flex items-center justify-center group">
+          <div className="flex items-center gap-2 transition-transform hover:scale-105">
+            <Image
+              src="/favicon.ico"
+              alt="Velure Logo"
+              width={24}
+              height={24}
+              className="h-6 w-6 object-contain"
+            />
+            <span className="font-serif text-lg font-bold tracking-wider text-white">
+              VELURE
+            </span>
           </div>
         </Link>
 
-        {/* Right: Actions */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1.5">
           <Button
             variant="ghost"
             size="icon"
-            className="hidden sm:flex hover:bg-neutral-50 rounded-sm"
+            className="hidden sm:flex hover:bg-slate-900 text-slate-300 hover:text-white h-8 w-8 rounded-none"
           >
             <Search className="h-4 w-4" />
           </Button>
@@ -106,7 +106,7 @@ export function Navbar() {
             <Button
               variant="ghost"
               size="icon"
-              className="hidden sm:flex hover:bg-neutral-50 rounded-sm"
+              className="hidden sm:flex hover:bg-slate-900 text-slate-300 hover:text-white h-8 w-8 rounded-none"
             >
               <Heart className="h-4 w-4" />
             </Button>
@@ -116,84 +116,79 @@ export function Navbar() {
             <Button
               variant="ghost"
               size="icon"
-              className="relative hover:bg-neutral-50 rounded-sm"
+              className="relative hover:bg-slate-900 text-slate-300 hover:text-white h-8 w-8 rounded-none"
             >
               <ShoppingBag className="h-4 w-4" />
-              <span className="absolute top-1.5 right-1.5 h-3.5 w-3.5 bg-black text-[8px] font-bold text-white rounded-sm flex items-center justify-center border border-white">
+              <span className="absolute top-1 right-1 h-3.5 w-3.5 bg-white text-[9px] font-bold text-slate-950 rounded-full flex items-center justify-center">
                 0
               </span>
             </Button>
           </Link>
 
-          <div className="hidden md:block h-5 w-px bg-neutral-200 mx-2" />
+          <div className="hidden md:block h-3.5 w-px bg-slate-800 mx-2" />
 
           {user ? (
             <Link href={ROUTES.DASHBOARD.ROOT}>
               <Button
                 variant="default"
                 size="sm"
-                className="h-9 px-5 text-[9px] font-bold tracking-widest rounded-sm bg-black text-white hover:bg-neutral-900 transition-all flex items-center gap-2"
+                className="h-8 px-3 text-xs font-medium bg-white text-slate-950 hover:bg-slate-200 transition-all flex items-center gap-1.5 rounded-none"
               >
-                <User className="h-3.5 w-3.5" />
+                <User className="h-3 w-3" />
                 Tableau de bord
               </Button>
             </Link>
           ) : (
             <Link
-              href={ROUTES.AUTH.LOGIN}
-              className="hidden md:block text-style-font text-style-font-static"
+              href={`${ROUTES.AUTH.LOGIN}?redirect=${pathname}`}
+              className="hidden md:block"
             >
               <Button
                 size="sm"
-                className="h-9 px-6 bg-black text-white rounded-sm text-[9px] font-bold tracking-widest"
+                className="h-8 px-3.5 bg-white text-slate-950 text-xs font-medium hover:bg-slate-200 transition-all rounded-none"
               >
                 Connexion
               </Button>
             </Link>
           )}
 
-          {/* Mobile Menu Toggle */}
           <button
             title="Menu"
-            className="md:hidden h-10 w-10 flex items-center justify-center rounded-sm hover:bg-neutral-50"
+            className="md:hidden h-8 w-8 flex items-center justify-center hover:bg-slate-900 text-slate-300"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? (
-              <X className="h-5 w-5" />
+              <X className="h-4 w-4" />
             ) : (
-              <Menu className="h-5 w-5" />
+              <Menu className="h-4 w-4" />
             )}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu Overlay - Minimalist */}
       {isMobileMenuOpen && (
-        <div className="absolute top-full left-0 right-0 bg-white border-b border-neutral-100 p-10 md:hidden shadow-2xl animate-in fade-in slide-in-from-top-4 duration-300">
-          <div className="flex flex-col gap-8">
-            <div className="flex flex-col gap-5">
+        <div className="absolute top-full left-0 right-0 bg-slate-950 border-b border-slate-800 p-6 md:hidden">
+          <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-3">
               {navLinks.map((link) => (
-                <Link
+                <ScannerNavLink
                   key={link.name}
                   href={link.href}
-                  className="text-xl font-bold tracking-tight text-black hover:text-neutral-500 transition-colors text-style-font text-style-font-static"
+                  label={link.name}
                   onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {link.name}
-                </Link>
+                />
               ))}
             </div>
 
-            <div className="h-px w-full bg-neutral-100" />
+            <div className="h-px w-full bg-slate-800" />
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
               <Link
                 href={user ? ROUTES.DASHBOARD.ROOT : ROUTES.AUTH.LOGIN}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="text-style-font text-style-font-static"
               >
-                <Button className="w-full h-12 rounded-sm font-bold tracking-widest text-[10px] bg-black text-white">
-                  {user ? "Votre Dashboard" : "Accéder au Compte"}
+                <Button className="w-full h-9 font-medium text-xs bg-white text-slate-950 rounded-none">
+                  {user ? "Tableau de bord" : "Se connecter"}
                 </Button>
               </Link>
             </div>

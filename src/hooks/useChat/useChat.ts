@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import { getMessages, sendMessage } from '@/lib/actions/chat.actions';
+import { getMessages, sendMessage } from '@/lib/actions/chat';
 import { MessageWithSender } from '@/types/chat';
 
 export function useChat(conversationId: string) {

@@ -6,10 +6,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { productSchema, ProductInput } from "@/lib/utils/validators";
-import { createProduct, updateProduct } from "@/lib/actions/product.actions";
+import { createProduct, updateProduct } from "@/lib/actions/product";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { useUIStore } from "@/store/ui.store";
+import { useUIStore } from "@/store/ui/ui.store";
 import {
   Save,
   Plus,

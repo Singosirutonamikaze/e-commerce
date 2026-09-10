@@ -2,9 +2,10 @@ import React from 'react'
 import prisma from "@/lib/prisma/client"
 import { formatPrice, formatDate } from "@/lib/utils/format"
 import { Button } from '@/components/ui/Button'
-import { Plus, Ticket, Edit3, Trash2, Calendar, Users } from 'lucide-react'
+import { Plus, Ticket, Edit3, Trash2, Calendar } from 'lucide-react'
 import Link from 'next/link'
 import { Badge } from '@/components/ui/Badge'
+import { cn } from "@/lib/utils/cn"
 
 export default async function AdminPromosPage() {
   const promos = await prisma.promo.findMany({
@@ -65,14 +66,14 @@ export default async function AdminPromosPage() {
                           {promo.type === 'POURCENTAGE' ? `${Number(promo.reduction)}%` : formatPrice(Number(promo.reduction))}
                        </span>
                        <span className="text-[10px] font-bold text-text-hint uppercase tracking-widest mt-0.5">
-                          Dès {formatPrice(Number(promo.montantMinimum || 0))} d'achat
+                          Dès {formatPrice(Number(promo.montantMinimum || 0))} d&apos;achat
                        </span>
                     </div>
                   </td>
                   <td className="px-8 py-6 text-center">
                     <div className="flex flex-col items-center gap-1">
                        <span className={cn("text-xs font-bold", new Date() > promo.dateExpiration ? "text-danger" : "text-text-primary")}>
-                          Jusqu'au {formatDate(promo.dateExpiration)}
+                          Jusqu&apos;au {formatDate(promo.dateExpiration)}
                        </span>
                        <span className="text-[10px] text-text-hint font-medium uppercase tracking-widest flex items-center gap-1">
                           <Calendar className="h-3 w-3" />
@@ -109,5 +110,3 @@ export default async function AdminPromosPage() {
     </div>
   )
 }
-
-import { cn } from '@/lib/utils/cn'

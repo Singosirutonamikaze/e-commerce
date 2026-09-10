@@ -27,6 +27,7 @@ export const ROUTES = {
     CART: "/dashboard/cart",
     CATALOGUE: "/dashboard/catalogue",
     SHOP: "/dashboard/shop",
+    CATEGORY_DETAIL: (slug: string) => `/dashboard/categories/${slug}`,
     ADMIN: "/dashboard/admin",
     PRODUCTS: "/dashboard/produits",
     PRODUCT_DETAIL: (slug: string) => `/dashboard/products/${slug}`,

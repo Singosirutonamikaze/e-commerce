@@ -1,7 +1,6 @@
-import { Button } from '@/components/ui/Button'
-import { Search, Filter, ChevronRight, Activity } from 'lucide-react'
+import { Search, ChevronRight, Activity } from 'lucide-react'
 import { OrderList } from '@/components/admin/OrderList/OrderList'
-import { getOrders } from '@/lib/actions/order.actions'
+import { getOrders } from '@/lib/actions/order'
 import { Card } from '@/components/ui/Card'
 
 export default async function AdminOrdersPage() {

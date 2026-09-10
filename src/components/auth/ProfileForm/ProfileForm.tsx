@@ -1,12 +1,12 @@
 'use client'
 
 import React, { useState } from 'react'
-import { User, Mail, Phone, Camera, Save, Lock, ShieldCheck, ChevronRight } from 'lucide-react'
+import Image from 'next/image'
+import { User, Mail, Camera, Save, Lock, ShieldCheck } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
-import { Card } from '@/components/ui/Card'
-import { useUIStore } from '@/store/ui.store'
-import { updateProfile } from '@/lib/actions/user.actions'
+import { useUIStore } from '@/store/ui/ui.store'
+import { updateProfile } from '@/lib/actions/user'
 
 interface ProfileFormProps {
   initialData: {
@@ -43,7 +43,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
       } else {
         addToast({ title: 'Erreur', description: result.error || 'Une erreur est survenue', type: 'danger' })
       }
-    } catch (err) {
+    } catch {
       addToast({ title: 'Erreur', description: 'Erreur de connexion serveur', type: 'danger' })
     } finally {
       setLoading(false)
@@ -56,120 +56,135 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
   })
 
   return (
-    <form onSubmit={handleSave} className="flex flex-col gap-10">
-      {/* Avatar Section */}
-      <section className="flex flex-col sm:flex-row items-center gap-8 p-8 bg-surface rounded-sm border border-border shadow-sm">
+    <form onSubmit={handleSave} className="flex flex-col gap-8">
+      <section className="flex flex-col sm:flex-row items-center gap-6 p-6 bg-slate-900/60 rounded-lg border border-slate-800/80 backdrop-blur-md">
         <div className="relative group">
-          <div className="h-32 w-32 rounded-sm overflow-hidden border-4 border-white shadow-xl bg-surface-alt flex items-center justify-center">
+          <div className="relative h-24 w-24 rounded-lg overflow-hidden border border-slate-700 bg-slate-950 flex items-center justify-center">
             {formData.avatarUrl ? (
-              <img src={formData.avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
+              <Image
+                src={formData.avatarUrl}
+                alt="Avatar"
+                fill
+                sizes="96px"
+                className="object-cover"
+              />
             ) : (
-              <User className="h-12 w-12 text-text-hint" />
+              <User className="h-10 w-10 text-slate-500" />
             )}
           </div>
-          <button type="button" className="absolute bottom-0 right-0 h-10 w-10 bg-accent text-white rounded-sm flex items-center justify-center shadow-lg border-4 border-white hover:scale-110 active:scale-95 transition-all">
-            <Camera className="h-5 w-5" />
+          <button
+            type="button"
+            className="absolute -bottom-1 -right-1 h-8 w-8 bg-white text-slate-950 rounded-lg flex items-center justify-center shadow-md hover:bg-slate-200 transition-all"
+          >
+            <Camera className="h-4 w-4" />
           </button>
         </div>
-        <div className="flex flex-col text-center sm:text-left">
-          <h3 className="text-xl font-bold text-text-primary tracking-tight mb-1">
+        <div className="flex flex-col text-center sm:text-left gap-1">
+          <h3 className="text-lg font-semibold text-white tracking-tight">
             {formData.prenom} {formData.nom}
           </h3>
-          <p className="text-sm text-text-muted mb-4 font-medium italic">Membre depuis {memberDate}</p>
-          <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
-            <span className="px-3 py-1 bg-success-bg text-success text-[10px] font-bold uppercase tracking-widest rounded-sm flex items-center gap-1.5 shadow-sm">
+          <p className="text-xs text-slate-400">Membre depuis {memberDate}</p>
+          <div className="flex flex-wrap gap-2 justify-center sm:justify-start mt-2">
+            <span className="px-2.5 py-0.5 bg-emerald-950/40 text-emerald-400 border border-emerald-800/50 text-[10px] font-medium rounded-lg flex items-center gap-1.5">
               <ShieldCheck className="h-3 w-3" />
-              Compte Vérifié
+              Compte vérifié
             </span>
-            <span className="px-3 py-1 bg-accent-light text-accent text-[10px] font-bold uppercase tracking-widest rounded-sm flex items-center gap-1.5 shadow-sm border border-accent/10">
-              Client Premium
+            <span className="px-2.5 py-0.5 bg-slate-800 text-slate-300 border border-slate-700 text-[10px] font-medium rounded-lg flex items-center gap-1.5">
+              Client Velure
             </span>
           </div>
         </div>
       </section>
 
       {/* Info Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <Card className="p-8 border-border shadow-sm rounded-sm flex flex-col gap-6 bg-white">
-          <h3 className="text-sm font-bold uppercase tracking-widest text-text-primary mb-2 flex items-center gap-2">
-            <User className="h-4 w-4 text-accent" />
-            Informations Personnelles
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="p-6 border border-slate-800/80 rounded-lg flex flex-col gap-4 bg-slate-900/40 backdrop-blur-md">
+          <h3 className="text-xs font-semibold text-white flex items-center gap-2 border-b border-slate-800/80 pb-3">
+            <User className="h-3.5 w-3.5 text-slate-400" />
+            Informations personnelles
           </h3>
           
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-text-hint px-1">Prénom</label>
+          <div className="space-y-3.5 text-xs">
+            <div>
+              <label htmlFor="profil_prenom" className="block text-slate-400 mb-1 font-medium">Prénom</label>
               <Input 
+                id="profil_prenom"
                 value={formData.prenom} 
                 onChange={(e) => setFormData({...formData, prenom: e.target.value})} 
-                className="h-12 rounded-sm focus:ring-accent/20" 
+                className="h-9 rounded-lg border-slate-800 bg-slate-950 text-xs text-slate-200" 
               />
             </div>
-            <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-text-hint px-1">Nom</label>
+            <div>
+              <label htmlFor="profil_nom" className="block text-slate-400 mb-1 font-medium">Nom</label>
               <Input 
+                id="profil_nom"
                 value={formData.nom} 
                 onChange={(e) => setFormData({...formData, nom: e.target.value})} 
-                className="h-12 rounded-sm focus:ring-accent/20" 
+                className="h-9 rounded-lg border-slate-800 bg-slate-950 text-xs text-slate-200" 
               />
             </div>
-          </div>
-        </Card>
-
-        <Card className="p-8 border-border shadow-sm rounded-sm flex flex-col gap-6 bg-white">
-          <h3 className="text-sm font-bold uppercase tracking-widest text-text-primary mb-2 flex items-center gap-2">
-            <Mail className="h-4 w-4 text-accent" />
-            Coordonnées
-          </h3>
-          
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-text-hint px-1">Email <span className="opacity-50">(sécurisé)</span></label>
-              <div className="relative">
-                <Input 
-                  value={initialData.email} 
-                  disabled 
-                  className="h-12 rounded-sm bg-surface-alt border-dashed border-border" 
-                />
-                <Lock className="absolute right-4 top-1/2 -translate-y-1/2 h-3 w-3 text-text-hint" />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-text-hint px-1">Téléphone</label>
-              <Input 
-                value={formData.telephone || ''} 
-                onChange={(e) => setFormData({...formData, telephone: e.target.value})} 
-                placeholder="+33 6 .." 
-                className="h-12 rounded-sm focus:ring-accent/20" 
-              />
-            </div>
-          </div>
-        </Card>
-      </div>
-
-      {/* Security Info Bundle */}
-      <Card className="p-8 border-border shadow-sm rounded-sm flex items-center justify-between group hover:border-accent/40 transition-all cursor-pointer bg-white">
-        <div className="flex items-center gap-5">
-          <div className="h-14 w-14 bg-surface-alt rounded-sm flex items-center justify-center text-text-muted group-hover:bg-accent-light group-hover:text-accent transition-all">
-            <Lock className="h-6 w-6" />
-          </div>
-          <div>
-            <h4 className="font-bold text-text-primary uppercase tracking-tight">Sécurité du Compte</h4>
-            <p className="text-xs font-medium text-text-muted">Gérer votre mot de passe et vos sessions actives</p>
           </div>
         </div>
-        <ChevronRight className="h-5 w-5 text-text-hint group-hover:text-accent group-hover:translate-x-1 transition-all" />
-      </Card>
+
+        <div className="p-6 border border-slate-800/80 rounded-lg flex flex-col gap-4 bg-slate-900/40 backdrop-blur-md">
+          <h3 className="text-xs font-semibold text-white flex items-center gap-2 border-b border-slate-800/80 pb-3">
+            <Mail className="h-3.5 w-3.5 text-slate-400" />
+            Coordonnées de contact
+          </h3>
+          
+          <div className="space-y-3.5 text-xs">
+            <div>
+              <label htmlFor="profil_email" className="block text-slate-400 mb-1 font-medium">Adresse email (sécurisée)</label>
+              <div className="relative">
+                <Input 
+                  id="profil_email"
+                  value={initialData.email} 
+                  disabled 
+                  className="h-9 rounded-lg bg-slate-950/40 border-slate-800 text-xs text-slate-400 pr-8" 
+                />
+                <Lock className="absolute right-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-500" />
+              </div>
+            </div>
+            <div>
+              <label htmlFor="profil_tel" className="block text-slate-400 mb-1 font-medium">Numéro de téléphone</label>
+              <Input 
+                id="profil_tel"
+                value={formData.telephone || ''} 
+                onChange={(e) => setFormData({...formData, telephone: e.target.value})} 
+                placeholder="+228 90 00 00 00" 
+                className="h-9 rounded-lg border-slate-800 bg-slate-950 text-xs text-slate-200 font-mono" 
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Security Info Card */}
+      <div className="p-5 border border-slate-800/80 rounded-lg flex items-center justify-between group hover:border-slate-700 transition-all bg-slate-900/40 backdrop-blur-md">
+        <div className="flex items-center gap-4">
+          <div className="h-10 w-10 bg-slate-900 rounded-lg border border-slate-800 flex items-center justify-center text-slate-400">
+            <Lock className="h-4 w-4" />
+          </div>
+          <div>
+            <h4 className="text-xs font-semibold text-white">Sécurité du compte</h4>
+            <p className="text-[11px] text-slate-400">Authentification et sessions actives protégées</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-1 text-xs text-slate-400">
+          <ShieldCheck className="h-4 w-4 text-emerald-400" />
+          <span>Actif</span>
+        </div>
+      </div>
 
       {/* Footer Actions */}
-      <div className="flex items-center justify-end pt-6 border-t border-border mt-4">
+      <div className="flex items-center justify-end pt-4 border-t border-slate-800/80">
         <Button 
           type="submit" 
           disabled={loading}
-          className="h-14 px-10 text-sm font-bold uppercase tracking-widest rounded-sm shadow-xl shadow-accent/10 transition-all hover:scale-105 active:scale-95"
+          className="h-10 px-6 text-xs font-medium rounded-lg bg-white text-slate-950 hover:bg-slate-200 transition-all flex items-center gap-2"
         >
-          {loading ? 'Mise à jour en cours...' : 'Enregistrer les modifications'}
-          <Save className="h-5 w-5 ml-3" />
+          <Save className="h-3.5 w-3.5" />
+          {loading ? 'Enregistrement...' : 'Enregistrer les modifications'}
         </Button>
       </div>
     </form>

@@ -1,21 +1,22 @@
 import React from "react";
 import Link from "next/link";
 import { ROUTES } from "@/lib/utils/constants/routes";
+import { HelpCircle, ChevronRight } from "lucide-react";
 
 export default function FAQPage() {
   const faqs = [
     {
-      category: "Commandes et Paiement",
+      category: "Commandes et paiement",
       items: [
         {
           question: "Quels sont les moyens de paiement acceptés ?",
           answer:
-            "Nous acceptons les paiements par carte bancaire (Visa, MasterCard) via notre passerelle sécurisée, ainsi que les transferts par Mobile Money (T-Money, Flooz) pour nos clients au Togo.",
+            "Nous acceptons les cartes bancaires (Visa, MasterCard) ainsi que les paiements par Mobile Money (T-Money, Flooz) pour nos clients au Togo.",
         },
         {
           question: "Puis-je modifier ou annuler ma commande ?",
           answer:
-            "Une fois confirmée, votre commande est directement transmise à notre logistique pour expédition. L'annulation n'est plus possible. Vous pourrez toutefois effectuer un retour après réception.",
+            "Une fois validée, la commande entre immédiatement en préparation pour expédition rapide. L'annulation n'est plus possible, mais vous pourrez effectuer un retour après réception.",
         },
       ],
     },
@@ -25,64 +26,68 @@ export default function FAQPage() {
         {
           question: "Quels sont les délais de livraison ?",
           answer:
-            "Les livraisons standards s'effectuent sous 24 à 48 heures ouvrées. Un service par coursier privé le jour même est disponible pour Lomé (commandes passées avant 14h).",
+            "Les livraisons standards s'effectuent sous 24 à 48 heures ouvrées. Un service express par coursier le jour même est disponible pour Lomé (pour toute commande passée avant 14h).",
         },
         {
           question: "Comment suivre l'acheminement de mon colis ?",
           answer:
-            "Dès l'expédition de votre commande, un numéro de suivi vous sera communiqué. Vous pourrez suivre l'état de la livraison directement depuis l'historique de votre compte client.",
+            "Dès l'expédition, un numéro de suivi vous est transmis par email. Vous pouvez également suivre son état depuis votre tableau de bord client.",
         },
       ],
     },
     {
-      category: "Retours et Qualité",
+      category: "Retours et garanties",
       items: [
         {
           question: "Quelle est votre politique de retour ?",
           answer:
-            "Vous disposez d'un délai strict de 14 jours francs après réception pour nous retourner un article s'il ne vous convient pas. L'article doit être strictement neuf, non porté et renvoyé dans son emballage d'origine.",
+            "Vous disposez de 14 jours francs après réception pour retourner un article neuf, non porté et dans son emballage d'origine.",
         },
         {
-          question: "Authenticité des pièces ?",
+          question: "Authenticité des pièces",
           answer:
-            "Toutes nos pièces sont directement distribuées par notre atelier. Chaque article est inspecté scrupuleusement avant expédition pour garantir un standard de qualité parfait.",
+            "Toutes nos pièces proviennent directement de nos ateliers certifiés et font l'objet d'un contrôle rigoureux avant chaque envoi.",
         },
       ],
     },
   ];
 
   return (
-    <div className="pt-32 pb-32 px-6 min-h-screen bg-bg">
-      <div className="max-w-7xl mx-auto">
-        <header className="mb-16 text-center sm:text-left border-b border-neutral-100 pb-12">
-          <h1 className="text-3xl md:text-4xl font-serif text-black mb-6">
-            Support et questions fréquentes
+    <div className="pt-28 pb-20 px-6 lg:px-12 text-slate-100 min-h-screen">
+      <div className="max-w-4xl mx-auto">
+        <header className="mb-12 border-b border-slate-800/80 pb-8">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-xs font-medium text-slate-400">
+              Assistance
+            </span>
+          </div>
+          <h1 className="text-2xl md:text-3xl font-bold text-white mb-3">
+            Questions fréquentes
           </h1>
-          <p className="text-sm font-medium text-text-muted leading-relaxed max-w-2xl mx-auto sm:mx-0">
-            Retrouvez ici les réponses aux questions fréquemment posées. Si vous
-            ne trouvez pas l&apos;information recherchée, notre service client
-            se tient à votre entière disposition.
+          <p className="text-xs md:text-sm text-slate-400 leading-relaxed max-w-xl">
+            Retrouvez les réponses aux questions les plus courantes sur vos commandes, livraisons et retours.
           </p>
         </header>
 
-        <div className="space-y-20 mt-16">
+        <div className="space-y-12">
           {faqs.map((group) => (
-            <section
-              key={group.category}
-              className="flex flex-col md:flex-row gap-8 md:gap-16"
-            >
-              <div className="w-full md:w-1/3">
-                <h2 className="text-xl font-serif text-black border-l-2 border-black pl-4">
-                  {group.category}
-                </h2>
-              </div>
-              <div className="w-full md:w-2/3 flex flex-col gap-10">
+            <section key={group.category} className="flex flex-col gap-4">
+              <h2 className="text-sm font-semibold text-white tracking-wide border-b border-slate-800/80 pb-2">
+                {group.category}
+              </h2>
+              <div className="grid grid-cols-1 gap-3">
                 {group.items.map((item) => (
-                  <div key={item.question} className="flex flex-col gap-3">
-                    <h3 className="text-sm font-bold text-black uppercase tracking-tight">
-                      {item.question}
-                    </h3>
-                    <p className="text-sm font-medium text-text-muted leading-relaxed text-justify">
+                  <div
+                    key={item.question}
+                    className="p-5 rounded-sm bg-slate-950/60 backdrop-blur-md border border-slate-800/80 flex flex-col gap-2"
+                  >
+                    <div className="flex items-center gap-2">
+                      <HelpCircle className="h-4 w-4 text-slate-400 shrink-0" />
+                      <h3 className="text-xs font-semibold text-white">
+                        {item.question}
+                      </h3>
+                    </div>
+                    <p className="text-xs text-slate-400 leading-relaxed pl-6">
                       {item.answer}
                     </p>
                   </div>
@@ -92,18 +97,21 @@ export default function FAQPage() {
           ))}
         </div>
 
-        <div className="mt-24 p-12 bg-neutral-50 border border-neutral-100 text-center flex flex-col items-center gap-6 rounded-sm">
-          <h3 className="text-xl font-serif text-black tracking-tight">
-            Toujours besoin d&apos;assistance ?
-          </h3>
-          <p className="text-sm font-medium text-neutral-500 max-w-sm">
-            Contactez notre conciergerie dédiée pour une prise en charge
-            personnalisée.
-          </p>
-          <Link href={ROUTES.HOME}>
-            <button className="h-12 px-8 border border-black text-black hover:bg-black hover:text-white transition-all text-xs font-bold uppercase tracking-widest rounded-sm mt-4">
-              Contactez-nous
-            </button>
+        <div className="mt-16 p-6 rounded-sm bg-slate-900/50 border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <h3 className="text-sm font-semibold text-white">
+              Une autre question ?
+            </h3>
+            <p className="text-xs text-slate-400 mt-0.5">
+              Notre équipe est à votre disposition pour vous aider.
+            </p>
+          </div>
+          <Link
+            href={ROUTES.HOME}
+            className="text-xs font-medium text-white hover:text-slate-300 flex items-center gap-1 transition-colors"
+          >
+            Retourner à l&apos;accueil
+            <ChevronRight className="h-3.5 w-3.5" />
           </Link>
         </div>
       </div>

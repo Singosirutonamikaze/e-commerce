@@ -1,0 +1,36 @@
+name: "🐛 Rapport de Bug"
+description: "Signaler un comportement inattendu ou un dysfonctionnement"
+title: "fix: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Merci de signaler ce problème afin d'améliorer la stabilité de Velure.
+  - type: textarea
+    id: description
+    attributes:
+      label: Description du problème
+      description: Résumé clair et concis du bogue rencontré.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Étapes de reproduction
+      description: Comment reproduire le problème étape par étape.
+      placeholder: "1. Aller sur '/dashboard/shop'\n2. Cliquer sur...\n3. Observer le comportement"
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Comportement attendu
+      description: Que devrait-il se passer normalement ?
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / Captures d'écran
+      description: Ajoutez ici les erreurs de la console ou captures utiles.

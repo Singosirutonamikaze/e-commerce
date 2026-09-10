@@ -1,25 +1,28 @@
 import { CatalogTable } from "@/components/dashboard/CatalogTable/CatalogTable";
-import { getProducts } from "@/lib/actions/product.actions";
+import { getProducts } from "@/lib/actions/product";
 
 export default async function DashboardCataloguePage() {
   const products = await getProducts({});
 
   return (
     <section className="space-y-6">
-      <div className="flex flex-col gap-2">
-        <span className="text-xs font-semibold tracking-[0.2em] text-neutral-400">
-          Dashboard / Catalogue
-        </span>
-        <h2 className="text-2xl md:text-3xl font-bold text-black">
-          Catalogue produits
-        </h2>
-        <p className="text-sm text-neutral-600">
-          Tableau complet des produits disponibles. Cliquez sur une ligne pour
-          voir les détails.
+      <div className="flex flex-col gap-1 border-b border-slate-800/80 pb-6">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="text-xs font-semibold text-slate-400">
+            Articles
+          </span>
+        </div>
+        <h1 className="text-2xl md:text-3xl font-serif text-white tracking-tight">
+          Catalogue des produits
+        </h1>
+        <p className="text-xs md:text-sm text-slate-400 mt-1">
+          Consultez l&apos;ensemble de nos articles disponibles et filtrez votre sélection.
         </p>
       </div>
 
-      <CatalogTable products={products} />
+      <div className="border border-slate-800/80 bg-slate-950/60 backdrop-blur-md overflow-hidden">
+        <CatalogTable products={products} />
+      </div>
     </section>
   );
 }

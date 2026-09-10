@@ -2,36 +2,45 @@ import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import { CategoryGrid } from "@/components/category/CategoryGrid";
 import { PromoBanner } from "@/components/promo/PromoBanner";
+import { ProductGrid } from "@/components/product/ProductGrid/ProductGrid";
 import { ROUTES } from "@/lib/utils/constants/routes";
 import { HomeHeroSection } from "@/components/home/HomeHeroSection";
-import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
+import { getCategories } from "@/lib/actions/category";
+import { getProducts } from "@/lib/actions/product";
+import { ShieldCheck, Truck, Clock, Sparkles } from "lucide-react";
 
 const FEATURES = [
   {
-    title: "Qualité Artisanale",
-    desc: "Un savoir-faire unique avec des matériaux d'exception pour un style durable.",
+    icon: Sparkles,
+    title: "Qualité artisanale",
+    desc: "Confections soignées et matières sélectionnées pour une tenue durable.",
   },
   {
-    title: "Service Client",
-    desc: "Une navigation fluide et un service client dédié à votre satisfaction.",
+    icon: Truck,
+    title: "Livraison rapide",
+    desc: "Expédition sécurisée avec suivi en temps réel de vos commandes.",
   },
   {
-    title: "Authenticité Garantie",
-    desc: "Toutes nos pièces sont certifiées et soigneusement sélectionnées par nos experts.",
+    icon: Clock,
+    title: "Service client",
+    desc: "Assistance dédiée pour vous accompagner dans vos choix.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Paiement sécurisé",
+    desc: "Transactions chiffrées et protégées en toute simplicité.",
   },
 ];
+
 export default async function HomePage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const currentDateYears = new Date().getFullYear();
 
-  if (user) {
-    redirect(ROUTES.DASHBOARD.ROOT);
-  }
+  const [dbCategories, products] = await Promise.all([
+    getCategories(),
+    getProducts({}),
+  ]);
 
-  const categories = [
+  const defaultCategories = [
     {
       id: "1",
       nom: "Chaussures",
@@ -64,37 +73,34 @@ export default async function HomePage() {
     },
   ];
 
+  const categories = dbCategories.length > 0 ? dbCategories.slice(0, 3) : defaultCategories;
+  const featuredProducts = products.slice(0, 4);
+
   const promo = {
-    code: "SEASON-2026",
+    code: `season-${currentDateYears}`,
     reduction: 15,
     type: "POURCENTAGE",
     montantMinimum: 50000,
   };
 
   return (
-    <div className="flex flex-col bg-white">
+    <div className="flex flex-col text-slate-100">
       <HomeHeroSection />
 
-      <section className="py-24 bg-white border-b border-neutral-100">
+      <section className="py-16 bg-slate-950/40 backdrop-blur-sm border-b border-slate-800/80">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="flex flex-col md:flex-row items-end justify-between mb-20 gap-8">
-            <div className="max-w-lg flex flex-col gap-3">
-              <div className="flex items-center gap-2">
-                <span className="text-[9px] font-bold uppercase tracking-[0.4em] text-neutral-400 text-style-font text-style-font-static">
-                  Nos Coups de Cœur
-                </span>
-              </div>
-              <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-black uppercase text-style-font text-style-font-static">
-                NOTRE SÉLECTION
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-3">
+              <span className="h-1.5 w-1.5 rounded-full bg-slate-400" />
+              <h2 className="text-sm font-semibold text-white tracking-wide">
+                Univers
               </h2>
             </div>
-            <Link href={ROUTES.CATEGORIES}>
-              <Button
-                variant="ghost"
-                className="rounded-sm border border-neutral-100 h-10 px-8 text-[9px] font-bold uppercase tracking-widest hover:border-black transition-all"
-              >
-                TOUT EXPLORER
-              </Button>
+            <Link
+              href={ROUTES.CATEGORIES}
+              className="text-xs text-slate-400 hover:text-white transition-colors font-mono"
+            >
+              [Tout explorer]
             </Link>
           </div>
 
@@ -102,23 +108,49 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="py-16 px-6 lg:px-12">
-        <div className="max-w-7xl mx-auto rounded-sm overflow-hidden border border-neutral-100">
+      {featuredProducts.length > 0 && (
+        <section className="py-16 bg-slate-900/30 backdrop-blur-sm border-b border-slate-800/80">
+          <div className="max-w-7xl mx-auto px-6 lg:px-12">
+            <div className="flex items-center justify-between mb-8">
+              <div className="flex items-center gap-3">
+                <span className="h-1.5 w-1.5 rounded-full bg-slate-400" />
+                <h2 className="text-sm font-semibold text-white tracking-wide">
+                  Sélection récente
+                </h2>
+              </div>
+              <Link
+                href={ROUTES.PRODUCTS}
+                className="text-xs text-slate-400 hover:text-white transition-colors font-mono"
+              >
+                [Catalogue complet]
+              </Link>
+            </div>
+
+            <ProductGrid products={featuredProducts} />
+          </div>
+        </section>
+      )}
+
+      <section className="py-12 px-6 lg:px-12">
+        <div className="max-w-7xl mx-auto rounded-sm overflow-hidden border border-slate-800 backdrop-blur-md">
           <PromoBanner promo={promo} />
         </div>
       </section>
 
-      <section className="py-24 bg-neutral-50 border-y border-neutral-100">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-3 gap-16">
+      <section className="py-16 bg-slate-900/20 backdrop-blur-sm border-y border-slate-800/80">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {FEATURES.map((feature) => (
             <div
               key={feature.title}
-              className="flex flex-col gap-5 p-8 bg-white border border-neutral-100 rounded-sm hover:border-black transition-all shadow-sm shadow-black/1"
+              className="flex flex-col gap-2.5 p-5 bg-slate-950/60 backdrop-blur-md border border-slate-800/80 rounded-sm"
             >
-              <h3 className="text-[10px] font-bold uppercase tracking-[0.4em] text-black border-b border-neutral-100 pb-4">
+              <div className="h-8 w-8 rounded-sm bg-slate-900 flex items-center justify-center text-slate-300 border border-slate-800">
+                <feature.icon className="h-4 w-4" />
+              </div>
+              <h3 className="text-sm font-semibold text-white">
                 {feature.title}
               </h3>
-              <p className="text-[10px] font-bold text-neutral-400 leading-relaxed max-w-xs uppercase tracking-widest">
+              <p className="text-xs text-slate-400 leading-relaxed">
                 {feature.desc}
               </p>
             </div>
@@ -126,27 +158,37 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="py-32 px-6 lg:px-12 bg-white">
-        <div className="max-w-3xl mx-auto text-center flex flex-col items-center gap-12">
-          <div className="flex flex-col gap-4">
-            <span className="text-[9px] font-bold uppercase tracking-[0.4em] text-neutral-400">
+      <section className="py-16 px-6 lg:px-12">
+        <div className="max-w-md mx-auto text-center flex flex-col items-center gap-4 bg-slate-950/60 backdrop-blur-md p-8 border border-slate-800/80 rounded-sm">
+          <div className="flex flex-col gap-1">
+            <span className="text-xs font-medium text-slate-400">
               Newsletter
             </span>
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-black uppercase">
-              RESTEZ CONNECTÉ À NOS NOUVEAUTÉS
+            <h2 className="text-xl font-bold text-white">
+              Recevez nos actualités
             </h2>
+            <p className="text-xs text-slate-400">
+              Offres exclusives et nouveautés directement par email.
+            </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 w-full bg-neutral-50 p-3 rounded-sm border border-neutral-100">
+          <form
+            onSubmit={undefined}
+            className="flex flex-col sm:flex-row gap-2 w-full pt-2"
+          >
             <input
               type="email"
               placeholder="votre@email.com"
-              className="grow h-12 bg-white border border-neutral-100 px-6 rounded-sm text-[10px] font-bold tracking-widest placeholder:text-neutral-300 focus:outline-none focus:border-black transition-all"
+              required
+              className="grow h-9 bg-slate-900/80 border border-slate-800 px-3 rounded-sm text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-slate-600 transition-all"
             />
-            <Button className="h-12 px-10 rounded-sm bg-black text-white text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-neutral-900 transition-all">
-              S&apos;INSCRIRE
+            <Button
+              type="submit"
+              className="h-9 px-4 rounded-sm bg-white text-slate-950 text-xs font-semibold hover:bg-slate-200 transition-all shadow-sm shrink-0"
+            >
+              S&apos;inscrire
             </Button>
-          </div>
+          </form>
         </div>
       </section>
     </div>

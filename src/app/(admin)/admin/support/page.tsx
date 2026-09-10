@@ -1,5 +1,5 @@
 import React from 'react';
-import { getActiveConversations } from '@/lib/actions/chat.actions';
+import { getActiveConversations } from '@/lib/actions/chat';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { MessageSquare, Clock, ArrowRight, Star } from 'lucide-react';
