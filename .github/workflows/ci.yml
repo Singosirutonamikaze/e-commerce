@@ -49,7 +49,7 @@ jobs:
           node-version: 22
 
       - name: Installation de pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
 
       - name: Installation des dependances
         run: pnpm install --frozen-lockfile
