@@ -1,4 +1,4 @@
-name: CI - Intégration Continue & Assurance Qualité
+name: CI - Integration Continue & Assurance Qualite
 
 on:
   push:
@@ -40,32 +40,32 @@ jobs:
       ADMIN_SETUP_SECRET: "mock-admin-secret"
 
     steps:
-      - name: 📥 Récupération du dépôt
+      - name: Recuperation du depot
         uses: actions/checkout@v4
 
-      - name: ⚡ Configuration de Node.js (v22 LTS requis pour pnpm v11)
+      - name: Configuration de Node.js (v22 LTS requis pour pnpm v11)
         uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      - name: 📦 Installation de pnpm
+      - name: Installation de pnpm
         uses: pnpm/action-setup@v4
 
-      - name: 🚀 Installation des dépendances
+      - name: Installation des dependances
         run: pnpm install --frozen-lockfile
 
-      - name: 🛡️ Validation du schéma Prisma & Génération du client
+      - name: Validation du schema Prisma et generation du client
         run: |
           pnpm exec prisma validate
           pnpm exec prisma generate
 
-      - name: 🔍 Vérification stricte des types TypeScript
+      - name: Verification stricte des types TypeScript
         run: pnpm exec tsc --noEmit
 
-      - name: 🧹 Analyse statique ESLint
+      - name: Analyse statique ESLint
         run: pnpm lint
 
-      - name: 🧪 Exécution des tests unitaires Vitest
+      - name: Execution des tests unitaires Vitest
         run: pnpm test
 
   # ---------------------------------------------------------------------------
@@ -77,13 +77,13 @@ jobs:
     needs: quality-check
 
     steps:
-      - name: 📥 Récupération du dépôt
+      - name: Recuperation du depot
         uses: actions/checkout@v4
 
-      - name: 🐳 Configuration de Docker Buildx
+      - name: Configuration de Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: 🏗️ Construction de l'image Docker de Production
+      - name: Construction de l'image Docker de Production
         uses: docker/build-push-action@v5
         with:
           context: .
