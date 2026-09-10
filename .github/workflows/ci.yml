@@ -43,14 +43,13 @@ jobs:
       - name: 📥 Récupération du dépôt
         uses: actions/checkout@v4
 
-      - name: 📦 Installation de pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: ⚡ Configuration de Node.js
+      - name: ⚡ Configuration de Node.js (v22 LTS requis pour pnpm v11)
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: "pnpm"
+          node-version: 22
+
+      - name: 📦 Installation de pnpm
+        uses: pnpm/action-setup@v4
 
       - name: 🚀 Installation des dépendances
         run: pnpm install --frozen-lockfile
